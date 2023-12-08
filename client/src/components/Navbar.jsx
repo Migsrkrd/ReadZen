@@ -1,7 +1,10 @@
 import { Link} from 'react-router-dom';
 import { useState } from 'react';
-import Auth from '../../utils/auth';
-
+import Auth from '../utils/auth';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+import Modal from '@mui/material/Modal';
 
 const Header = () => {
     const [showModal, setShowModal] = useState(false);
@@ -48,12 +51,12 @@ const Header = () => {
           <Modal.Header closeButton>
             <Modal.Title id='signup-modal'>
               <Nav variant='pills'>
-                <Nav.Item>
-                  <Nav.Link eventKey='login'>Login</Nav.Link>
-                </Nav.Item>
-                <Nav.Item>
-                  <Nav.Link eventKey='signup'>Sign Up</Nav.Link>
-                </Nav.Item>
+                <Item>
+                  <Link eventKey='login'>Login</Link>
+                </Item>
+                <Item>
+                  <Link eventKey='signup'>Sign Up</Link>
+                </Item>
               </Nav>
             </Modal.Title>
           </Modal.Header>
