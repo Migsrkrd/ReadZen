@@ -5,7 +5,8 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
-
+import LoginForm from './LoginForm';
+import SignupForm from './SignupForm';
 
 const style = {
     position: 'absolute',
@@ -51,7 +52,7 @@ const Header = () => {
             </>
           ) : (
             <>
-              <Link onClick={() => setShowModal(true)}>
+              <Link onClick={() => {{handleOpen}}}>
                 Login/Sign Up
               </Link>
             </>
@@ -69,15 +70,17 @@ const Header = () => {
       >
         <Box sx={style}>
           <Typography id="modal-modal-title" variant="h6" component="h2">
-            Text in a modal
+          <Link eventKey='login'>Login</Link>
+          <Link eventKey='signup'>Sign Up</Link>
           </Typography>
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
+                <LoginForm handleModalClose={() => setShowModal(false)} />
+                <SignupForm handleModalClose={() => setShowModal(false)} />
           </Typography>
         </Box>
       </Modal>
     </div>
-        {/* <Modal
+         {/* <Modal
         size='lg'
         show={showModal}
         onHide={() => setShowModal(false)}
@@ -106,7 +109,7 @@ const Header = () => {
             </Content>
           </Modal.Body>
         </Container>
-      </Modal> */}
+      </Modal>  */}
       </header>
     )
 }
