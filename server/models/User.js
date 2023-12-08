@@ -6,26 +6,26 @@ const userSchema = new Schema({
         type: String, 
         required: true,
         unique: true,
-        trim: TextTrackCue,
-        email: {
-            String,
-            required: true,
-            unique: true,
-            match: [/.+@.+\..+/, 'Must be a valid email address!']
-        },
-        password: {
-            type: String,
-            required: true,
-            minlength: 5
-        },
-        readMes: [
-            {
-                type: Schema.Types.ObjectId,
-                ref: 'ReadMe'
-            }
-        ]
-        // Add pinned ReadMes later
-    }
+        trim: true
+    },
+    email: {
+        String,
+        required: true,
+        unique: true,
+        match: [/.+@.+\..+/, 'Must be a valid email address!']
+    },
+    password: {
+        type: String,
+        required: true,
+        minlength: 5
+    },
+    readMes: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'ReadMe'
+        }
+    ]
+    // Add pinned ReadMes later
 });
 
 // Hashes password
