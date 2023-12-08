@@ -13,6 +13,22 @@ const router = createBrowserRouter([
     element: <App />,
     errorElement: <h1 className='display-2'>Wrong page!</h1>,
     children: [
+        {
+            index: true,
+            element: <Home />,
+        },
+        {
+            path: 'profiles/:username',
+            element: <Profile />
+        },
+        {
+            path: '/me',
+            element: <Profile />
+        },
+        {
+            path: '/about',
+            element: <About />
+        }
 
     ]
   }
