@@ -29,6 +29,9 @@ const readMeSchema = new Schema({
     },
     repoLink: {
         type: String
+    },
+    deployLink: {
+        type: String
     }
 });
 
