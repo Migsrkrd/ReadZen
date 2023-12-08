@@ -20,7 +20,10 @@ const resolvers = {
         },
         // Returns all readmes of a given user
         readmes: async (parent, { username }) => {
-            // Requires author field
+            const user = User.findOne({ username: username });
+            const readmes = user.ReadMes;
+
+            return readmes;
         },
         // Returns a single readme by id
         readme: async (parent, { readmeId }) => {
@@ -56,7 +59,7 @@ const resolvers = {
             const readme = await ReadMe.create({ ...args });
 
             await User.findOneAndUpdate(
-                { username: author },
+                { username: args.username },
                 { $addToSet: { ReadMes: readme }}
             );
             return readme;
@@ -72,7 +75,7 @@ const resolvers = {
                 { _id: readmeId },
                 { $pull: { ReadMes: { _id: readmeId }}},
                 { $addToSet: { ReadMes: readme }}
-            )
+            );
             return readme;
         },
         // Deletes a readme and removes it from a user's readmes
@@ -82,7 +85,7 @@ const resolvers = {
                 { _id: readmeId },
                 { $pull: { ReadMes: { _id: readmeId }}},
                 { new: true}
-            )
+            );
             return readme;
         }
     }
