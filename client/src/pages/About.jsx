@@ -4,7 +4,7 @@ const About = () => {
       fontWeight: "bold",
     },
     aboutUs: {
-        color: "#fbf9fa",
+      color: "#fbf9fa",
       display: "flex",
       flexDirection: "column",
       alignItems: "center",
@@ -13,7 +13,8 @@ const About = () => {
       margin: "20px",
     },
     main: {
-        backgroundColor: "#2b2024",
+      textAlign: "center",
+      backgroundColor: "#2b2024",
       border: "2px solid #fd0054",
       display: "flex",
       flexDirection: "column",
@@ -24,7 +25,7 @@ const About = () => {
       borderRadius: "10px",
     },
     mission: {
-        backgroundColor: "#2b2024",
+      backgroundColor: "#2b2024",
       width: "400px",
       height: "400px",
       border: "2px solid #fd0054",
@@ -37,7 +38,7 @@ const About = () => {
       borderRadius: "10px",
     },
     features: {
-        backgroundColor: "#2b2024",
+      backgroundColor: "#2b2024",
       width: "400px",
       height: "400px",
       border: "2px solid #fd0054",
@@ -50,7 +51,7 @@ const About = () => {
       borderRadius: "10px",
     },
     howItWorks: {
-        backgroundColor: "#2b2024",
+      backgroundColor: "#2b2024",
       width: "400px",
       height: "400px",
       border: "2px solid #fd0054",
@@ -63,8 +64,9 @@ const About = () => {
       borderRadius: "10px",
     },
     join: {
-        backgroundColor: "#2b2024",
-        border: "2px solid #fd0054",
+      textAlign: "center",
+      backgroundColor: "#2b2024",
+      border: "2px solid #fd0054",
       display: "flex",
       flexDirection: "column",
       alignItems: "center",
