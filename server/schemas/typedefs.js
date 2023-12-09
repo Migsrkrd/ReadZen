@@ -18,6 +18,7 @@ type ReadMe {
     Tests: String
     RepoLink: String!
     DeployedLink: String!
+    author: User
 }
 
 type Auth {
@@ -36,10 +37,10 @@ type Query {
 type Mutation {
     login(email: String!, password: String!): Auth
     addUser(username: String!, email: String!, password: String!): Auth
-    addReadMe(title: String!, description: String!, TableOfContents: String, Installation: String, Usage: String, Credits: String, License: String, Tests: String, RepoLink: String!, DeployedLink: String!): ReadMe
-    editReadMe(_id: ID!, title: String!, description: String!, TableOfContents: String, Installation: String, Usage: String, Credits: String, License: String, Tests: String, RepoLink: String!, DeployedLink: String!): ReadMe
+    updateReadMe(_id: ID!, title: String, description: String, TableOfContents: String, Installation: String, Usage: String, Credits: String, License: String, Tests: String, RepoLink: String, DeployedLink: String): ReadMe
     deleteReadMe(_id: ID!): ReadMe
+    addReadMe(title: String!, description: String!, TableOfContents: String, Installation: String, Usage: String, Credits: String, License: String, Tests: String, RepoLink: String!, DeployedLink: String!): ReadMe
 }
-`
+`;
 
 module.exports = typedefs;
