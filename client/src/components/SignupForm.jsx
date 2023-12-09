@@ -1,5 +1,11 @@
 import { useState } from 'react';
 // import { Form, Button, Alert } from 'react-bootstrap';
+import Box from '@mui/material/Box';
+import FilledInput from '@mui/material/FilledInput';
+import FormControl from '@mui/material/FormControl';
+import FormHelperText from '@mui/material/FormHelperText';
+import Input from '@mui/material/Input';
+import InputLabel from '@mui/material/InputLabel';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button'
 import { useMutation } from '@apollo/client';
@@ -21,8 +27,8 @@ const SignupForm = () => {
   });
 
   const handleInputChange = (event) => {
-    const { name, value } = event.target;
-    setUserFormData({ ...userFormData, [name]: value });
+    const { id, value } = event.target;
+    setUserFormData({ ...userFormData, [id]: value });
   };
 
   const handleFormSubmit = async (event) => {
@@ -62,8 +68,16 @@ const SignupForm = () => {
         {/* <Alert dismissible onClose={() => setShowAlert(false)} show={showAlert} variant='danger'>
           Something went wrong with your signup!
         </Alert> */}
-
-        <TextField         
+    <Box
+          component="form"
+          sx={{
+            '& > :not(style)': { m: 1 },
+          }}
+          noValidate
+          autoComplete="off"
+          >
+        <TextField
+        id='username'  
         label="Username"
         value={userFormData.username}
         onChange={handleInputChange}
@@ -71,6 +85,7 @@ const SignupForm = () => {
         margin="normal"
         />
         <TextField
+        id='email'
         label="Email"
         value={userFormData.email}
         onChange={handleInputChange}
@@ -78,6 +93,7 @@ const SignupForm = () => {
         margin="normal"
       />
         <TextField
+        id='password'
         label="Password"
         value={userFormData.password}
         onChange={handleInputChange}
@@ -86,10 +102,12 @@ const SignupForm = () => {
       />
         <Button
           disabled={!(userFormData.username && userFormData.email && userFormData.password)}
+          onSubmit={handleFormSubmit}
           type='submit'
           variant='contained'>
           Submit
         </Button>
+        </Box>
       {/* </Form> */}
     </>
   );

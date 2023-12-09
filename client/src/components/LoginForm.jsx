@@ -1,6 +1,7 @@
 // see SignupForm.js for comments
 import { useState } from 'react';
 // import { Form, Button, Alert } from 'react-bootstrap';
+import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button'
 import { useMutation } from '@apollo/client';
@@ -15,8 +16,8 @@ const LoginForm = () => {
   const [login, {error}] = useMutation(LOGIN_USER)
 
   const handleInputChange = (event) => {
-    const { name, value } = event.target;
-    setUserFormData({ ...userFormData, [name]: value });
+    const { id, value } = event.target;
+    setUserFormData({ ...userFormData, [id]: value });
   };
 
   const handleFormSubmit = async (event) => {
@@ -51,7 +52,16 @@ const LoginForm = () => {
         {/* <Alert dismissible onClose={() => setShowAlert(false)} show={showAlert} variant='danger'>
           Something went wrong with your login credentials!
         </Alert> */}
+            <Box
+          component="form"
+          sx={{
+            '& > :not(style)': { m: 1 },
+          }}
+          noValidate
+          autoComplete="off"
+          >
         <TextField
+        id='email'
         label="Email"
         value={userFormData.email}
         onChange={handleInputChange}
@@ -59,6 +69,7 @@ const LoginForm = () => {
         margin="normal"
       />
         <TextField
+        id='password'
         label="Password"
         value={userFormData.password}
         onChange={handleInputChange}
@@ -67,10 +78,12 @@ const LoginForm = () => {
       />
         <Button
           disabled={!(userFormData.email && userFormData.password)}
+          onSubmit={handleFormSubmit}
           type='submit'
           variant='contained'>
           Submit
         </Button>
+        </Box>
       {/* </Form> */}
     </>
   );

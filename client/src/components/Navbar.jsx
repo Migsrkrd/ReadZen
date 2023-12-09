@@ -22,10 +22,17 @@ const style = {
 
 const Header = () => {
     const [showModal, setShowModal] = useState(false);
-
+    const [activeForm, setActiveForm] = useState('login');
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+
+    const handleFormChange = (event) => {
+        // console.log(event.target.name)
+        // console.log(activeForm)
+        setActiveForm(event.target.name === 'login' ? 'sign up' : 'login');
+      };
+
 
     const logout = (event) => {
         event.preventDefault();
@@ -52,7 +59,7 @@ const Header = () => {
             </>
           ) : (
             <>
-              <Link onClick={() => {{handleOpen}}}>
+              <Link onClick={handleOpen}>
                 Login/Sign Up
               </Link>
             </>
@@ -61,7 +68,6 @@ const Header = () => {
             </div>
 
             <div>
-      <Button onClick={handleOpen}>Open modal</Button>
       <Modal
         open={open}
         onClose={handleClose}
@@ -70,46 +76,15 @@ const Header = () => {
       >
         <Box sx={style}>
           <Typography id="modal-modal-title" variant="h6" component="h2">
-          <Link eventKey='login'>Login</Link>
-          <Link eventKey='signup'>Sign Up</Link>
+          <button name='login' onClick={handleFormChange}>Login</button>
+          <button name='sign up' onClick={handleFormChange}>Sign Up</button>
           </Typography>
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                <LoginForm handleModalClose={() => setShowModal(false)} />
-                <SignupForm handleModalClose={() => setShowModal(false)} />
+            {activeForm==='login' ? <LoginForm />:<SignupForm />}
           </Typography>
         </Box>
       </Modal>
     </div>
-         {/* <Modal
-        size='lg'
-        show={showModal}
-        onHide={() => setShowModal(false)}
-        aria-labelledby='signup-modal'>
-        <Container defaultActiveKey='login'>
-          <Modal.Header closeButton>
-            <Modal.Title id='signup-modal'>
-              <Nav variant='pills'>
-                <Item>
-                  <Link eventKey='login'>Login</Link>
-                </Item>
-                <Item>
-                  <Link eventKey='signup'>Sign Up</Link>
-                </Item>
-              </Nav>
-            </Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <Content>
-              <Pane eventKey='login'>
-                <LoginForm handleModalClose={() => setShowModal(false)} />
-              </Pane>
-              <Pane eventKey='signup'>
-                <SignUpForm handleModalClose={() => setShowModal(false)} />
-              </Pane>
-            </Content>
-          </Modal.Body>
-        </Container>
-      </Modal>  */}
       </header>
     )
 }
