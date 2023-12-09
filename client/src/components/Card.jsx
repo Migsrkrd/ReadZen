@@ -18,8 +18,6 @@ const Card = ({ title, description, github, deploy, username }) => {
     setIsModalOpen(isModalOpen);
   };
 
-  console.log(isModalOpen)
-
   return (
     <div className="card"  onClick={openModal}>
       <div className="card-header">

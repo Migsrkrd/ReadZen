@@ -36,6 +36,7 @@ header h1{
     text-decoration: none;
     color: var(--third-color);
     transition: 0.2s;
+    cursor: pointer;
 }
 
 .navlink-home{

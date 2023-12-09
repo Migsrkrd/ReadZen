@@ -36,6 +36,7 @@ const Header = () => {
     event.preventDefault();
     Auth.logout();
   };
+
   return (
     <header>
       <div className="headers">
@@ -54,9 +55,9 @@ const Header = () => {
               <Link className="btn btn-lg btn-info m-2 navlink" to="/me">
                 <h2>{Auth.getProfile().data.username}'s profile</h2>
               </Link>
-              <button className="btn btn-lg btn-light m-2" onClick={logout}>
-                <h2>Logout</h2>
-              </button>
+
+                <h2 className="navlink" onClick={logout}>Logout</h2>
+
             </div>
           ) : (
             <div className="far-nav">
