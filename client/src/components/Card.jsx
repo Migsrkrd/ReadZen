@@ -5,7 +5,7 @@ const Card = ({ title, description, github, deploy, username }) => {
     <div className="card">
       <div className="card-header">
         <h3>{title}</h3>
-        <Link className="profile-link" to={`/profiles${username}`}>
+        <Link className="profile-link" to={`/profiles/${username}`}>
           <h4>@{username}</h4>
         </Link>
       </div>
