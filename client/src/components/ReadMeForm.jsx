@@ -3,6 +3,8 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import { Button } from '@mui/material';
 import { useState } from 'react';
+import { useMutation } from '@apollo/client';
+import { ADD_README } from '../utils/mutations';
 
 const ReadMeForm = () => {
 
@@ -16,9 +18,11 @@ const ReadMeForm = () => {
         license: '',
         tests:'',
         repoLink: '',
-        deployLink: ''
+        deployedLink: ''
     })
 
+
+    const [addReadMe, {error}] = useMutation(ADD_README)
     const handleInputChange = (event) => {
         const { id, value } = event.target;
         setUserFormData({ ...userFormData, [id]: value });
@@ -29,14 +33,12 @@ const ReadMeForm = () => {
         console.log('submit')
         try {
           //creates a new user in the db
-          const { data } = await addUser({
+          const { data } = await addReadMe({
             variables: { ...userFormData },
           });
     
-          Auth.login(data.addUser.token);
         } catch (e) {
           console.error(e);
-          setShowAlert(true);
         }
     
         setUserFormData({
@@ -49,7 +51,7 @@ const ReadMeForm = () => {
             license: '',
             tests:'',
             repoLink: '',
-            deployLink: ''
+            deployedLink: ''
         });
       };
     return (
@@ -136,9 +138,9 @@ const ReadMeForm = () => {
                 margin="normal"
                 />
                 <TextField
-                id='deployLink'  
+                id='deployedLink'  
                 label="Deployed Link"
-                value={userFormData.deployLink}
+                value={userFormData.deployedLink}
                 onChange={handleInputChange}
                 // fullWidth
                 margin="normal"

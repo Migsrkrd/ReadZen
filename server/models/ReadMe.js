@@ -1,4 +1,5 @@
 const { Schema, model } = require('mongoose');
+const dateFormat = require('../utils/dateFormat');
 
 const readMeSchema = new Schema({
     title: {
@@ -30,7 +31,23 @@ const readMeSchema = new Schema({
     repoLink: {
         type: String
     },
-    deployLink: {
+    deployedLink: {
+        type: String
+    },
+    dateCreated: {
+        type: Date,
+        default: Date.now,
+        get: (timestamp) => dateFormat(timestamp),
+    },
+    datePublished: {
+        type: Date,
+        default: Date.now,
+        get: (timestamp) => dateFormat(timestamp),
+    },
+    isPublished: {
+        type: Boolean
+    },
+    author: {
         type: String
     }
 });
