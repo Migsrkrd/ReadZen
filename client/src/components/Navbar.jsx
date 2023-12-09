@@ -25,7 +25,7 @@ const Header = () => {
 
     const [activeForm, setActiveForm] = useState('login');
     const handleFormChange = (event) => {
-        setActiveForm(event.target.name === 'login' ? 'sign up' : 'login');
+        setActiveForm(event.target.name === 'login' ? 'login' : 'sign up');
       };
     
 
@@ -75,8 +75,8 @@ const Header = () => {
       >
         <Box sx={style}>
           <Typography id="modal-modal-title" variant="h6" component="h2">
-          <button name='login' onClick={handleFormChange}>Login</button>
-          <button name='sign up' onClick={handleFormChange}>Sign Up</button>
+          <Button name='login' onClick={handleFormChange}>Login</Button>
+          <Button name='sign up' onClick={handleFormChange}>Sign Up</Button>
           </Typography>
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
             {activeForm==='login' ? <LoginForm />:<SignupForm />}
