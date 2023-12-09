@@ -6,6 +6,12 @@
     background: var(--primary-color);
 }
 
+body{
+    margin: 0px;
+    padding: 0px;
+    font-family: 'Roboto', sans-serif;
+}
+
 header h1{
     margin-left: 50px;
     color: var(--secondary-color);
