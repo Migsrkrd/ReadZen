@@ -9,15 +9,19 @@ type User {
 type ReadMe {
     _id: ID!
     title: String!
+    shortDescription: String!
     description: String!
-    TableOfContents: String
-    Installation: String
-    Usage: String
-    Credits: String
-    License: String
-    Tests: String
-    RepoLink: String!
-    DeployedLink: String!
+    tableOfContents: String
+    installation: String
+    usage: String
+    credits: String
+    license: String
+    tests: String
+    repoLink: String!
+    deployedLink: String!
+    dateCreated: String!
+    datePublished: String
+    isPublished: Boolean
     author: User
 }
 
@@ -35,11 +39,48 @@ type Query {
 }
 
 type Mutation {
-    login(email: String!, password: String!): Auth
-    addUser(username: String!, email: String!, password: String!): Auth
-    updateReadMe(_id: ID!, title: String, description: String, TableOfContents: String, Installation: String, Usage: String, Credits: String, License: String, Tests: String, RepoLink: String, DeployedLink: String): ReadMe
-    deleteReadMe(_id: ID!): ReadMe
-    addReadMe(title: String!, description: String!, TableOfContents: String, Installation: String, Usage: String, Credits: String, License: String, Tests: String, RepoLink: String!, DeployedLink: String!): ReadMe
+    login(
+        email: String!,
+        password: String!
+    ): Auth
+    addUser(
+        username: String!,
+        email: String!,
+        password: String!
+    ): Auth
+    updateReadMe(
+        _id: ID!,
+        title: String,
+        shortDescription: String,
+        description: String,
+        tableOfContents: String,
+        installation: String,
+        usage: String,
+        credits: String,
+        license: String,
+        tests: String,
+        repoLink: String,
+        deployedLink: String,
+        dateCreated: String,
+        datePublished: String,
+        isPublished: Boolean
+    ): ReadMe
+    deleteReadMe(
+        _id: ID!
+    ): ReadMe
+    addReadMe(
+        title: String!,
+        shortDescription: String!,
+        description: String!,
+        tableOfContents: String,
+        installation: String,
+        usage: String,
+        credits: String,
+        license: String,
+        tests: String,
+        repoLink: String!,
+        deployedLink: String!
+    ): ReadMe
 }
 `;
 
