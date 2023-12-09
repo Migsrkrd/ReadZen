@@ -13,10 +13,10 @@ const Card = ({ title, description, github, deploy, username }) => {
         <p>{description}</p>
         <div className="card-links">
           <a href={github} target="_blank" rel="noopener noreferrer">
-          <i class="fa fa-github"></i>
+          <i className="fa fa-github"></i>
           </a>
           <a href={deploy} target="_blank" rel="noopener noreferrer">
-          <i class="fa fa-link"></i>
+          <i className="fa fa-link"></i>
           </a>
         </div>
       </div>

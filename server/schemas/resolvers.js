@@ -65,7 +65,7 @@ const resolvers = {
             return readme;
         },
         // Edits a readme and updates a user's readmes
-        editReadMe: async (parent, args) => {
+        updateReadMe: async (parent, args) => {
             const readme = await ReadMe.findOneAndUpdate(
                 { _id: readmeId },
                 { ...args },
