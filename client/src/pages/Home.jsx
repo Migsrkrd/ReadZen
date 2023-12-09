@@ -8,11 +8,9 @@ const Home = () => {
       <main>
         <div className="divy">
         <Card title={"testing"} description={"greanioup nvieoapnrg aerinug[naeoinvf ao[ienrgiua[ eonvfioe[aoienrg [aeaoiunfba [oiuerng "} github={"#"} deploy={"#"} username={"Mikey"}/>
-        <Card title={"testing"} description={"whatsup"} github={"#"} deploy={"#"} username={"Mikey"}/>
-        <Card title={"testing"} description={"whatsup"} github={"#"} deploy={"#"} username={"Lenny"}/>
+        <Card title={"testing Again"} description={"whatsup"} github={"#"} deploy={"#"} username={"Mikey"}/>
+        <Card title={"testing a third time"} description={"Im getting tired but i dont wanna stop"} github={"#"} deploy={"#"} username={"Lenny"}/>
         </div>
-        
-        <h1> Stuff Goes Here</h1>
       </main>
     );
   };

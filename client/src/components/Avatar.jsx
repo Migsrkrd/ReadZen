@@ -9,7 +9,7 @@ const Avatar = ({ letter }) => {
     return (
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30" width="30" height="30">
         <circle cx="15" cy="15" r="15" fill={randomColor} />
-        <text x="50%" y="55%" dominant-baseline="middle" text-anchor="middle" font-size="17" fill="#fff" font-family="Arial, sans-serif">
+        <text x="50%" y="55%" dominantBaseline="middle" textAnchor="middle" fontSize="17" fill="#fff" fontFamily="Arial, sans-serif">
           {letter}
         </text>
       </svg>
