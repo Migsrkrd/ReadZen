@@ -23,6 +23,12 @@ const style = {
 const Header = () => {
     const [showModal, setShowModal] = useState(false);
 
+    const [activeForm, setActiveForm] = useState('login');
+    const handleFormChange = (event) => {
+        setActiveForm(event.target.name === 'login' ? 'sign up' : 'login');
+      };
+    
+
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -52,7 +58,7 @@ const Header = () => {
             </>
           ) : (
             <>
-              <Link onClick={() => setShowModal(true)}>
+              <Link onClick={handleOpen}>
                 Login/Sign Up
               </Link>
           </>
