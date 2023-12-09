@@ -49,39 +49,51 @@ mutation deleteUser($userId: ID!) {
 export const ADD_README = gql`
   mutation addReadMe(
     $title: String!,
+    $shortDescription: String!,
     $description: String!,
-    $TableOfContents: String,
-    $Installation: String,
-    $Usage: String,
-    $Credits: String,
-    $License: String,
-    $Tests: String,
-    $RepoLink: String!,
-    $DeployedLink: String!
+    $tableOfContents: String,
+    $installation: String,
+    $usage: String,
+    $credits: String,
+    $license: String,
+    $tests: String,
+    $repoLink: String!,
+    $deployedLink: String!,
+    $dateCreated: String!,
+    $datePublished: String,
+    $isPublished: Boolean
   ) {
     addReadMe(
       title: $title,
+      shortDescription: $shortDescription,
       description: $description,
-      TableOfContents: $TableOfContents,
-      Installation: $Installation,
-      Usage: $Usage,
-      Credits: $Credits,
-      License: $License,
-      Tests: $Tests,
-      RepoLink: $RepoLink,
-      DeployedLink: $DeployedLink
+      tableOfContents: $tableOfContents,
+      installation: $installation,
+      usage: $usage,
+      credits: $credits,
+      license: $license,
+      tests: $tests,
+      repoLink: $repoLink,
+      deployedLink: $deployedLink,
+      dateCreated: $dateCreated,
+      datePublished: $datePublished,
+      isPublished: $isPublished
     ) {
       _id
       title
+      shortDescription
       description
-      TableOfContents
-      Installation
-      Usage
-      Credits
-      License
-      Tests
-      RepoLink
-      DeployedLink
+      tableOfContents
+      installation
+      usage
+      credits
+      license
+      tests
+      repoLink
+      deployedLink
+      dateCreated
+      datePublished
+      isPublished
       author {
         _id
         username
@@ -94,40 +106,52 @@ export const UPDATE_README = gql`
   mutation updateReadMe(
     $readMeId: ID!,
     $title: String,
+    $shortDescription: String,
     $description: String,
-    $TableOfContents: String,
-    $Installation: String,
-    $Usage: String,
-    $Credits: String,
-    $License: String,
-    $Tests: String,
-    $RepoLink: String,
-    $DeployedLink: String
+    $tableOfContents: String,
+    $installation: String,
+    $usage: String,
+    $credits: String,
+    $license: String,
+    $tests: String,
+    $repoLink: String,
+    $deployedLink: String,
+    $dateCreated: String,
+    $datePublished: String,
+    $isPublished: Boolean
   ) {
     updateReadMe(
       readMeId: $readMeId,
       title: $title,
+      shortDescription: $shortDescription,
       description: $description,
-      TableOfContents: $TableOfContents,
-      Installation: $Installation,
-      Usage: $Usage,
-      Credits: $Credits,
-      License: $License,
-      Tests: $Tests,
-      RepoLink: $RepoLink,
-      DeployedLink: $DeployedLink
+      tableOfContents: $tableOfContents,
+      installation: $installation,
+      usage: $usage,
+      credits: $credits,
+      license: $license,
+      tests: $tests,
+      repoLink: $repoLink,
+      deployedLink: $deployedLink,
+      dateCreated: $dateCreated,
+      datePublished: $datePublished,
+      isPublished: $isPublished
     ) {
       _id
       title
+      shortDescription
       description
-      TableOfContents
-      Installation
-      Usage
-      Credits
-      License
-      Tests
-      RepoLink
-      DeployedLink
+      tableOfContents
+      installation
+      usage
+      credits
+      license
+      tests
+      repoLink
+      deployedLink
+      dateCreated
+      datePublished
+      isPublished
       author {
         _id
         username
@@ -143,4 +167,3 @@ export const DELETE_README = gql`
     }
   }
 `;
-
