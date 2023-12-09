@@ -49,7 +49,6 @@ mutation deleteUser($userId: ID!) {
 export const ADD_README = gql`
   mutation addReadMe(
     $title: String!,
-    $shortDescription: String!,
     $description: String!,
     $tableOfContents: String,
     $installation: String,
@@ -59,13 +58,10 @@ export const ADD_README = gql`
     $tests: String,
     $repoLink: String!,
     $deployedLink: String!,
-    $dateCreated: String!,
-    $datePublished: String,
     $isPublished: Boolean
   ) {
     addReadMe(
       title: $title,
-      shortDescription: $shortDescription,
       description: $description,
       tableOfContents: $tableOfContents,
       installation: $installation,
@@ -75,13 +71,10 @@ export const ADD_README = gql`
       tests: $tests,
       repoLink: $repoLink,
       deployedLink: $deployedLink,
-      dateCreated: $dateCreated,
-      datePublished: $datePublished,
       isPublished: $isPublished
     ) {
       _id
       title
-      shortDescription
       description
       tableOfContents
       installation
@@ -106,7 +99,6 @@ export const UPDATE_README = gql`
   mutation updateReadMe(
     $readMeId: ID!,
     $title: String,
-    $shortDescription: String,
     $description: String,
     $tableOfContents: String,
     $installation: String,
@@ -123,7 +115,6 @@ export const UPDATE_README = gql`
     updateReadMe(
       readMeId: $readMeId,
       title: $title,
-      shortDescription: $shortDescription,
       description: $description,
       tableOfContents: $tableOfContents,
       installation: $installation,
@@ -139,7 +130,6 @@ export const UPDATE_README = gql`
     ) {
       _id
       title
-      shortDescription
       description
       tableOfContents
       installation

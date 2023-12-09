@@ -9,7 +9,6 @@ type User {
 type ReadMe {
     _id: ID!
     title: String!
-    shortDescription: String!
     description: String!
     tableOfContents: String
     installation: String
@@ -51,7 +50,6 @@ type Mutation {
     updateReadMe(
         _id: ID!,
         title: String,
-        shortDescription: String,
         description: String,
         tableOfContents: String,
         installation: String,
@@ -70,7 +68,6 @@ type Mutation {
     ): ReadMe
     addReadMe(
         title: String!,
-        shortDescription: String!,
         description: String!,
         tableOfContents: String,
         installation: String,
@@ -80,6 +77,9 @@ type Mutation {
         tests: String,
         repoLink: String!,
         deployedLink: String!
+        dateCreated: String,
+        datePublished: String,
+        isPublished: Boolean
     ): ReadMe
 }
 `;
