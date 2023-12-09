@@ -56,6 +56,7 @@ const resolvers = {
 
         // Creates a new user and assigns a token
         addUser: async (parent, args) => {
+            console.log("add user")
             const user = await User.create(args);
             const token = signToken(user);
 
