@@ -9,30 +9,23 @@ import LoginForm from './LoginForm';
 import SignupForm from './SignupForm';
 
 const style = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 400,
-    bgcolor: 'background.paper',
-    border: '2px solid #000',
-    boxShadow: 24,
-    p: 4,
-  };
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "background.paper",
+  border: "2px solid #000",
+  boxShadow: 24,
+  p: 4,
+};
 
 const Header = () => {
     const [showModal, setShowModal] = useState(false);
-    const [activeForm, setActiveForm] = useState('login');
+
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
-
-    const handleFormChange = (event) => {
-        // console.log(event.target.name)
-        // console.log(activeForm)
-        setActiveForm(event.target.name === 'login' ? 'sign up' : 'login');
-      };
-
 
     const logout = (event) => {
         event.preventDefault();
@@ -59,11 +52,11 @@ const Header = () => {
             </>
           ) : (
             <>
-              <Link onClick={handleOpen}>
+              <Link onClick={() => setShowModal(true)}>
                 Login/Sign Up
               </Link>
-            </>
-          )}
+          </>
+        )}
         </div>
             </div>
 
