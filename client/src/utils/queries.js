@@ -6,10 +6,11 @@ export const GET_USERS = gql`
       _id
       username
       email
-      ReadMes {
+      readMes {
         _id
         title
-        createdAt
+        shortDescription
+        dateCreated
       }
     }
   }
@@ -21,10 +22,11 @@ export const GET_USER_BY_ID = gql`
       _id
       username
       email
-      ReadMes {
+      readMes {
         _id
         title
-        createdAt
+        shortDescription
+        dateCreated
       }
     }
   }
@@ -36,10 +38,11 @@ export const GET_ME = gql`
       _id
       username
       email
-      ReadMes {
+      readMes {
         _id
         title
-        createdAt
+        shortDescription
+        dateCreated
       }
     }
   }
@@ -47,29 +50,33 @@ export const GET_ME = gql`
 
 export const GET_READMES = gql`
   query getReadMes {
-    readmes {
+    readMes {
       _id
       title
-      description
-      createdAt
+      shortDescription
+      dateCreated
     }
   }
 `;
 
 export const GET_README_BY_ID = gql`
   query getReadMe($readMeId: ID!) {
-    readme(_id: $readMeId) {
+    readMe(_id: $readMeId) {
       _id
       title
+      shortDescription
       description
-      TableOfContents
-      Installation
-      Usage
-      Credits
-      License
-      Tests
-      RepoLink
-      DeployedLink
+      tableOfContents
+      installation
+      usage
+      credits
+      license
+      tests
+      repoLink
+      deployedLink
+      dateCreated
+      datePublished
+      isPublished
       author {
         _id
         username
