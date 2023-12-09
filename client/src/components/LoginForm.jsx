@@ -23,12 +23,6 @@ const LoginForm = () => {
   const handleFormSubmit = async (event) => {
     event.preventDefault();
 
-    // check if form has everything (as per react-bootstrap docs)
-    const form = event.currentTarget;
-    if (form.checkValidity() === false) {
-      event.preventDefault();
-      event.stopPropagation();
-    }
     try {
       //logs the user in
       const { data } = await login({
@@ -57,6 +51,7 @@ const LoginForm = () => {
           sx={{
             '& > :not(style)': { m: 1 },
           }}
+          onSubmit={handleFormSubmit}
           noValidate
           autoComplete="off"
           >
@@ -78,7 +73,6 @@ const LoginForm = () => {
       />
         <Button
           disabled={!(userFormData.email && userFormData.password)}
-          onSubmit={handleFormSubmit}
           type='submit'
           variant='contained'>
           Submit
