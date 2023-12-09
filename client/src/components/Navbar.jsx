@@ -42,7 +42,7 @@ const Header = () => {
         <h1>ReadZen</h1>
         <div className="nav">
           <Link className="navlink-home" to="/">
-            <h2><i class="fa fa-home"></i></h2>
+            <h2><i className="fa fa-home"></i></h2>
           </Link>
           <Link className="navlink" to="/about">
             <h2>About</h2>
