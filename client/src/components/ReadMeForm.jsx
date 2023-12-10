@@ -1,14 +1,22 @@
+import MarkdownIt from 'markdown-it';
+
+// import renderHTML from 'react-render-html';
 
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import { Button } from '@mui/material';
+import FormGroup from '@mui/material/FormGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Switch from '@mui/material/Switch';
 import Grid from '@mui/material/Unstable_Grid2';
 import { useState } from 'react';
 import { useMutation } from '@apollo/client';
 import { ADD_README } from '../utils/mutations';
 
-const ReadMeForm = () => {
 
+const ReadMeForm = () => {
+    const md = MarkdownIt()
+    const result =md.render('# markdown it rules')
     const [userFormData, setUserFormData] = useState({
         title: '',
         description: '',
@@ -20,15 +28,17 @@ const ReadMeForm = () => {
         tests:'',
         repoLink: '',
         deployedLink: ''
-    })
-
+    });
+    const [renderToggle, setRenderToggle] = useState('code');
 
     const [addReadMe, {error}] = useMutation(ADD_README)
     const handleInputChange = (event) => {
         const { id, value } = event.target;
         setUserFormData({ ...userFormData, [id]: value });
       };
-
+    const handleToggle = () => {
+        setRenderToggle(renderToggle === 'render' ? 'code' : 'render')
+    }
       const handleFormSubmit = async (event) => {
         event.preventDefault();
         console.log('submit')
@@ -162,16 +172,34 @@ const ReadMeForm = () => {
                 </Box>
             </Grid>
             <Grid xs={6}>
+            <FormGroup>
+                <FormControlLabel  control={<Switch onChange={handleToggle}/>} label="Render" />
+            </FormGroup>
+                {renderToggle === 'code' ?
                 <pre>
-                {userFormData.title ? `# ${userFormData.title} \n`:''}
-                {userFormData.description ? `## Description\n${userFormData.deployedLink ? `[Visit the Deployed Site](${userFormData.deployedLink})\n` : ''}${userFormData.description}\n` : ''}
-                {userFormData.tableOfContents ? `## Table of Contents\n ${userFormData.tableOfContents}\n`:''}
-                {userFormData.installation ? `## Installation\n ${userFormData.installation}\n`:''}
-                {userFormData.usage ? `## Usage\n ${userFormData.installation}\n`:''}
-                {userFormData.credits ? `## Credits\n ${userFormData.credits}\n`:''}
-                {userFormData.license ? `## License\n ${userFormData.license}\n`:''}
-                {userFormData.tests ? `## Test\n ${userFormData.tests}\n`:''}
+                {userFormData.title ? `# ${userFormData.title} \n\n`:''}
+                {userFormData.description ? `## Description\n\n${userFormData.deployedLink ? `[Visit the Deployed Site](${userFormData.deployedLink})\n\n` : ''}${userFormData.description}\n\n` : ''}
+                {userFormData.tableOfContents ? `## Table of Contents\n\n ${userFormData.tableOfContents}\n\n`:''}
+                {userFormData.installation ? `## Installation\n\n ${userFormData.installation}\n\n`:''}
+                {userFormData.usage ? `## Usage\n\n ${userFormData.installation}\n\n`:''}
+                {userFormData.credits ? `## Credits\n\n ${userFormData.credits}\n\n`:''}
+                {userFormData.license ? `## License\n\n ${userFormData.license}\n\n`:''}
+                {userFormData.tests ? `## Test\n\n ${userFormData.tests}\n\n`:''}
                 </pre>
+                : 
+                <div >
+                < div dangerouslySetInnerHTML={{__html: md.render(`${
+                    (userFormData.title ? `# ${userFormData.title} \n\n` : '')}${
+                    (userFormData.description ? `## Description\n\n${userFormData.deployedLink ? `[Visit the Deployed Site](${userFormData.deployedLink})\n\n` : ''}${userFormData.description}\n\n` : '')}${
+                    (userFormData.tableOfContents ? `## Table of Contents\n\n ${userFormData.tableOfContents}\n\n` : '')}${
+                    (userFormData.installation ? `## Installation\n\n ${userFormData.installation}\n\n` : '')}${
+                    (userFormData.usage ? `## Usage\n\n ${userFormData.installation}\n\n`:'')}${
+                    (userFormData.credits ? `## Credits\n\n ${userFormData.credits}\n\n`:'')}${
+                    (userFormData.license ? `## License\n\n ${userFormData.license}\n\n`:'')}${
+                    (userFormData.tests ? `## Test\n\n ${userFormData.tests}\n\n`:'')}
+                `)}}></div>
+                </div>
+                }
             </Grid>
         </Grid>
     )
