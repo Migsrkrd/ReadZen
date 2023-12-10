@@ -48,6 +48,19 @@ export const GET_ME = gql`
   }
 `;
 
+export const GET_ALL_READMES = gql`
+  query getAllReadMes {
+    allreadmes {
+      _id
+      title
+      description
+      repoLink
+      deployedLink
+      author
+    }
+  }`
+
+
 export const GET_READMES = gql`
   query getReadMes {
     readMes {

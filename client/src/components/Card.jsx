@@ -5,7 +5,7 @@ import DisplayReadMe from "./DisplayReadMe";
 import Avatar from "./Avatar"
 
 const Card = ({ title, description, github, deploy, username }) => {
-
+  console.log('test')
   const letter = username.charAt(0).toUpperCase();
 
   const [isModalOpen, setIsModalOpen] = useState(false);

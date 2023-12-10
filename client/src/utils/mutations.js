@@ -88,7 +88,6 @@ export const ADD_README = gql`
       datePublished
       isPublished
       author {
-        _id
         username
       }
     }
