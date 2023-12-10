@@ -27,11 +27,9 @@ const Header = () => {
   const handleFormChange = (event) => {
     setActiveForm(event.target.name === "login" ? "login" : "sign up");
   };
-  console.log("get profile data ",  Auth.getProfile().data)
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
   const logout = (event) => {
     event.preventDefault();
     Auth.logout();
