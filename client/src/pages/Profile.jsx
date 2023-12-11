@@ -7,13 +7,9 @@ import { GET_READMES } from "../utils/queries";
 
 const Profile = () => {
 
-    // console.log("params" , useParams())
-    const username= 'james';
-    // console.log(useLocation().pathname === '/me' ? `${Auth.getProfile().data.username}` : useLocation().pathname.split("/").pop())
     const { loading, data } = useQuery(GET_READMES, {
         variables: {username: (useLocation().pathname === '/me' ? `${Auth.getProfile().data.username}` : useParams().username)  },
     });
-    console.log(data)
     const ReadMes = data?.readmes || [];
     return (
         <>

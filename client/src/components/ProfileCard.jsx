@@ -6,7 +6,7 @@ import { Button } from "@mui/material";
 
 const ProfileCard = (props) => {
 
-  console.log(props.ReadMes)
+//   console.log(props.ReadMes)
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const openModal = () => {
@@ -20,8 +20,8 @@ const ProfileCard = (props) => {
   return (
     <div>
     {props.ReadMes.map((readme) => (
-    <div key={readme._id} className="card"  onClick={openModal}>
-      {console.log(readme)}
+    <div key={readme._id} className="card">
+      {/* {console.log(readme)} */}
       <div className="card-header">
         <h3>{readme.title}</h3>
       </div>
@@ -35,7 +35,11 @@ const ProfileCard = (props) => {
           <a href={readme.deployedLink} target="_blank" rel="noopener noreferrer">
             <i className="fa fa-link"></i>
           </a>
-          <Button variant="outlined">Edit</Button>
+
+          <Button onClick={openModal} variant="outlined">Show ReadMe</Button>
+          <Link to='/generate' state= {{ readme} }>
+            <Button variant="outlined">Edit</Button>
+            </Link>
           <Button variant="outlined">Delete</Button>
         </div>
       </div>

@@ -67,6 +67,12 @@ export const GET_READMES = gql`
       _id
       title
       description
+      tableOfContents
+      installation
+      usage
+      credits
+      license
+      tests
       repoLink
       deployedLink
       dateCreated
