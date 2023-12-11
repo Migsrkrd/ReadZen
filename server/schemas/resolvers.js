@@ -22,12 +22,13 @@ const resolvers = {
             return User.findOne({ _id: userId }).populate('readme');
         },
 
-        // Returns all readmes of a given user
-        readmes: async (parent, { username }) => {
-            const user = await User.findOne({ username });
-            const readmes = user.ReadMes;
+        allreadmes: async (parent, args) => {
+            return ReadMe.find({});
+        },
 
-            return readmes;
+        // Returns all readmes of a given user
+        readmes: async (parent, { username }, context) => {
+            return ReadMe.find({ author: username });
         },
 
         // Returns a single readme by id
@@ -64,11 +65,11 @@ const resolvers = {
         },
 
         // Creates a new readme and adds it to user's readmes
-        addReadMe: async (parent, args) => {
-            const readme = await ReadMe.create({ ...args });
+        addReadMe: async (parent, args, context) => {
+            const readme = await ReadMe.create({ ...args, author: context.user.username });
 
             await User.findOneAndUpdate(
-                { username: args.username },
+                { username: context.user.username },
                 { $addToSet: { ReadMes: readme }}
             );
             return readme;

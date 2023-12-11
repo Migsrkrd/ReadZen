@@ -48,13 +48,35 @@ export const GET_ME = gql`
   }
 `;
 
-export const GET_READMES = gql`
-  query getReadMes {
-    readMes {
+export const GET_ALL_READMES = gql`
+  query getAllReadMes {
+    allreadmes {
       _id
       title
-      shortDescription
+      description
+      repoLink
+      deployedLink
+      author
+    }
+  }`
+
+
+export const GET_READMES = gql`
+  query getReadMes($username: String) {
+    readmes(username:  $username) {
+      _id
+      title
+      description
+      tableOfContents
+      installation
+      usage
+      credits
+      license
+      tests
+      repoLink
+      deployedLink
       dateCreated
+      author
     }
   }
 `;

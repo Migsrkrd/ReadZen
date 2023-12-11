@@ -14,10 +14,11 @@ import { useMutation } from '@apollo/client';
 import { ADD_README } from '../utils/mutations';
 
 
-const ReadMeForm = () => {
+const ReadMeForm = (props) => {
+  console.log(props)
     const md = MarkdownIt()
     const result =md.render('# markdown it rules')
-    const [userFormData, setUserFormData] = useState({
+    const [userFormData, setUserFormData] = useState((props.readme ? props.readme : {
         title: '',
         description: '',
         tableOfContents:'',
@@ -28,7 +29,7 @@ const ReadMeForm = () => {
         tests:'',
         repoLink: '',
         deployedLink: ''
-    });
+    }));
     const [renderToggle, setRenderToggle] = useState('code');
 
     const [addReadMe, {error}] = useMutation(ADD_README)

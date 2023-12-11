@@ -87,10 +87,7 @@ export const ADD_README = gql`
       dateCreated
       datePublished
       isPublished
-      author {
-        _id
-        username
-      }
+      author 
     }
   }
 `;

@@ -21,7 +21,7 @@ type ReadMe {
     dateCreated: String!
     datePublished: String
     isPublished: Boolean
-    author: User
+    author: String
 }
 
 type Auth {
@@ -33,6 +33,7 @@ type Query {
     me: User
     users: [User]
     user(_id: ID!): User
+    allreadmes: [ReadMe]
     readmes(username: String): [ReadMe]
     readme(_id: ID!): ReadMe
 }
