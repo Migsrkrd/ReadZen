@@ -1,4 +1,5 @@
 import { Link, useLocation, useParams } from "react-router-dom";
+import Card from "../components/Card";
 import ProfileCard from "../components/ProfileCard";
 import Auth from "../utils/auth";
 import { useQuery } from "@apollo/client";
@@ -28,7 +29,7 @@ const Profile = () => {
         </div>
         )
         
-        :  <ProfileCard ReadMes={ReadMes}/>}
+        :  <Card ReadMes={ReadMes}/>}
         </div>
         </>
     )

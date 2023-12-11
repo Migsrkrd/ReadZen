@@ -70,6 +70,7 @@ export const GET_READMES = gql`
       repoLink
       deployedLink
       dateCreated
+      author
     }
   }
 `;
