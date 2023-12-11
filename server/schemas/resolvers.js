@@ -27,11 +27,8 @@ const resolvers = {
         },
 
         // Returns all readmes of a given user
-        readmes: async (parent, { username }) => {
-            const user = await User.findOne({ username });
-            const readmes = user.ReadMes;
-
-            return readmes;
+        readmes: async (parent, { username }, context) => {
+            return ReadMe.find({ author: username });
         },
 
         // Returns a single readme by id

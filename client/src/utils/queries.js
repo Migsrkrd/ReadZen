@@ -62,11 +62,13 @@ export const GET_ALL_READMES = gql`
 
 
 export const GET_READMES = gql`
-  query getReadMes {
-    readMes {
+  query getReadMes($username: String) {
+    readmes(username:  $username) {
       _id
       title
-      shortDescription
+      description
+      repoLink
+      deployedLink
       dateCreated
     }
   }

@@ -6,7 +6,6 @@ import Avatar from "./Avatar"
 
 const Card = (props) => {
 
-  console.log(props.ReadMes)
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const openModal = () => {
@@ -20,8 +19,7 @@ const Card = (props) => {
   return (
     <div>
     {props.ReadMes.map((readme) => (
-    <div className="card"  onClick={openModal}>
-      {console.log(readme)}
+    <div key={readme._id} className="card"  onClick={openModal}>
       <div className="card-header">
         <Link className="profile-link" to={`/profiles/${readme.author}`}>
           <h4><Avatar letter={readme.author.charAt(0).toUpperCase()}/>@{readme.author}</h4>
@@ -29,6 +27,7 @@ const Card = (props) => {
         <h3>{readme.title}</h3>
       </div>
       <div className="card-body">
+        {/* limit words */}
         <p>{readme.description}</p>
         <div className="card-links">
           <a href={readme.reoLink} target="_blank" rel="noopener noreferrer">
