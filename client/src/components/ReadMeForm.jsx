@@ -15,7 +15,6 @@ import { ADD_README } from '../utils/mutations';
 
 
 const ReadMeForm = (props) => {
-  console.log(props)
     const md = MarkdownIt()
     const result =md.render('# markdown it rules')
     const [userFormData, setUserFormData] = useState((props.readme ? props.readme : {
@@ -34,9 +33,10 @@ const ReadMeForm = (props) => {
 
     const [addReadMe, {error}] = useMutation(ADD_README)
     const handleInputChange = (event) => {
-        const { id, value } = event.target;
-        setUserFormData({ ...userFormData, [id]: value });
-      };
+      console.log(event.target)
+      const { id, value } = event.target;
+       setUserFormData({ ...userFormData, [id]: value });
+    };
     const handleToggle = () => {
         setRenderToggle(renderToggle === 'render' ? 'code' : 'render')
     }
@@ -177,16 +177,20 @@ const ReadMeForm = (props) => {
                 <FormControlLabel  control={<Switch onChange={handleToggle}/>} label="Render" />
             </FormGroup>
                 {renderToggle === 'code' ?
-                <pre>
-                {userFormData.title ? `# ${userFormData.title} \n\n`:''}
-                {userFormData.description ? `## Description\n\n${userFormData.deployedLink ? `[Visit the Deployed Site](${userFormData.deployedLink})\n\n` : ''}${userFormData.description}\n\n` : ''}
-                {userFormData.tableOfContents ? `## Table of Contents\n\n ${userFormData.tableOfContents}\n\n`:''}
-                {userFormData.installation ? `## Installation\n\n ${userFormData.installation}\n\n`:''}
-                {userFormData.usage ? `## Usage\n\n ${userFormData.installation}\n\n`:''}
-                {userFormData.credits ? `## Credits\n\n ${userFormData.credits}\n\n`:''}
-                {userFormData.license ? `## License\n\n ${userFormData.license}\n\n`:''}
-                {userFormData.tests ? `## Test\n\n ${userFormData.tests}\n\n`:''}
-                </pre>
+                  <TextField
+                  // onChange={handleInputChange}
+                  fullWidth
+                  multiline
+                  defaultValue={`${userFormData.title ? `# ${userFormData.title} \n` : ''}
+${userFormData.description ? `## Description\n${userFormData.deployedLink ? `[Visit the Deployed Site](${userFormData.deployedLink})\n` : ''}${userFormData.description}\n` : ''}
+${userFormData.tableOfContents ? `## Table of Contents\n ${userFormData.tableOfContents}\n` : ''}
+${userFormData.installation ? `## Installation\n ${userFormData.installation}\n` : ''}
+${userFormData.usage ? `## Usage\n ${userFormData.installation}\n` : ''}
+${userFormData.credits ? `## Credits\n ${userFormData.credits}\n` : ''}
+${userFormData.license ? `## License\n ${userFormData.license}\n` : ''}
+${userFormData.tests ? `## Test\n ${userFormData.tests}\n` : ''}
+                  `}
+                />
                 : 
                 <div >
                 < div dangerouslySetInnerHTML={{__html: md.render(`${
@@ -208,3 +212,15 @@ const ReadMeForm = (props) => {
 }
 
 export default ReadMeForm;
+
+{/* <TextField fullWidth multiline 
+defaultValue={`${userFormData.title ? `# ${userFormData.title} \n`:''}
+${userFormData.description ? `## Description\n\n${userFormData.deployedLink ? `[Visit the Deployed Site](${userFormData.deployedLink})\n\n` : ''}${userFormData.description}\n\n` : ''}
+${userFormData.tableOfContents ? `## Table of Contents\n\n ${userFormData.tableOfContents}\n\n`:''}
+${userFormData.installation ? `## Installation\n\n ${userFormData.installation}\n\n`:''}
+${userFormData.usage ? `## Usage\n\n ${userFormData.installation}\n\n`:''}
+${userFormData.credits ? `## Credits\n\n ${userFormData.credits}\n\n`:''}
+${userFormData.license ? `## License\n\n ${userFormData.license}\n\n`:''}
+${userFormData.tests ? `## Test\n\n ${userFormData.tests}\n\n`:''}
+`}
+/> */}
