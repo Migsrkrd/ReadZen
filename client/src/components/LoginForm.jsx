@@ -41,12 +41,12 @@ const LoginForm = () => {
   };
   
   return (
-    <>
+    <div>
       {/* <Form noValidate validated={validated} onSubmit={handleFormSubmit}> */}
         {/* <Alert dismissible onClose={() => setShowAlert(false)} show={showAlert} variant='danger'>
           Something went wrong with your login credentials!
         </Alert> */}
-            <Box
+            <Box className='loginForm'
           component="form"
           sx={{
             '& > :not(style)': { m: 1 },
@@ -62,6 +62,12 @@ const LoginForm = () => {
         onChange={handleInputChange}
         fullWidth
         margin="normal"
+        sx={{
+          '& .MuiInputLabel-root.Mui-focused': {
+            color: '#a80038',
+          }
+          
+        }}
       />
         <TextField
         id='password'
@@ -71,16 +77,28 @@ const LoginForm = () => {
         onChange={handleInputChange}
         fullWidth
         margin="normal"
+        sx={{
+          '& .MuiInputLabel-root.Mui-focused': {
+            color: '#a80038',
+          },
+        }}
       />
         <Button
           disabled={!(userFormData.email && userFormData.password)}
           type='submit'
-          variant='contained'>
+          variant='contained'
+          sx={{
+            backgroundColor: '#a80038',
+            '&:hover': {
+              backgroundColor: '#fd0054',
+            },
+          }}
+          >
           Submit
         </Button>
         </Box>
       {/* </Form> */}
-    </>
+    </div>
   );
 };
 

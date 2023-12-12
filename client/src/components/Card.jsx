@@ -39,19 +39,19 @@ const Card = (props) => {
     return str;
   }
 
-  function share(event){
+  function share(event) {
     event.stopPropagation();
-    console.log("share")
+    console.log("share");
   }
 
-  function like(event){
+  function like(event) {
     event.stopPropagation();
-    console.log("like")
+    console.log("like");
   }
 
-  function comment(event){
+  function comment(event) {
     event.stopPropagation();
-    console.log("comment")
+    console.log("comment");
   }
   return (
     <div className="cardLayout">

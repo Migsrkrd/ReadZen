@@ -9,8 +9,11 @@ const About = () => {
       flexDirection: "column",
       alignItems: "center",
       justifyContent: "center",
-      padding: "0 20px",
-      margin: "20px",
+      margin: "0 5%",
+      paddingLeft: "5%",
+      paddingRight: "5%",
+      borderRight: "4px solid #fd0054",
+      borderLeft: "4px solid #fd0054",
     },
     main: {
       textAlign: "center",
@@ -20,48 +23,48 @@ const About = () => {
       flexDirection: "column",
       alignItems: "center",
       justifyContent: "center",
+      width: "70%",
       padding: "0 20px",
-      margin: "20px",
+      margin: "30px 20px 30px 20px",
       borderRadius: "10px",
+      lineHeight: "1.5",
     },
     mission: {
       backgroundColor: "#2b2024",
-      width: "400px",
-      height: "400px",
       border: "2px solid #fd0054",
       display: "flex",
       flexDirection: "column",
       alignItems: "center",
       justifyContent: "center",
-      padding: "0 20px",
-      margin: "20px",
+      padding: "20px",
+      margin: "30px 20px 50px 20px",
       borderRadius: "10px",
+      lineHeight: "1.5",
     },
     features: {
       backgroundColor: "#2b2024",
-      width: "400px",
-      height: "400px",
       border: "2px solid #fd0054",
       display: "flex",
       flexDirection: "column",
       alignItems: "center",
       justifyContent: "center",
-      padding: "0 20px",
-      margin: "20px",
+      padding: "20px",
+      margin: "30px 20px 50px 20px",
       borderRadius: "10px",
+      lineHeight: "1.5",
     },
     howItWorks: {
       backgroundColor: "#2b2024",
-      width: "400px",
-      height: "400px",
       border: "2px solid #fd0054",
       display: "flex",
       flexDirection: "column",
       alignItems: "center",
       justifyContent: "center",
-      padding: "0 20px",
-      margin: "20px",
+      padding: "20px",
+      margin: "30px 20px 40px 20px",
       borderRadius: "10px",
+      lineHeight: "1.5",
+
     },
     join: {
       textAlign: "center",
@@ -71,22 +74,19 @@ const About = () => {
       flexDirection: "column",
       alignItems: "center",
       justifyContent: "center",
-      padding: "0 20px",
+      padding: "20px",
       margin: "20px",
       borderRadius: "10px",
+      lineHeight: "1.5",
+      width: "70%",
     },
-    listArea: {
-      display: "flex",
-      flexDirection: "row",
-      alignItems: "center",
-      justifyContent: "center",
-      padding: "0 20px",
-      margin: "20px",
-      flexWrap: "wrap",
-    },
+    holder: {
+      paddingTop: "150px",
+    }
   };
 
   return (
+    <div style={styles.holder}>
     <div style={styles.aboutUs}>
       <div style={styles.main}>
         <h1>About ReadZen</h1>
@@ -186,6 +186,7 @@ const About = () => {
           coding! 🚀
         </p>
       </div>
+    </div>
     </div>
   );
 };

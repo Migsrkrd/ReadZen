@@ -14,8 +14,6 @@ import { useMutation } from '@apollo/client';
 import { ADD_README, UPDATE_README } from '../utils/mutations';
 import { Link } from "react-router-dom";
 import { saveAs } from 'file-saver';
-// import { useHistory } from 'react-router-dom';
-
 
 const ReadMeForm = (props) => {
   const myElRef=useRef(null);
@@ -164,9 +162,6 @@ const ReadMeForm = (props) => {
             repoLink: '',
             deployedLink: '',
         });
-
-        // go back to the profiles page
-        // history.push('/me');
     };
 
     return (

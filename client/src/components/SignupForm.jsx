@@ -72,6 +72,12 @@ const SignupForm = () => {
         onChange={handleInputChange}
         fullWidth
         margin="normal"
+        sx={{
+          '& .MuiInputLabel-root.Mui-focused': {
+            color: '#a80038',
+          }
+          
+        }}
         />
         <TextField
         id='email'
@@ -80,6 +86,12 @@ const SignupForm = () => {
         onChange={handleInputChange}
         fullWidth
         margin="normal"
+        sx={{
+          '& .MuiInputLabel-root.Mui-focused': {
+            color: '#a80038',
+          }
+          
+        }}
       />
         <TextField
         id='password'
@@ -89,12 +101,24 @@ const SignupForm = () => {
         onChange={handleInputChange}
         fullWidth
         margin="normal"
+        sx={{
+          '& .MuiInputLabel-root.Mui-focused': {
+            color: '#a80038',
+          }
+          
+        }}
       />
         <Button
           disabled={!(userFormData.username && userFormData.email && userFormData.password)}
 
           type='submit'
-          variant='contained'>
+          variant='contained'
+          sx={{
+            backgroundColor: '#a80038',
+            '&:hover': {
+              backgroundColor: '#fd0054',
+            },
+          }}>
           Submit
         </Button>
         </Box>

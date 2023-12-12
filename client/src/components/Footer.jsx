@@ -10,6 +10,8 @@ const Footer = () => {
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
+      position: 'sticky',
+      marginTop: '100px',
     },
     container: {
       width: '100%',

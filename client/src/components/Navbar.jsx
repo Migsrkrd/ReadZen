@@ -7,6 +7,8 @@ import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import LoginForm from "./LoginForm";
 import SignupForm from "./SignupForm";
+import Backdrop from "@mui/material/Backdrop";
+
 
 const style = {
   position: "absolute",
@@ -14,8 +16,9 @@ const style = {
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: 400,
-  bgcolor: "background.paper",
-  border: "2px solid #000",
+  bgcolor: "#fbf9fa",
+  border: "2px solid #a80038",
+  borderRadius: "10px",
   boxShadow: 24,
   p: 4,
 };
@@ -72,6 +75,11 @@ const Header = () => {
 
       <div>
         <Modal
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          sx: { backdropFilter: 'blur(3px)'},
+        }}
+
           open={open}
           onClose={handleClose}
           aria-labelledby="modal-modal-title"
