@@ -1,13 +1,10 @@
 import { Link } from "react-router-dom";
-import { Button } from '@mui/material';
 import { useState } from "react";
 import MarkdownIt from 'markdown-it';
 import { Button, Modal, Box } from "@mui/material";
 import { useMutation } from '@apollo/client';
 import { UPDATE_README, DELETE_README } from '../utils/mutations';
 import Avatar from "./Avatar";
-import { useMutation } from "@apollo/client";
-import { DELETE_README, UPDATE_README } from "../utils/mutations";
 
 
 const style = {
