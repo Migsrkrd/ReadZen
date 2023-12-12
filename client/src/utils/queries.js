@@ -57,6 +57,7 @@ export const GET_ALL_READMES = gql`
       repoLink
       deployedLink
       author
+      markdown
     }
   }`
 

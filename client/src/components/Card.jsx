@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
-
+import { Box, Button, Modal, Typography } from "@mui/material";
 import DisplayReadMe from "./DisplayReadMe";
 import Avatar from "./Avatar";
 
@@ -20,22 +20,36 @@ const Card = (props) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [clickedModal, setClickedModal] = useState();
   const [selectedReadme, setSelectedReadme] = useState(null);
+
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => {
+    console.log('click')
+    setOpen(true);
+  }
+  const handleClose = (event) => {
+    event.stopPropagation();
+    console.log('close')
+    // console.log(readme.markdown)
+    setOpen(false);
+  }
+
+  console.log(props.ReadMes)
   // const openModal = (id) => {
   //   console.log(id);
   //   setClickedModal(id);
   //   setIsModalOpen(!isModalOpen);
   // };
-  const openModal = (readme) => {
-    console.log(readme)
-    setSelectedReadme(readme);
-    // setIsModalOpen(true);
-    // console.log(selectedReadme)
-  }
+  // const openModal = (readme) => {
+  //   console.log(readme)
+  //   setSelectedReadme(readme);
+  //   // setIsModalOpen(true);
+  //   // console.log(selectedReadme)
+  // }
 
-  const closeModal = () => {
-    setSelectedReadme(null)
-    // setIsModalOpen(isModalOpen);
-  };
+  // const closeModal = () => {
+  //   setSelectedReadme(null)
+  //   // setIsModalOpen(isModalOpen);
+  // };
 
   function noMoreThanWords(str) {
     if (str.split(" ").length > 30) {
@@ -61,7 +75,7 @@ const Card = (props) => {
   return (
     <div className="cardLayout">
       {props.ReadMes.map((readme) => (
-        <div key={readme._id} className="card" onClick={()=>openModal(readme)}>
+        <div key={readme._id} className="card" onClick={handleOpen}>
           <div className="card-header">
             <Link className="profile-link" to={`/profiles/${readme.author}`}>
               <h4>
@@ -90,20 +104,26 @@ const Card = (props) => {
                 <i className="fa fa-link"></i>
               </a>
             </div>
-            <div className="interactions">
-        <button className="btnBeg" onClick={like}>Like</button>
-        <button className="btnMid" onClick={comment}>Comment</button>
-        <button className="btnEnd" onClick={share}>Share</button>
-      </div>
-          </div>
-          {selectedReadme && (
-            <DisplayReadMe
-              onClose={closeModal}
-              username={readme.username}
-              title={readme.title}
-              description={readme.description}
-            />
-          )}
+              <div className="interactions">
+              <button className="btnBeg" onClick={like}>Like</button>
+              <button className="btnMid" onClick={comment}>Comment</button>
+              <button className="btnEnd" onClick={share}>Share</button>
+              </div>
+         </div>
+        <Modal
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+          >
+            <Box sx={style}> 
+                <pre>
+                {readme.markdown}
+                </pre>
+                <Button onClick={handleClose}>Close</Button>
+
+            </Box>
+          </Modal>
         </div>
       ))}
     </div>
@@ -111,3 +131,13 @@ const Card = (props) => {
 };
 
 export default Card;
+
+
+          {/* {selectedReadme && (
+            <DisplayReadMe
+              onClose={closeModal}
+              username={readme.username}
+              title={readme.title}
+              description={readme.description}
+            />
+          )} */}
