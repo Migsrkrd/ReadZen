@@ -4,6 +4,8 @@ import DisplayReadMe from "./DisplayReadMe";
 import Avatar from "./Avatar";
 import { useMutation } from "@apollo/client";
 import { DELETE_README } from "../utils/mutations";
+import { UPDATE_README } from "../utils/mutations";
+import Button from '@mui/material/Button'
 
 const ProfileCard = (props) => {
   //   console.log(props.ReadMes)
@@ -100,7 +102,7 @@ const ProfileCard = (props) => {
             <div className="interactions">
               
               <Link className="edit-link" to="/generate" state={{ readme }}>
-                <button className="btnBeg">Edit</button>
+                <Button className="btnBeg">Edit</Button>
               </Link>
 
               <Button
@@ -110,7 +112,7 @@ const ProfileCard = (props) => {
                 Delete
               </Button>
 
-              <Button onClick={() => callPublish(readme._id, event)} variant="outlined">
+              <Button onClick={() => callPublish(readme._id, event)}>
                 {readMeIsPublished ? 'Unpublish' : 'Publish'}
               </Button>
 

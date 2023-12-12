@@ -95,7 +95,23 @@ header h1{
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
     transition: 0.2s;
     width: 500px;
-    height: 300px;
+    height: 350px;
+    margin: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: height 0.5s ease-in-out;
+    overflow: hidden;
+}
+
+.cardTwo {
+    background: var(--fourth-color);
+    color: var(--primary-color);
+    border-radius: 10px;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+    transition: 0.2s;
+    width: 500px;
+    height: 100%;
     margin: 40px;
     display: flex;
     flex-direction: column;
@@ -210,7 +226,7 @@ header h1{
 }
 
 .btnBeg:hover, .btnMid:hover, .btnEnd:hover{
-    color: var(--fourth-color);
+    color: var(--secondary-color);
     cursor: pointer;
     background: var(--secondary-color);
     font-weight: bolder;
@@ -267,5 +283,50 @@ header h1{
 
 .createPage{
     padding-top: 150px;
+}
+
+.comment-section{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    width: 90%;
+    margin: none;
+}
+
+.comment-header{
+    font-size: 20px;
+    text-align:left;
+    border-bottom: 2px solid var(--secondary-color);
+    padding: none;
+}
+
+.comments{
+    line-height: 0px;
+    border: 2px solid var(--secondary-color);
+    padding: 0px;
+    margin-bottom: 10px;
+}
+
+.comment-user{
+    font-size: 15px;
+    color: var(--secondary-color);
+    padding:0px;
+    margin: 20px 10px 20px 10px;
+}
+
+.comment-text{
+    display: flex;
+    justify-content: left;
+    padding: 15px 20px 10px 20px;
+    margin: 20px 10px 20px 10px;
+}
+
+.comment-input{
+    border-radius: 15px;
+    padding: 10px;
+    font-size: 15px;
+    background: var(--primary-color);
+    display: flex;
+    justify-content: center;
 }
 
