@@ -22,19 +22,19 @@ const Card = (props) => {
     return str;
   }
 
-  function share(event){
+  function share(event) {
     event.stopPropagation();
-    console.log("share")
+    console.log("share");
   }
 
-  function like(event){
+  function like(event) {
     event.stopPropagation();
-    console.log("like")
+    console.log("like");
   }
 
-  function comment(event){
+  function comment(event) {
     event.stopPropagation();
-    console.log("comment")
+    console.log("comment");
   }
 
   return (
@@ -70,10 +70,16 @@ const Card = (props) => {
               </a>
             </div>
             <div className="interactions">
-        <button className="btnBeg" onClick={like}>Like</button>
-        <button className="btnMid" onClick={comment}>Comment</button>
-        <button className="btnEnd" onClick={share}>Share</button>
-      </div>
+              <button className="btnBeg" onClick={like}>
+                Like
+              </button>
+              <button className="btnMid" onClick={comment}>
+                Comment
+              </button>
+              <button className="btnEnd" onClick={share}>
+                Share
+              </button>
+            </div>
           </div>
           {isModalOpen && (
             <DisplayReadMe

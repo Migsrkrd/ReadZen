@@ -9,8 +9,7 @@ const About = () => {
       flexDirection: "column",
       alignItems: "center",
       justifyContent: "center",
-      padding: "0 20px",
-      margin: "20px",
+      paddingTop: "150px",
     },
     main: {
       textAlign: "center",
