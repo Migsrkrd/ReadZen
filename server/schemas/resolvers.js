@@ -109,12 +109,12 @@ const resolvers = {
             const maxLength = 128;
             const originalDescription = parent.description;
 
-            // check if orgininal description is already shorter than maxLength
+            // check if original description is already shorter than maxLength
             if (originalDescription.length <= maxLength) {
                 return originalDescription.trim();
             }
 
-            // find the nearest space character before or at the maxLength position
+            // find the nearest space character before or at the 128th position
             const nearestSpaceIndex = originalDescription.lastIndexOf(' ', maxLength);
 
             // if a space is found, use it as the breakpoint
