@@ -129,6 +129,7 @@ const ReadMeForm = (props) => {
                     fullWidth
                     margin="normal"
                     />
+
                     <TextField
                     id='usage'  
                     label="Usage"
@@ -146,6 +147,7 @@ const ReadMeForm = (props) => {
                     fullWidth
                     margin="normal"
                     />
+                    
                     <TextField
                     id='license'  
                     label="License"
@@ -163,7 +165,7 @@ const ReadMeForm = (props) => {
                     fullWidth
                     margin="normal"
                     />
-                    
+
                     <TextField
                     id='repoLink'  
                     label="Repository Link"
