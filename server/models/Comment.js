@@ -11,11 +11,12 @@ const commentSchema = new Schema({
         required: 'You need to have a comment!',
         trim: true
     },
-    dateCreated: {
+    datePosted: {
         type: Date,
         default: Date.now,
         get: (timestamp) => dateFormat(timestamp),
-    }
+    },
+
 });
 
 const Comment = model('Comment', commentSchema);

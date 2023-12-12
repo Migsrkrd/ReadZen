@@ -1,4 +1,4 @@
-const { User, ReadMe } = require('../models');
+const { User, ReadMe, Comment } = require('../models');
 const { signToken, AuthenticationError } = require('../utils/auth');
 
 const resolvers = {
@@ -22,6 +22,7 @@ const resolvers = {
             return User.findOne({ _id: userId }).populate('readme');
         },
 
+        // Returns all readmes
         allreadmes: async (parent, args) => {
             return ReadMe.find({});
         },
@@ -39,6 +40,11 @@ const resolvers = {
         // Returns a single readme by id
         readme: async (parent, { readMeId }) => {
             return ReadMe.findOne({ _id: readMeId }).populate('author');
+        },
+
+        // Returns all comments
+        comments: async () => {
+            return Comment.find({});
         }
     },
     
@@ -106,7 +112,47 @@ const resolvers = {
                 { new: true }
             );
             return readme;
-        }
+        },
+
+        // Create a comment
+        addComment: async (parent, { text, readMeId }) => {
+            const comment = await Comment.create({ author: context.user.username, text });
+            await ReadMe.findOneAndUpdate(
+                { _id: readMeId},
+                { $addToSet: { comments: comment }},
+                { new: true }
+            );
+            return comment;
+        },
+
+        // Updates a comment
+        updateComment: async (parent, { text, readMeId }) => {
+            const { args, ...updateArgs } = args;
+            const comment = await Comment.findOneAndUpdate(
+                { _id: commentId },
+                { text },
+                { new: true }
+            );
+            await ReadMe.findOneAndUpdate(
+                { _id: readMeId},
+                { $pull: { comments: { _id: readMeId } }},
+                { $addToSet: { comments: comment }},
+                { new: true }
+            );
+
+            return comment;
+        },
+
+        // Deletes a comment
+        deleteComment: async (parent, args ) => {
+            const comment = await Comment.findOneAndDelete({ _id: args._id });
+            await ReadMe.findOneAndUpdate(
+                { _id: readMeId},
+                { $pull: { comments: { _id: readMeId } }},
+                { new: true }
+            );
+            return comment;
+        },
     }
 };
 

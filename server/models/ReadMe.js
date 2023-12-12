@@ -52,7 +52,13 @@ const readMeSchema = new Schema({
     },
     author: {
         type: String
-    }
+    },
+    comments: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'Comment'
+        }
+    ]
 });
 
 const ReadMe = model('ReadMe', readMeSchema);

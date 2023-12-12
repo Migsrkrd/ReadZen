@@ -29,7 +29,7 @@ type Comment {
     _id: ID!
     author: String!
     text: String!
-    dateCreated: [ReadMe]
+    dateCreated: String!
 }
 
 type Auth {
@@ -106,7 +106,7 @@ type Mutation {
     ): Comment
     deleteComment(
         _id: ID!
-    ): Comment
+    ): ReadMe
 }
 `;
 
