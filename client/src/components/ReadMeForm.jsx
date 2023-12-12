@@ -13,7 +13,8 @@ import { useState } from 'react';
 import { useMutation } from '@apollo/client';
 import { ADD_README, UPDATE_README } from '../utils/mutations';
 import { Link } from "react-router-dom";
-
+import { useHistory } from 'react-router-dom';
+const history = useHistory();
 
 const ReadMeForm = (props) => {
     console.log(props);
@@ -68,6 +69,7 @@ const ReadMeForm = (props) => {
           console.error(e);
         }
   
+        // clear the form
         setUserFormData({
             title: '',
             description: '',
@@ -80,6 +82,9 @@ const ReadMeForm = (props) => {
             repoLink: '',
             deployedLink: '',
         });
+
+        // go back to the profiles page
+        history.push('/me');
     };
 
     return (
@@ -235,7 +240,6 @@ const ReadMeForm = (props) => {
             </Grid>
         </Grid>
     );
-
 }
 
 export default ReadMeForm;
