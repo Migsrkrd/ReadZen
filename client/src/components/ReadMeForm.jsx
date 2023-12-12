@@ -4,7 +4,7 @@ import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
-import { Button } from '@mui/material';
+import { Button, Popper } from '@mui/material';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
@@ -13,12 +13,9 @@ import { useState, useRef } from 'react';
 import { useMutation } from '@apollo/client';
 import { ADD_README, UPDATE_README } from '../utils/mutations';
 import { Link } from "react-router-dom";
-import { saveAs } from 'file-saver';
 
 const ReadMeForm = (props) => {
   const myElRef=useRef(null);
-
-  // const history = useHistory();
     const md = MarkdownIt()
     const [formats, setFormats] = useState(() => ['bold', 'italic']);
 
@@ -88,10 +85,6 @@ const ReadMeForm = (props) => {
       }
     }
 
-
-
-
-
     const [userFormData, setUserFormData] = useState((props.readme ? props.readme : {
         title: '',
         description: '',
@@ -105,7 +98,7 @@ const ReadMeForm = (props) => {
         deployedLink: ''
     }));
     const [renderToggle, setRenderToggle] = useState('code');
-
+    const [anchorEl, setAnchorEl] = useState(null);
     const [addReadMe, {error: addReadMeError }] = useMutation(ADD_README);
     const [updateReadMe, {error: updateReadMeError }] = useMutation(UPDATE_README);
 
@@ -114,15 +107,20 @@ const ReadMeForm = (props) => {
         setUserFormData({ ...userFormData, [id]: value });
     };
 
-    const handleToggle = () => {
-        setRenderToggle(renderToggle === 'render' ? 'code' : 'render');
+    const handleToggle = (event) => {
+      
+      renderToggle === 'render' ? (
+      setRenderToggle('code'), setAnchorEl(null))
+      : (setRenderToggle('render'), setAnchorEl(event.currentTarget));
+
+
     };
+
+    const open = Boolean(anchorEl);
+    const id = open ? 'simple-popover' : undefined;
 
     const handleFormSubmit = async (event) => {
         event.preventDefault();
-        console.log('submit')
-        // console.log(props.readme);
-        // console.log(myElRef.current.textContent)
         try {
             if (props.readme) {
                 // if the readme already exists (editing), then update it
@@ -213,6 +211,7 @@ const ReadMeForm = (props) => {
                     value={userFormData.usage}
                     onChange={handleInputChange}
                     fullWidth
+                    multiline
                     margin="normal"
                     />
 
@@ -265,10 +264,8 @@ const ReadMeForm = (props) => {
                     multiline
                     margin="normal"
                     />
-
                     <Button
                     disabled={!(userFormData.title) && renderToggle === 'render'}
-                    // onClick= {() => userFormData.isPublished = true}
                     type='submit'
                     variant='contained'
                     >
@@ -287,7 +284,15 @@ const ReadMeForm = (props) => {
             </Grid>
             <Grid xs={6}>
             <FormGroup>
-                <FormControlLabel  control={<Switch onChange={handleToggle}/>} label="Render" />
+                <FormControlLabel  control={<Switch onChange={(event) => handleToggle(event)}/>} label="Render" />
+                <Popper  
+                id={id}
+                open={open}
+                anchorEl={anchorEl}    
+                placement='top-start'
+                >
+                  Note: You can only save when rendering is off
+                </Popper>
                 <ToggleButtonGroup
                     value={formats}
                     onChange={handleFormat}
