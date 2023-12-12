@@ -8,6 +8,7 @@ import Avatar from "./Avatar";
 import { saveAs } from 'file-saver';
 
 
+
 const style = {
   position: "absolute",
   top: "50%",
@@ -21,10 +22,15 @@ const style = {
 };
 
 const ProfileCard = (props) => {
+  // console.log('props.ReadMes');
+  // console.log(props.ReadMes);
+
   const md = MarkdownIt()
-  // const [deleteId, setDeleteId] = useState();
   const [markdown, setMarkdown] = useState();
   const [open, setOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  // const [deleteId, setDeleteId] = useState();
+
   const handleOpen = (readme) => {
     setMarkdown(readme)
     setOpen(true);
@@ -43,30 +49,36 @@ const ProfileCard = (props) => {
   const [readMeIsPublished, setReadMeIsPublished] = useState();
 
   const [deleteReadMe] = useMutation(DELETE_README, {
-    variables: { readMeId: deleteId },
+    // variables: { readMeId: deleteId },
   });
 
-  const [togglePublishedState] = useMutation(UPDATE_README);
+  const [togglePublished] = useMutation(UPDATE_README);
 
   const callDelete = (id, event) => {
     event.stopPropagation();
-    setDeleteId(id);
-    deleteReadMe();
+    // setDeleteId(id);
+    deleteReadMe(
+      {
+        variables: {
+          readMeId: id,
+        },
+      }
+    );
   }
 
-  const callPublish = (id, event) => {
+  const callPublish = (id, isPublished, event) => {
     event.stopPropagation();
-    setReadMeIsPublished = !props.readme.isPublished;
-    const newDataPublished = readMeIsPublished
+    const newIsPublished = !isPublished;
+    const newDatePublished = newIsPublished
       ? new Date().toISOString()
-      : 'DRAFT';
+      : null;
 
-    togglePublishedState({
+    togglePublished({
       variables: { 
         readMeId: id,
-        isPublished: readMeIsPublished,
-        datePublished: newDataPublished,
-      },
+        isPublished: newIsPublished,
+        datePublished: newDatePublished,
+        },
     });
   };
 
@@ -127,8 +139,12 @@ const ProfileCard = (props) => {
               >
                 Delete
               </Button>
-              <Button onClick={(event) => callPublish(readme._id, event)} variant="outlined">
-                {readMeIsPublished ? 'Unpublish' : 'Publish'}
+
+              <Button
+                onClick={(event) => callPublish(readme._id, readme.isPublished, event)}
+                variant="outlined"
+              >
+                {readme.isPublished ? 'Unpublish' : 'Publish'}
               </Button>
                 <Button onClick={(event)=> downloadFile(readme.markdown,readme.title,event)}>
                   Download

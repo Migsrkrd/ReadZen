@@ -12,7 +12,7 @@ import Grid from '@mui/material/Unstable_Grid2';
 import { useState, useRef } from 'react';
 import { useMutation } from '@apollo/client';
 import { ADD_README, UPDATE_README } from '../utils/mutations';
-import { Link } from "react-router-dom";
+import { Link, redirect } from "react-router-dom";
 
 const ReadMeForm = (props) => {
   const myElRef=useRef(null);
@@ -113,7 +113,6 @@ const ReadMeForm = (props) => {
       setRenderToggle('code'), setAnchorEl(null))
       : (setRenderToggle('render'), setAnchorEl(event.currentTarget));
 
-        console.log(renderToggle);
     };
 
     const open = Boolean(anchorEl);
@@ -124,14 +123,23 @@ const ReadMeForm = (props) => {
         try {
             if (props.readme) {
                 // if the readme already exists (editing), then update it
+                console.log('update')
                 await updateReadMe({
-                    variables: { readMeId: props.readme._id, markdown:myElRef.current.textContent, ...userFormData },
+                    variables: {
+                      readMeId: props.readme._id,
+                      markdown:myElRef.current.textContent,
+                      datePublished: '',
+                      isPublished: false,
+                      ...userFormData
+                    },
                 });
+
             } else {
                 // if the readme doesn't exist (adding), create a new one
                 await addReadMe({
                     variables: {markdown:myElRef.current.textContent, ...userFormData },
                 });
+                          
             }
         } catch (e) {
           console.error(e);
@@ -150,6 +158,7 @@ const ReadMeForm = (props) => {
             repoLink: '',
             deployedLink: '',
         });
+        window.location.href = '/me';
     };
 
     return (
@@ -264,16 +273,13 @@ const ReadMeForm = (props) => {
                     multiline
                     margin="normal"
                     />
-                    <Link to='/me'>
                     <Button
-                    onSubmit={handleToggle}
-                    disabled={!(userFormData.title)}
+                    disabled={!(userFormData.title) || renderToggle === 'render'}
                     type='submit'
                     variant='contained'
                     >
                         Save
                     </Button>
-                    </Link>
                     <Link to='/me' >
                         <Button
                         type='button'
