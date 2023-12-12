@@ -133,22 +133,21 @@ const ProfileCard = (props) => {
               <Link className="edit-link" to="/generate" state={{ readme }}>
                 <button className="btnBeg">Edit</button>
               </Link>
-              <Button
+              <button
                 className="btnMid"
                 onClick={(event) => callDelete(readme._id, event)}
               >
                 Delete
-              </Button>
+              </button>
 
-              <Button
+              <button
                 onClick={(event) => callPublish(readme._id, readme.isPublished, event)}
-                variant="outlined"
               >
                 {readme.isPublished ? 'Unpublish' : 'Publish'}
-              </Button>
-                <Button onClick={(event)=> downloadFile(readme.markdown,readme.title,event)}>
+              </button>
+                <button onClick={(event)=> downloadFile(readme.markdown,readme.title,event)}>
                   Download
-                </Button>
+                </button>
             </div>
           </div>
         </div>
