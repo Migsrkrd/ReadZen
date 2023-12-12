@@ -38,7 +38,10 @@ const Header = () => {
   return (
     <header>
       <div className="headers">
+        <div className="logo">
+        <img src="../src/assets/logo.png" alt="logo" />
         <h1>ReadZen</h1>
+        </div>
         <div className="nav">
           <Link className="navlink-home" to="/">
             <h2><i className="fa fa-home"></i></h2>

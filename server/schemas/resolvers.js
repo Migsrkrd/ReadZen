@@ -26,6 +26,11 @@ const resolvers = {
             return ReadMe.find({});
         },
 
+        // Returns all readmes with isPublished: true
+        publishedReadmes: async () => {
+            return ReadMe.find({ isPublished: true });
+        },
+
         // Returns all readmes of a given user
         readmes: async (parent, { username }, context) => {
             return ReadMe.find({ author: username });
@@ -93,11 +98,11 @@ const resolvers = {
         },
 
         // Deletes a readme and removes it from a user's readmes
-        deleteReadMe: async (parent, { readMeId }) => {
-            const readme = await ReadMe.findOneAndDelete({ _id: readMeId });
+        deleteReadMe: async (parent, args ) => {
+            const readme = await ReadMe.findOneAndDelete({ _id: args._id });
             await User.findOneAndUpdate(
-                { _id: readMeId },
-                { $pull: { ReadMes: { _id: readMeId } } },
+                { _id: args._id },
+                { $pull: { ReadMes: { _id: args._id } } },
                 { new: true }
             );
             return readme;

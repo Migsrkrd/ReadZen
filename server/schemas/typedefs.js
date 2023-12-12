@@ -34,6 +34,7 @@ type Query {
     users: [User]
     user(_id: ID!): User
     allreadmes: [ReadMe]
+    publishedReadmes: [ReadMe]
     readmes(username: String): [ReadMe]
     readme(_id: ID!): ReadMe
 }
