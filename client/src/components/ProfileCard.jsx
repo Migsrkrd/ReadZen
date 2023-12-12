@@ -90,6 +90,8 @@ const ProfileCard = (props) => {
     return str;
   }
 
+  console.log(props.ReadMes);
+
   return (
     
     <div className="cardLayout">
@@ -103,9 +105,11 @@ const ProfileCard = (props) => {
                 {readme.author}
               </h4>
             </Link>
-            <h3>{readme.title}</h3>
+            
           </div>
+          
           <div className="card-body">
+          <h3>{readme.title}</h3>
             <p>{noMoreThanWords(readme.description)}</p>
             
             <div className="card-links">
@@ -129,6 +133,7 @@ const ProfileCard = (props) => {
                 <i className="fa fa-link"></i>
               </Link>
             </div>
+          </div>
             <div className="interactions">
               <Link className="edit-link" to="/generate" state={{ readme }}>
                 <button className="btnBeg">Edit</button>
@@ -140,16 +145,15 @@ const ProfileCard = (props) => {
                 Delete
               </button>
 
-              <button
+              <button className="btnMid"
                 onClick={(event) => callPublish(readme._id, readme.isPublished, event)}
               >
                 {readme.isPublished ? 'Unpublish' : 'Publish'}
               </button>
-                <button onClick={(event)=> downloadFile(readme.markdown,readme.title,event)}>
+                <button className="btnEnd" onClick={(event)=> downloadFile(readme.markdown,readme.title,event)}>
                   Download
                 </button>
             </div>
-          </div>
         </div>
   ))}
           <Modal
