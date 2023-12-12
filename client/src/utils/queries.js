@@ -99,6 +99,7 @@ export const GET_README_BY_ID = gql`
       dateCreated
       datePublished
       isPublished
+      markdown
       author {
         _id
         username

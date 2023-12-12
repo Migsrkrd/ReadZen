@@ -4,15 +4,37 @@ import { useState } from "react";
 import DisplayReadMe from "./DisplayReadMe";
 import Avatar from "./Avatar";
 
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "background.paper",
+  border: "2px solid #000",
+  boxShadow: 24,
+  p: 4,
+};
+
 const Card = (props) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const openModal = () => {
-    setIsModalOpen(!isModalOpen);
-  };
+  const [clickedModal, setClickedModal] = useState();
+  const [selectedReadme, setSelectedReadme] = useState(null);
+  // const openModal = (id) => {
+  //   console.log(id);
+  //   setClickedModal(id);
+  //   setIsModalOpen(!isModalOpen);
+  // };
+  const openModal = (readme) => {
+    console.log(readme)
+    setSelectedReadme(readme);
+    // setIsModalOpen(true);
+    // console.log(selectedReadme)
+  }
 
   const closeModal = () => {
-    setIsModalOpen(isModalOpen);
+    setSelectedReadme(null)
+    // setIsModalOpen(isModalOpen);
   };
 
   function noMoreThanWords(str) {
@@ -36,11 +58,10 @@ const Card = (props) => {
     event.stopPropagation();
     console.log("comment")
   }
-
   return (
     <div className="cardLayout">
       {props.ReadMes.map((readme) => (
-        <div key={readme._id} className="card" onClick={openModal}>
+        <div key={readme._id} className="card" onClick={()=>openModal(readme)}>
           <div className="card-header">
             <Link className="profile-link" to={`/profiles/${readme.author}`}>
               <h4>
@@ -75,7 +96,7 @@ const Card = (props) => {
         <button className="btnEnd" onClick={share}>Share</button>
       </div>
           </div>
-          {isModalOpen && (
+          {selectedReadme && (
             <DisplayReadMe
               onClose={closeModal}
               username={readme.username}
