@@ -115,28 +115,20 @@ const resolvers = {
         },
 
         // Create a comment
-        addComment: async (parent, { text, readMeId }) => {
-            const comment = await Comment.create({ author: context.user.username, text });
-            await ReadMe.findOneAndUpdate(
-                { _id: readMeId},
-                { $addToSet: { comments: comment }},
-                { new: true }
-            );
+        addComment: async (parent, { text, readMeId }, context) => {
+            const comment = await Comment.create({
+                author: context.user.username, 
+                text, 
+                readMeId
+            });
             return comment;
         },
 
         // Updates a comment
         updateComment: async (parent, { text, readMeId }) => {
-            const { args, ...updateArgs } = args;
             const comment = await Comment.findOneAndUpdate(
                 { _id: commentId },
                 { text },
-                { new: true }
-            );
-            await ReadMe.findOneAndUpdate(
-                { _id: readMeId},
-                { $pull: { comments: { _id: readMeId } }},
-                { $addToSet: { comments: comment }},
                 { new: true }
             );
 
@@ -146,11 +138,6 @@ const resolvers = {
         // Deletes a comment
         deleteComment: async (parent, args ) => {
             const comment = await Comment.findOneAndDelete({ _id: args._id });
-            await ReadMe.findOneAndUpdate(
-                { _id: readMeId},
-                { $pull: { comments: { _id: readMeId } }},
-                { new: true }
-            );
             return comment;
         },
     }

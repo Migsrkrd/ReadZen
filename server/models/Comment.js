@@ -2,6 +2,10 @@ const { Schema, model } = require('mongoose');
 const dateFormat = require('../utils/dateFormat');
 
 const commentSchema = new Schema({
+    readMeId: {
+        type: Number,
+        required: 'You need a readme to comment to!'
+    },
     author: {
         type: String,
         required: 'You need to have an author!'

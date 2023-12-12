@@ -27,9 +27,10 @@ type ReadMe {
 
 type Comment {
     _id: ID!
+    readMeId: ID!
     author: String!
     text: String!
-    dateCreated: String!
+    dateCreated: String
 }
 
 type Auth {
@@ -95,14 +96,16 @@ type Mutation {
         markdown: String
     ): ReadMe
     addComment(
+        readMeId: ID!
         author: String!,
         text: String!,
-        dateCreated: String!
+        dateCreated: String
     ): Comment
     updateComment(
-        author: String!,
-        text: String!,
-        dateCreated: String!
+        readMeId: ID!
+        author: String,
+        text: String,
+        dateCreated: String
     ): Comment
     deleteComment(
         _id: ID!
