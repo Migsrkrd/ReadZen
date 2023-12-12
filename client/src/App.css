@@ -87,16 +87,19 @@ header h1{
 .card {
     background: var(--fourth-color);
     color: var(--primary-color);
-    padding: 0px 20px 20px 20px;
     border-radius: 10px;
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
     transition: 0.2s;
-    width: 300px;
-    margin: 20px;
+    width: 500px;
+    height: 275px;
+    margin: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .card:hover{
-    scale: 1.1;
+    scale: 1.05;
     box-shadow: 0 0 20px 0 var(--secondary-color);
     transition: 0.2s;
 }
@@ -108,32 +111,47 @@ header h1{
     flex-direction: column;
 }
 
+.card-body p{
+    /* margin-bottom: 30px; */
+    margin-right: 30px;
+    margin-left: 30px;
+
+}
+
 .card-header{
     display: flex;
-    justify-content: space-around;
-    align-items: center;
+    flex-direction: column;
+    
 }
+
+
 
 .card-header h3{
     font-size: 25px;
-    font-weight: 900;
-    font-family: 'Roboto', sans-serif
+    font-family: 'Roboto', sans-serif;
+    display: flex;
+    justify-content: center;
+    margin: 20px;
 }
 
 .card-header h4{
     font-size: 20px;
     font-weight: 900;
     font-family: 'Roboto', sans-serif;
+    display: flex;
+    justify-content: flex-start;
     color: var(--secondary-color);
+    margin: 20px 0px 0px 10px;
 }
 
 .profile-link{
     text-decoration: none;
     transition: 0.2s;
+    margin: none;
 }
 
 .profile-link:hover, .card-header h4:hover{
-    letter-spacing: 6px;
+    color: var(--third-color);
     transition: 0.2s;
 }
 
@@ -141,18 +159,61 @@ header h1{
     color: var(--secondary-color);
     font-size: 40px;
     transition: 0.2s;
-    margin: 0px 20px 0px 20px;
+    margin: 0px 50px 0px 50px;
+    /* padding-bottom: 40px; */
+}
+.card-links{
+    display: flex;
+    align-items: flex-end;
 }
 
 .card-links a:hover{
-    color: var(--primary-color);
+    color: var(--third-color);
     scale: 1.2;
     transition: 0.2s;
+    cursor: pointer;
 }
 
 .divy{
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.interactions{
+    display: flex;
+    width: 100%;
+}
+.interactions button{
+    width: 100%;
+    background: var(--third-color);
+    color: var(--primary-color);
+    margin-top: 10px;
+}
+
+.btnEnd{
+    /* border: 1px solid var(--secondary-color); */
+    border-bottom-right-radius: 9px;
+}
+
+.btnBeg{
+    border-bottom-left-radius: 9px;
+}
+
+.btnMid{
+    border-radius: 1px;
+}
+
+.btnBeg:hover, .btnMid:hover, .btnEnd:hover{
+    color: var(--fourth-color);
+    cursor: pointer;
+    background: var(--secondary-color);
+    font-weight: bolder;
+}
+
+.cardLayout{
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-direction: column;
+    flex-wrap: wrap;
 }

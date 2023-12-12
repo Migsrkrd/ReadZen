@@ -30,6 +30,14 @@ const ProfileCard = (props) => {
     setIsModalOpen(isModalOpen);
   };
 
+  function noMoreThanWords(str) {
+    if (str.split(" ").length > 30){
+
+      return str.split(" ").splice(0, 30).join(" ") + "...";
+    }
+    return str;
+  }
+
   return (
     <div>
     {props.ReadMes.map((readme) => (
@@ -40,7 +48,7 @@ const ProfileCard = (props) => {
       </div>
       <div className="card-body">
         {/* limit words */}
-        <p>{readme.description}</p>
+        <p>{noMoreThanWords(readme.description)}</p>
         <div className="card-links">
           <a href={readme.reoLink} target="_blank" rel="noopener noreferrer">
             <i className="fa fa-github"></i>
