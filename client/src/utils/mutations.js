@@ -58,6 +58,7 @@ export const ADD_README = gql`
     $tests: String,
     $repoLink: String!,
     $deployedLink: String!,
+    $datePublished: String,
     $isPublished: Boolean
   ) {
     addReadMe(
@@ -71,6 +72,7 @@ export const ADD_README = gql`
       tests: $tests,
       repoLink: $repoLink,
       deployedLink: $deployedLink,
+      datePublished: $datePublished,
       isPublished: $isPublished
     ) {
       _id
@@ -110,7 +112,7 @@ export const UPDATE_README = gql`
     $isPublished: Boolean
   ) {
     updateReadMe(
-      readMeId: $readMeId,
+      _id: $readMeId,
       title: $title,
       description: $description,
       tableOfContents: $tableOfContents,
@@ -139,16 +141,15 @@ export const UPDATE_README = gql`
       dateCreated
       datePublished
       isPublished
-      author {
-        _id
-        username
-      }
+      author
     }
   }
 `;
 
 export const DELETE_README = gql`
-  mutation deleteReadMe($readMeId: ID!) {
+  mutation deleteReadMe(
+    $readMeId: ID!
+  ) {
     deleteReadMe(_id: $readMeId) {
       _id
       title

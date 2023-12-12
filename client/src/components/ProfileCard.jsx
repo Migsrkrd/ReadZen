@@ -7,39 +7,42 @@ import { useMutation } from "@apollo/client";
 import { DELETE_README, UPDATE_README } from "../utils/mutations";
 
 const ProfileCard = (props) => {
-     console.log(props.ReadMes)
+  console.log('props.ReadMes');
+  console.log(props.ReadMes);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [deleteId, setDeleteId] = useState();
-  const [readMeIsPublished, setReadMeIsPublished] = useState();
+  // const [deleteId, setDeleteId] = useState();
 
   const [deleteReadMe] = useMutation(DELETE_README, {
-    variables: { readMeId: deleteId },
+    // variables: { readMeId: deleteId },
   });
 
-  const [togglePublishedState] = useMutation(UPDATE_README);
+  const [togglePublished] = useMutation(UPDATE_README);
 
   const callDelete = (id, event) => {
     event.stopPropagation();
-    setDeleteId(id);
-    deleteReadMe();
+    // setDeleteId(id);
+    deleteReadMe(
+      {
+        variables: {
+          readMeId: id,
+        },
+      }
+    );
   }
 
-  const callPublish = (id, event) => {
+  const callPublish = (id, isPublished, event) => {
     event.stopPropagation();
-    setReadMeIsPublished((prevIsPublished) => {
-      const newDatePublished = !prevIsPublished
-        ? new Date().toISOString()
-        : null;
-  
-      togglePublishedState({
-        variables: { 
-          readMeId: id,
-          isPublished: !prevIsPublished,
-          datePublished: newDatePublished,
+    const newIsPublished = !isPublished;
+    const newDatePublished = newIsPublished
+      ? new Date().toISOString()
+      : null;
+
+    togglePublished({
+      variables: { 
+        readMeId: id,
+        isPublished: newIsPublished,
+        datePublished: newDatePublished,
         },
-      });
-  
-      return !prevIsPublished; // Return the updated value
     });
   };
 
@@ -115,10 +118,10 @@ const ProfileCard = (props) => {
               </Button>
 
               <Button
-                onClick={(event) => callPublish(readme._id, event)}
+                onClick={(event) => callPublish(readme._id, readme.isPublished, event)}
                 variant="outlined"
               >
-                {readMeIsPublished ? 'Unpublish' : 'Publish'}
+                {readme.isPublished ? 'Unpublish' : 'Publish'}
               </Button>
 
             </div>

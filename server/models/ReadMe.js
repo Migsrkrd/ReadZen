@@ -41,12 +41,11 @@ const readMeSchema = new Schema({
     },
     datePublished: {
         type: Date,
-        default: null,
         get: (timestamp) => dateFormat(timestamp),
     },
     isPublished: {
         type: Boolean,
-        default: false
+        default: false,
     },
     author: {
         type: String

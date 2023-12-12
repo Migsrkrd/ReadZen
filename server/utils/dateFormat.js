@@ -63,5 +63,8 @@ module.exports = (
 
   const formattedTimeStamp = `${formattedMonth} ${dayOfMonth}, ${year} at ${hour}:${minutes} ${periodOfDay}`;
 
+  if (!timestamp) {
+    return '';
+  }
   return formattedTimeStamp;
 };

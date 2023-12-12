@@ -107,10 +107,7 @@ export const GET_README_BY_ID = gql`
       dateCreated
       datePublished
       isPublished
-      author {
-        _id
-        username
-      }
+      author
     }
   }
 `;

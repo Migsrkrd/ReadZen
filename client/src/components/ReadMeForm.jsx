@@ -123,7 +123,7 @@ const ReadMeForm = (props) => {
                 await updateReadMe({
                     variables: {
                       readMeId: props.readme._id,
-                      datePublished: null,
+                      datePublished: '',
                       isPublished: false,
                       ...userFormData },
                 });
