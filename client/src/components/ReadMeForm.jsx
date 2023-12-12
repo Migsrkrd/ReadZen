@@ -18,16 +18,6 @@ import { saveAs } from 'file-saver';
 const ReadMeForm = (props) => {
   const myElRef=useRef(null);
 
-  function createFile() {
-
-    const myElement = myElRef.current.textContent;
-    console.log(myElement);
-    const fileContent = myElement;
-    const fileName = 'README.md';
-    const blob = new Blob([fileContent], { type: 'text/plain;charset=utf-8' });
-    saveAs(blob, fileName);
-  }
-
   // const history = useHistory();
     const md = MarkdownIt()
     const [formats, setFormats] = useState(() => ['bold', 'italic']);
@@ -277,16 +267,12 @@ const ReadMeForm = (props) => {
                     />
 
                     <Button
-                    disabled={!(userFormData.title)}
+                    disabled={!(userFormData.title) && renderToggle === 'render'}
                     // onClick= {() => userFormData.isPublished = true}
                     type='submit'
                     variant='contained'
                     >
                         Save
-                    </Button>
-                    <Button
-                    onClick={createFile}>
-                      Create File
                     </Button>
                     <Link to='/me' >
                         <Button
