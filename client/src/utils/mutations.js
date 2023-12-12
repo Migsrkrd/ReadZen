@@ -149,8 +149,9 @@ export const UPDATE_README = gql`
 
 export const DELETE_README = gql`
   mutation deleteReadMe($readMeId: ID!) {
-    deleteReadMe(readMeId: $readMeId) {
-      message
+    deleteReadMe(_id: $readMeId) {
+      _id
+      title
     }
   }
 `;
