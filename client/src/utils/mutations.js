@@ -111,10 +111,10 @@ export const UPDATE_README = gql`
     $dateCreated: String,
     $datePublished: String,
     $isPublished: Boolean
-    $markdwon: String
+    $markdown: String
   ) {
     updateReadMe(
-      readMeId: $readMeId,
+      _id: $readMeId,
       title: $title,
       description: $description,
       tableOfContents: $tableOfContents,
@@ -145,10 +145,7 @@ export const UPDATE_README = gql`
       datePublished
       isPublished
       markdown
-      author {
-        _id
-        username
-      }
+      author
     }
   }
 `;

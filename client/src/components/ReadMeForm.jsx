@@ -113,7 +113,7 @@ const ReadMeForm = (props) => {
       setRenderToggle('code'), setAnchorEl(null))
       : (setRenderToggle('render'), setAnchorEl(event.currentTarget));
 
-
+        console.log(renderToggle);
     };
 
     const open = Boolean(anchorEl);
@@ -264,13 +264,16 @@ const ReadMeForm = (props) => {
                     multiline
                     margin="normal"
                     />
+                    <Link to='/me'>
                     <Button
-                    disabled={!(userFormData.title) && renderToggle === 'render'}
+                    onSubmit={handleToggle}
+                    disabled={!(userFormData.title)}
                     type='submit'
                     variant='contained'
                     >
                         Save
                     </Button>
+                    </Link>
                     <Link to='/me' >
                         <Button
                         type='button'
