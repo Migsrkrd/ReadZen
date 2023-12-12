@@ -7,7 +7,7 @@ const Home = () => {
 
   const { loading, data } = useQuery(GET_ALL_READMES);
   // console.log(data)
-  const ReadMes = data?.allreadmes || [];
+  const ReadMes = data?.publishedReadmes || [];
     return (
       <main>
         <div className="divy">

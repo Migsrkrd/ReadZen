@@ -160,6 +160,7 @@ const ReadMeForm = (props) => {
                     />
                     <Button
                     disabled={!(userFormData.title)}
+                    onClick= {() => userFormData.isPublished = true}
                     type='submit'
                     variant='contained'>
                     Publish

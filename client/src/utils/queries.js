@@ -50,7 +50,7 @@ export const GET_ME = gql`
 
 export const GET_ALL_READMES = gql`
   query getAllReadMes {
-    allreadmes {
+    publishedReadmes {
       _id
       title
       description
