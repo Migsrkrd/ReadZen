@@ -1,19 +1,36 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
-
-import DisplayReadMe from "./DisplayReadMe";
+import MarkdownIt from 'markdown-it';
+import { Box, Button, Modal, Typography } from "@mui/material";
 import Avatar from "./Avatar";
 
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "background.paper",
+  border: "2px solid #000",
+  boxShadow: 24,
+  p: 4,
+};
+
 const Card = (props) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const openModal = () => {
-    setIsModalOpen(!isModalOpen);
-  };
+  const md = MarkdownIt()
+  const [markdown, setMarkdown] = useState();
+  const [open, setOpen] = useState(false);
+  const handleOpen = (readme) => {
+    setMarkdown(readme)
+    setOpen(true);
+  }
+  const handleClose = (event) => {
+    event.stopPropagation();
+    setOpen(false);
+  }
 
-  const closeModal = () => {
-    setIsModalOpen(isModalOpen);
-  };
+
 
   function noMoreThanWords(str) {
     if (str.split(" ").length > 30) {
@@ -36,11 +53,10 @@ const Card = (props) => {
     event.stopPropagation();
     console.log("comment");
   }
-
   return (
     <div className="cardLayout">
       {props.ReadMes.map((readme) => (
-        <div key={readme._id} className="card" onClick={openModal}>
+        <div key={readme._id} className="card" onClick={()=>handleOpen(readme.markdown)}>
           <div className="card-header">
             <Link className="profile-link" to={`/profiles/${readme.author}`}>
               <h4>
@@ -69,28 +85,27 @@ const Card = (props) => {
                 <i className="fa fa-link"></i>
               </a>
             </div>
-            <div className="interactions">
-              <button className="btnBeg" onClick={like}>
-                Like
-              </button>
-              <button className="btnMid" onClick={comment}>
-                Comment
-              </button>
-              <button className="btnEnd" onClick={share}>
-                Share
-              </button>
-            </div>
-          </div>
-          {isModalOpen && (
-            <DisplayReadMe
-              onClose={closeModal}
-              username={readme.username}
-              title={readme.title}
-              description={readme.description}
-            />
-          )}
+              <div className="interactions">
+              <button className="btnBeg" onClick={like}>Like</button>
+              <button className="btnMid" onClick={comment}>Comment</button>
+              <button className="btnEnd" onClick={share}>Share</button>
+              </div>
+         </div>
         </div>
       ))}
+        <Modal
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+          >
+            <Box sx={style}> 
+                <div dangerouslySetInnerHTML={{__html: md.render(`${markdown}`)}}>
+                </div>
+                <Button onClick={handleClose}>Close</Button>
+
+            </Box>
+          </Modal>
     </div>
   );
 };

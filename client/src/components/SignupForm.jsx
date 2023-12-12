@@ -96,6 +96,7 @@ const SignupForm = () => {
         <TextField
         id='password'
         label="Password"
+        type='password'
         value={userFormData.password}
         onChange={handleInputChange}
         fullWidth

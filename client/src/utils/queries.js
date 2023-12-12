@@ -57,6 +57,7 @@ export const GET_ALL_READMES = gql`
       repoLink
       deployedLink
       author
+      markdown
     }
   }`
 
@@ -77,6 +78,7 @@ export const GET_READMES = gql`
       deployedLink
       dateCreated
       author
+      markdown
     }
   }
 `;
@@ -99,6 +101,7 @@ export const GET_README_BY_ID = gql`
       dateCreated
       datePublished
       isPublished
+      markdown
       author {
         _id
         username
