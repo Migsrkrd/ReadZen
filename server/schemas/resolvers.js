@@ -102,6 +102,28 @@ const resolvers = {
             );
             return readme;
         }
+    },
+
+    ReadMe: {
+        shortDescription: (parent) => {
+            const maxLength = 128;
+            const originalDescription = parent.description;
+
+            // check if orgininal description is already shorter than maxLength
+            if (originalDescription.length <= maxLength) {
+                return originalDescription.trim();
+            }
+
+            // find the nearest space character before or at the maxLength position
+            const nearestSpaceIndex = originalDescription.lastIndexOf(' ', maxLength);
+
+            // if a space is found, use it as the breakpoint
+            const breakPoint = nearestSpaceIndex !== -1
+                ? nearestSpaceIndex
+                : maxLength;
+
+            return originalDescription.substring(0, breakPoint).trim() + '...';
+        }
     }
 };
 

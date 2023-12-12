@@ -11,6 +11,8 @@ export const GET_USERS = gql`
         title
         shortDescription
         dateCreated
+        datePublished
+        isPublished  
       }
     }
   }
@@ -27,7 +29,9 @@ export const GET_USER_BY_ID = gql`
         title
         shortDescription
         dateCreated
-      }
+        datePublished
+        isPublished
+        }
     }
   }
 `;
@@ -43,7 +47,9 @@ export const GET_ME = gql`
         title
         shortDescription
         dateCreated
-      }
+        datePublished
+        isPublished
+        }
     }
   }
 `;
@@ -53,10 +59,15 @@ export const GET_ALL_READMES = gql`
     allreadmes {
       _id
       title
-      description
+      shortDescription
       repoLink
       deployedLink
-      author
+      datePublished
+      isPublished
+      author {
+        _id
+        username
+      }
     }
   }`
 
@@ -66,6 +77,7 @@ export const GET_READMES = gql`
     readmes(username:  $username) {
       _id
       title
+      shortDescription
       description
       tableOfContents
       installation
@@ -76,7 +88,12 @@ export const GET_READMES = gql`
       repoLink
       deployedLink
       dateCreated
-      author
+      datePublished
+      isPublished
+      author {
+        _id
+        username
+      }
     }
   }
 `;

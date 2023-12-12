@@ -9,6 +9,7 @@ type User {
 type ReadMe {
     _id: ID!
     title: String!
+    shortDescription: String
     description: String!
     tableOfContents: String
     installation: String
