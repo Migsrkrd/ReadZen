@@ -59,6 +59,7 @@ const LoginForm = () => {
         id='email'
         label="Email"
         value={userFormData.email}
+        helperText={error ? error.message : ''}
         onChange={handleInputChange}
         fullWidth
         margin="normal"
