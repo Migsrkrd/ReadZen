@@ -1,12 +1,13 @@
 import { Link } from "react-router-dom";
+import { Button } from '@mui/material';
 import { useState } from "react";
 import DisplayReadMe from "./DisplayReadMe";
 import Avatar from "./Avatar";
 import { useMutation } from "@apollo/client";
-import { DELETE_README } from "../utils/mutations";
+import { DELETE_README, UPDATE_README } from "../utils/mutations";
 
 const ProfileCard = (props) => {
-  //   console.log(props.ReadMes)
+     console.log(props.ReadMes)
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [deleteId, setDeleteId] = useState();
   const [readMeIsPublished, setReadMeIsPublished] = useState();
@@ -25,17 +26,20 @@ const ProfileCard = (props) => {
 
   const callPublish = (id, event) => {
     event.stopPropagation();
-    setReadMeIsPublished = !props.readme.isPublished;
-    const newDataPublished = readMeIsPublished
-      ? new Date().toISOString()
-      : 'DRAFT';
-
-    togglePublishedState({
-      variables: { 
-        readMeId: id,
-        isPublished: readMeIsPublished,
-        datePublished: newDataPublished,
-      },
+    setReadMeIsPublished((prevIsPublished) => {
+      const newDatePublished = !prevIsPublished
+        ? new Date().toISOString()
+        : null;
+  
+      togglePublishedState({
+        variables: { 
+          readMeId: id,
+          isPublished: !prevIsPublished,
+          datePublished: newDatePublished,
+        },
+      });
+  
+      return !prevIsPublished; // Return the updated value
     });
   };
 
@@ -110,7 +114,10 @@ const ProfileCard = (props) => {
                 Delete
               </Button>
 
-              <Button onClick={() => callPublish(readme._id, event)} variant="outlined">
+              <Button
+                onClick={(event) => callPublish(readme._id, event)}
+                variant="outlined"
+              >
                 {readMeIsPublished ? 'Unpublish' : 'Publish'}
               </Button>
 

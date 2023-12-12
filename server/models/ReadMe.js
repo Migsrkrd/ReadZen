@@ -41,7 +41,7 @@ const readMeSchema = new Schema({
     },
     datePublished: {
         type: Date,
-        default: Date.now,
+        default: null,
         get: (timestamp) => dateFormat(timestamp),
     },
     isPublished: {
