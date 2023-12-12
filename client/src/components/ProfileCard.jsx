@@ -9,16 +9,33 @@ const ProfileCard = (props) => {
   //   console.log(props.ReadMes)
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [deleteId, setDeleteId] = useState();
+  const [readMeIsPublished, setReadMeIsPublished] = useState();
 
   const [deleteReadMe] = useMutation(DELETE_README, {
     variables: { readMeId: deleteId },
   });
 
+  const [togglePublishedState] = useMutation(UPDATE_README);
+
   const callDelete = (id, event) => {
     event.stopPropagation();
-    console.log("delete");
-    deleteReadMe({
-      variables: { readMeId: id },
+    setDeleteId(id);
+    deleteReadMe();
+  }
+
+  const callPublish = (id, event) => {
+    event.stopPropagation();
+    setReadMeIsPublished = !props.readme.isPublished;
+    const newDataPublished = readMeIsPublished
+      ? new Date().toISOString()
+      : 'DRAFT';
+
+    togglePublishedState({
+      variables: { 
+        readMeId: id,
+        isPublished: readMeIsPublished,
+        datePublished: newDataPublished,
+      },
     });
   };
 
@@ -41,6 +58,7 @@ const ProfileCard = (props) => {
     <div className="cardLayout">
       {props.ReadMes.map((readme) => (
         <div key={readme._id} className="card" onClick={openModal}>
+        
           <div className="card-header">
             <Link className="profile-link" to={`/profiles/${readme.author}`}>
               <h4>
@@ -50,10 +68,13 @@ const ProfileCard = (props) => {
             </Link>
             <h3>{readme.title}</h3>
           </div>
+          
           <div className="card-body">
             {/* limit words */}
             <p>{noMoreThanWords(readme.description)}</p>
+            
             <div className="card-links">
+            
               <Link
                 to="#"
                 onClick={(e) => {
@@ -63,6 +84,7 @@ const ProfileCard = (props) => {
               >
                 <i className="fa fa-github"></i>
               </Link>
+
               <Link
                 to="#"
                 onClick={(e) => {
@@ -72,20 +94,29 @@ const ProfileCard = (props) => {
               >
                 <i className="fa fa-link"></i>
               </Link>
+
             </div>
+
             <div className="interactions">
+              
               <Link className="edit-link" to="/generate" state={{ readme }}>
                 <button className="btnBeg">Edit</button>
               </Link>
-              <button
+
+              <Button
                 className="btnMid"
                 onClick={(event) => callDelete(readme._id, event)}
               >
                 Delete
-              </button>
-              <button className="btnEnd">Publish</button>
+              </Button>
+
+              <Button onClick={() => callPublish(readme._id, event)} variant="outlined">
+                {readMeIsPublished ? 'Unpublish' : 'Publish'}
+              </Button>
+
             </div>
           </div>
+
           {isModalOpen && (
             <DisplayReadMe
               onClose={closeModal}
