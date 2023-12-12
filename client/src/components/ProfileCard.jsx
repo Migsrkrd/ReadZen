@@ -11,14 +11,31 @@ const ProfileCard = (props) => {
 //   console.log(props.ReadMes)
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [deleteId, setDeleteId] = useState();
+  const [readMeIsPublished, setReadMeIsPublished] = useState();
 
   const [deleteReadMe] = useMutation(DELETE_README, {
     variables: { readMeId: deleteId }
   });
 
+  const [togglePublishedState] = useMutation(UPDATE_README);
+
   const callDelete = (id) => {
-    deleteReadMe({
-      variables: { readMeId: id }
+    setDeleteId(id);
+    deleteReadMe();
+  }
+
+  const callPublish = (id) => {
+    setReadMeIsPublished = !props.readme.isPublished;
+    const newDataPublished = readMeIsPublished
+      ? new Date().toISOString()
+      : 'DRAFT';
+
+    togglePublishedState({
+      variables: { 
+        readMeId: id,
+        isPublished: readMeIsPublished,
+        datePublished: newDataPublished,
+      },
     });
   }
 
@@ -60,8 +77,11 @@ const ProfileCard = (props) => {
           <Button onClick={openModal} variant="outlined">Show ReadMe</Button>
           <Link to='/generate' state= {{ readme} }>
             <Button variant="outlined">Edit</Button>
-            </Link>
+          </Link>
           <Button onClick={() => callDelete(readme._id)}variant="outlined">Delete</Button>
+          <Button onClick={() => callPublish(readme._id)}variant="outlined">
+            {readMeIsPublished ? 'Unpublish' : 'Publish'}
+          </Button>
         </div>
       </div>
       {isModalOpen && (
