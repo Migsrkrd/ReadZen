@@ -141,6 +141,7 @@ header h1{
 .card-header{
     display: flex;
     flex-direction: column;
+    width: fit-content;
     
 }
 
@@ -226,7 +227,7 @@ header h1{
 }
 
 .btnBeg:hover, .btnMid:hover, .btnEnd:hover{
-    color: var(--secondary-color);
+    color: var(--fourth-color);
     cursor: pointer;
     background: var(--secondary-color);
     font-weight: bolder;
