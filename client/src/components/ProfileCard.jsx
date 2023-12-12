@@ -2,11 +2,12 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import MarkdownIt from 'markdown-it';
 import { Button, Modal, Box } from "@mui/material";
-import { useMutation } from '@apollo/client';
+import { useQuery, useMutation } from '@apollo/client';
 import { UPDATE_README, DELETE_README } from '../utils/mutations';
+import { GET_READMES } from "../utils/queries";
 import Avatar from "./Avatar";
 import { saveAs } from 'file-saver';
-
+import Auth from "../utils/auth";
 
 
 const style = {
@@ -49,6 +50,12 @@ const ProfileCard = (props) => {
   const [readMeIsPublished, setReadMeIsPublished] = useState();
 
   const [deleteReadMe] = useMutation(DELETE_README, {
+    refetchQueries:[
+      GET_READMES, {
+      variables: {
+        username: Auth.getProfile().data.username
+      }
+    }]
     // variables: { readMeId: deleteId },
   });
 
