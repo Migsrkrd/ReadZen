@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import MarkdownIt from 'markdown-it';
 import { Box, Button, Modal, Typography } from "@mui/material";
-import DisplayReadMe from "./DisplayReadMe";
 import Avatar from "./Avatar";
 
 const style = {
@@ -17,9 +17,8 @@ const style = {
 };
 
 const Card = (props) => {
-  // const [isModalOpen, setIsModalOpen] = useState(false);
-  // const [clickedModal, setClickedModal] = useState();
-  // const [selectedReadme, setSelectedReadme] = useState(null);
+
+  const md = MarkdownIt()
   const [markdown, setMarkdown] = useState();
   const [open, setOpen] = useState(false);
   const handleOpen = (readme) => {
@@ -101,9 +100,8 @@ const Card = (props) => {
           aria-describedby="modal-modal-description"
           >
             <Box sx={style}> 
-                <pre>
-                  {markdown}
-                </pre>
+                <div dangerouslySetInnerHTML={{__html: md.render(`${markdown}`)}}>
+                </div>
                 <Button onClick={handleClose}>Close</Button>
 
             </Box>
@@ -113,31 +111,3 @@ const Card = (props) => {
 };
 
 export default Card;
-
-
-          {/* {selectedReadme && (
-            <DisplayReadMe
-              onClose={closeModal}
-              username={readme.username}
-              title={readme.title}
-              description={readme.description}
-            />
-          )} */}
-
-            // console.log(props.ReadMes)
-  // const openModal = (id) => {
-  //   console.log(id);
-  //   setClickedModal(id);
-  //   setIsModalOpen(!isModalOpen);
-  // };
-  // const openModal = (readme) => {
-  //   console.log(readme)
-  //   setSelectedReadme(readme);
-  //   // setIsModalOpen(true);
-  //   // console.log(selectedReadme)
-  // }
-
-  // const closeModal = () => {
-  //   setSelectedReadme(null)
-  //   // setIsModalOpen(isModalOpen);
-  // };

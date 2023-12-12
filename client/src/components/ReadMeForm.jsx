@@ -366,7 +366,7 @@ const ReadMeForm = (props) => {
                 </pre>
                 : 
                 <div >
-                < div dangerouslySetInnerHTML={{__html: md.render(`${
+                <div dangerouslySetInnerHTML={{__html: md.render(`${
                     (userFormData.title ? `# ${userFormData.title} \n\n` : '')}${
                     (userFormData.description ? `## Description\n\n${userFormData.deployedLink ? `[Visit the Deployed Site](${userFormData.deployedLink})\n\n` : ''}${userFormData.description}\n\n` : '')}${
                     (userFormData.tableOfContents ? `## Table of Contents\n\n ${userFormData.tableOfContents}\n\n` : '')}${

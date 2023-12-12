@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import DisplayReadMe from "./DisplayReadMe";
-import Avatar from "./Avatar"
+import MarkdownIt from 'markdown-it';
 import { Button, Modal, Box } from "@mui/material";
 import { useMutation } from '@apollo/client';
 import { DELETE_README } from '../utils/mutations';
@@ -19,9 +18,7 @@ const style = {
 };
 
 const ProfileCard = (props) => {
-
-//   console.log(props.ReadMes)
-  // const [isModalOpen, setIsModalOpen] = useState(false);
+  const md = MarkdownIt()
   const [deleteId, setDeleteId] = useState();
   const [markdown, setMarkdown] = useState();
   const [open, setOpen] = useState(false);
@@ -43,14 +40,6 @@ const ProfileCard = (props) => {
     });
   }
 
-  const openModal = () => {
-    setIsModalOpen(!isModalOpen);
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(isModalOpen);
-  };
-
   function noMoreThanWords(str) {
     if (str.split(" ").length > 30){
 
@@ -68,7 +57,6 @@ const ProfileCard = (props) => {
         <h3>{readme.title}</h3>
       </div>
       <div className="card-body">
-        {/* limit words */}
         <p>{noMoreThanWords(readme.description)}</p>
         <div className="card-links">
           <a href={readme.reoLink} target="_blank" rel="noopener noreferrer">
@@ -94,11 +82,9 @@ const ProfileCard = (props) => {
           aria-describedby="modal-modal-description"
           >
             <Box sx={style}> 
-                <pre>
-                  {markdown}
-                </pre>
+            <div dangerouslySetInnerHTML={{__html: md.render(`${markdown}`)}}>
+                </div>
                 <Button onClick={handleClose}>Close</Button>
-
             </Box>
           </Modal>
   </div>
