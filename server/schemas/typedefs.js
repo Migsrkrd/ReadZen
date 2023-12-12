@@ -21,7 +21,15 @@ type ReadMe {
     dateCreated: String!
     datePublished: String
     isPublished: Boolean
+    markdown: String
     author: String
+}
+
+type Comment {
+    _id: ID!
+    author: String!
+    text: String!
+    dateCreated: [ReadMe]
 }
 
 type Auth {
@@ -37,6 +45,7 @@ type Query {
     publishedReadmes: [ReadMe]
     readmes(username: String): [ReadMe]
     readme(_id: ID!): ReadMe
+    comments: [Comment]
 }
 
 type Mutation {
@@ -64,6 +73,7 @@ type Mutation {
         dateCreated: String,
         datePublished: String,
         isPublished: Boolean
+        markdown: String
     ): ReadMe
     deleteReadMe(
         _id: ID!
@@ -82,7 +92,21 @@ type Mutation {
         dateCreated: String,
         datePublished: String,
         isPublished: Boolean
+        markdown: String
     ): ReadMe
+    addComment(
+        author: String!,
+        text: String!,
+        dateCreated: String!
+    ): Comment
+    updateComment(
+        author: String!,
+        text: String!,
+        dateCreated: String!
+    ): Comment
+    deleteComment(
+        _id: ID!
+    ): Comment
 }
 `;
 
