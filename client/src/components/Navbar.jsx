@@ -9,7 +9,6 @@ import LoginForm from "./LoginForm";
 import SignupForm from "./SignupForm";
 import Backdrop from "@mui/material/Backdrop";
 
-
 const style = {
   position: "absolute",
   top: "50%",

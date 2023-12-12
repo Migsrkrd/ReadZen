@@ -5,6 +5,8 @@ import { Button, Modal, Box } from "@mui/material";
 import { useMutation } from '@apollo/client';
 import { UPDATE_README, DELETE_README } from '../utils/mutations';
 import Avatar from "./Avatar";
+import { saveAs } from 'file-saver';
+
 
 
 const style = {
@@ -20,8 +22,8 @@ const style = {
 };
 
 const ProfileCard = (props) => {
-  console.log('props.ReadMes');
-  console.log(props.ReadMes);
+  // console.log('props.ReadMes');
+  // console.log(props.ReadMes);
 
   const md = MarkdownIt()
   const [markdown, setMarkdown] = useState();
@@ -37,6 +39,14 @@ const ProfileCard = (props) => {
     event.stopPropagation();
     setOpen(false);
   }
+  const downloadFile= (readme, title, event) => {
+    event.stopPropagation();
+    const fileName = `${title}.README.md`;
+    const blob = new Blob([readme], { type: 'text/plain;charset=utf-8' });
+    saveAs(blob, fileName);
+  }
+  const [deleteId, setDeleteId] = useState();
+  const [readMeIsPublished, setReadMeIsPublished] = useState();
 
   const [deleteReadMe] = useMutation(DELETE_README, {
     // variables: { readMeId: deleteId },
@@ -72,13 +82,6 @@ const ProfileCard = (props) => {
     });
   };
 
-  const openModal = () => {
-    setIsModalOpen(!isModalOpen);
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(isModalOpen);
-  };
 
   function noMoreThanWords(str) {
     if (str.split(" ").length > 30) {
@@ -102,9 +105,7 @@ const ProfileCard = (props) => {
             </Link>
             <h3>{readme.title}</h3>
           </div>
-          
           <div className="card-body">
-            {/* limit words */}
             <p>{noMoreThanWords(readme.description)}</p>
             
             <div className="card-links">
@@ -118,7 +119,6 @@ const ProfileCard = (props) => {
               >
                 <i className="fa fa-github"></i>
               </Link>
-
               <Link
                 to="#"
                 onClick={(e) => {
@@ -128,15 +128,11 @@ const ProfileCard = (props) => {
               >
                 <i className="fa fa-link"></i>
               </Link>
-
             </div>
-
             <div className="interactions">
-              
               <Link className="edit-link" to="/generate" state={{ readme }}>
                 <button className="btnBeg">Edit</button>
               </Link>
-
               <Button
                 className="btnMid"
                 onClick={(event) => callDelete(readme._id, event)}
@@ -150,7 +146,9 @@ const ProfileCard = (props) => {
               >
                 {readme.isPublished ? 'Unpublish' : 'Publish'}
               </Button>
-
+                <Button onClick={(event)=> downloadFile(readme.markdown,readme.title,event)}>
+                  Download
+                </Button>
             </div>
           </div>
         </div>
