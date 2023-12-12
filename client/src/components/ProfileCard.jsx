@@ -3,11 +3,24 @@ import { useState } from "react";
 import DisplayReadMe from "./DisplayReadMe";
 import Avatar from "./Avatar"
 import { Button } from "@mui/material";
+import { useMutation } from '@apollo/client';
+import { DELETE_README } from '../utils/mutations';
 
 const ProfileCard = (props) => {
 
 //   console.log(props.ReadMes)
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [deleteId, setDeleteId] = useState();
+
+  const [deleteReadMe] = useMutation(DELETE_README, {
+    variables: { readMeId: deleteId }
+  });
+
+  const callDelete = (id) => {
+    deleteReadMe({
+      variables: { readMeId: id }
+    });
+  }
 
   const openModal = () => {
     setIsModalOpen(!isModalOpen);
@@ -40,7 +53,7 @@ const ProfileCard = (props) => {
           <Link to='/generate' state= {{ readme} }>
             <Button variant="outlined">Edit</Button>
             </Link>
-          <Button variant="outlined">Delete</Button>
+          <Button onClick={() => callDelete(readme._id)}variant="outlined">Delete</Button>
         </div>
       </div>
       {isModalOpen && (
