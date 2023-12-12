@@ -9,12 +9,26 @@ import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 import Grid from '@mui/material/Unstable_Grid2';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useMutation } from '@apollo/client';
 import { ADD_README, UPDATE_README } from '../utils/mutations';
 import { Link } from "react-router-dom";
+import { saveAs } from 'file-saver';
 
 const ReadMeForm = (props) => {
+  const myElRef=useRef(null);
+
+  function createFile() {
+
+    const myElement = myElRef.current.textContent;
+    console.log(myElement);
+    const fileContent = myElement;
+    const fileName = 'README.md';
+    const blob = new Blob([fileContent], { type: 'text/plain;charset=utf-8' });
+    saveAs(blob, fileName);
+  }
+
+  // const history = useHistory();
     const md = MarkdownIt()
     const [formats, setFormats] = useState(() => ['bold', 'italic']);
 
@@ -117,20 +131,24 @@ const ReadMeForm = (props) => {
     const handleFormSubmit = async (event) => {
         event.preventDefault();
         console.log('submit')
+        // console.log(props.readme);
+        // console.log(myElRef.current.textContent)
         try {
             if (props.readme) {
                 // if the readme already exists (editing), then update it
                 await updateReadMe({
                     variables: {
                       readMeId: props.readme._id,
+                      markdown:myElRef.current.textContent,
                       datePublished: '',
                       isPublished: false,
-                      ...userFormData },
+                      ...userFormData
+                    },
                 });
             } else {
                 // if the readme doesn't exist (adding), create a new one
                 await addReadMe({
-                    variables: { ...userFormData },
+                    variables: {markdown:myElRef.current.textContent, ...userFormData },
                 });
             }
         } catch (e) {
@@ -165,6 +183,7 @@ const ReadMeForm = (props) => {
                 autoComplete="off"
                 >
                     <TextField
+                    spellCheck='true'
                     id='title'  
                     label="Title"
                     value={userFormData.title}
@@ -265,13 +284,16 @@ const ReadMeForm = (props) => {
 
                     <Button
                     disabled={!(userFormData.title)}
-                    onClick= {() => userFormData.isPublished = true}
+                    // onClick= {() => userFormData.isPublished = true}
                     type='submit'
                     variant='contained'
                     >
                         Save
                     </Button>
-
+                    <Button
+                    onClick={createFile}>
+                      Create File
+                    </Button>
                     <Link to='/me' >
                         <Button
                         type='button'
@@ -333,7 +355,7 @@ const ReadMeForm = (props) => {
                 </ToggleButtonGroup>
             </FormGroup>
                 {renderToggle === 'code' ?
-                <pre>
+                <pre ref={myElRef}>
                   {userFormData.title ? `# ${userFormData.title} \n\n` : ''}
                   {userFormData.description ? `## Description\n\n${userFormData.deployedLink ? `[Visit the Deployed Site](${userFormData.deployedLink})\n\n` : ''}${userFormData.description}\n\n` : ''}
                   {userFormData.tableOfContents ? `## Table of Contents\n\n ${userFormData.tableOfContents}\n\n` : ''}
@@ -345,7 +367,7 @@ const ReadMeForm = (props) => {
                 </pre>
                 : 
                 <div >
-                < div dangerouslySetInnerHTML={{__html: md.render(`${
+                <div dangerouslySetInnerHTML={{__html: md.render(`${
                     (userFormData.title ? `# ${userFormData.title} \n\n` : '')}${
                     (userFormData.description ? `## Description\n\n${userFormData.deployedLink ? `[Visit the Deployed Site](${userFormData.deployedLink})\n\n` : ''}${userFormData.description}\n\n` : '')}${
                     (userFormData.tableOfContents ? `## Table of Contents\n\n ${userFormData.tableOfContents}\n\n` : '')}${

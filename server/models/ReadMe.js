@@ -47,6 +47,9 @@ const readMeSchema = new Schema({
         type: Boolean,
         default: false,
     },
+    markdown:{
+        type: String,
+    },
     author: {
         type: String
     }

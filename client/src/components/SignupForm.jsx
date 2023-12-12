@@ -11,13 +11,14 @@ import Auth from '../utils/auth';
 const SignupForm = () => {
   // set initial form state
   const [userFormData, setUserFormData] = useState({ username: '', email: '', password: '' });
+  const [errorMessages, setErrorMessages] = useState({});
 
   // set state for form validation
   const [validated] = useState(false);
   // set state for alert
   const [showAlert, setShowAlert] = useState(false);
   //allows for a user to be added
-  const [addUser] = useMutation(ADD_USER, {
+  const [addUser, { error }] = useMutation(ADD_USER, {
     variables: userFormData,
   });
 
@@ -38,6 +39,8 @@ const SignupForm = () => {
       Auth.login(data.addUser.token);
     } catch (e) {
       console.error(e);
+      handleError(e)
+      console.log("error", e)
       setShowAlert(true);
     }
 
@@ -47,6 +50,21 @@ const SignupForm = () => {
       password: '',
     });
   };
+
+  const handleError = (error) => {
+    const message = error.message;
+    const messageArray = message.slice(message.indexOf(':') + 1).split(',');
+    const messages = {};
+    messages.main = message.split(':')[0];
+    messageArray.forEach((index) => {
+      const property = index.split(':')[0].trim();
+      messages[property] = index.split(':')[1].trim();
+    });
+    console.log('error message', messages.main);
+    console.log('error array', messageArray);
+    console.log('error object', messages);
+    setErrorMessages(messages);
+  }
 
   return (
     <>
@@ -69,6 +87,7 @@ const SignupForm = () => {
         id='username'  
         label="Username"
         value={userFormData.username}
+        helperText={error ? errorMessages.main : ''}
         onChange={handleInputChange}
         fullWidth
         margin="normal"
@@ -83,6 +102,7 @@ const SignupForm = () => {
         id='email'
         label="Email"
         value={userFormData.email}
+        helperText={error ? errorMessages.email : ''}
         onChange={handleInputChange}
         fullWidth
         margin="normal"
@@ -96,7 +116,9 @@ const SignupForm = () => {
         <TextField
         id='password'
         label="Password"
+        type='password'
         value={userFormData.password}
+        helperText={error ? errorMessages.password : ''}
         onChange={handleInputChange}
         fullWidth
         margin="normal"

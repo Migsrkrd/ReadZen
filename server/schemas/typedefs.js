@@ -21,6 +21,7 @@ type ReadMe {
     dateCreated: String!
     datePublished: String
     isPublished: Boolean
+    markdown: String
     author: String
 }
 
@@ -64,6 +65,7 @@ type Mutation {
         dateCreated: String,
         datePublished: String,
         isPublished: Boolean
+        markdown: String
     ): ReadMe
     deleteReadMe(
         _id: ID!
@@ -82,6 +84,7 @@ type Mutation {
         dateCreated: String,
         datePublished: String,
         isPublished: Boolean
+        markdown: String
     ): ReadMe
 }
 `;

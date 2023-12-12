@@ -63,6 +63,7 @@ export const GET_ALL_READMES = gql`
       isPublished
       datePublished
       author
+      markdown
     }
   }`
 
@@ -85,6 +86,7 @@ export const GET_READMES = gql`
       datePublished
       isPublished
       author
+      markdown
     }
   }
 `;

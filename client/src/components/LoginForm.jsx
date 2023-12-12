@@ -59,6 +59,7 @@ const LoginForm = () => {
         id='email'
         label="Email"
         value={userFormData.email}
+        helperText={error ? error.message : ''}
         onChange={handleInputChange}
         fullWidth
         margin="normal"
@@ -72,6 +73,7 @@ const LoginForm = () => {
         <TextField
         id='password'
         label="Password"
+        type='password'
         value={userFormData.password}
         onChange={handleInputChange}
         fullWidth
