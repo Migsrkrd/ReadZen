@@ -1,7 +1,7 @@
 import MarkdownIt from 'markdown-it';
-
 // import renderHTML from 'react-render-html';
-
+import ToggleButton from '@mui/material/ToggleButton';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import { Button } from '@mui/material';
@@ -16,7 +16,78 @@ import { ADD_README } from '../utils/mutations';
 
 const ReadMeForm = (props) => {
     const md = MarkdownIt()
-    const result =md.render('# markdown it rules')
+    const [formats, setFormats] = useState(() => ['bold', 'italic']);
+
+    //bold, italics, code, bullets, quotes, code block, block quote, strike through, highlight
+    const handleFormat = (event, newFormats) => {
+      let target = event.target;
+      while (target && target.getAttribute && target.getAttribute('value') === null) {
+        target = target.parentNode;
+      }
+      const value = target.getAttribute('value');
+      const selection = window.getSelection().toString();
+      if(selection){
+      const regex = new RegExp(window.getSelection().toString(), "gi");
+      for (let key in userFormData) {
+            const matches = userFormData[key].match(regex);
+            if(matches){
+              cases(value, key, matches);
+            }
+      }
+    }
+      setFormats(newFormats);
+    };
+
+    const cases = (value, key, matches) => {
+      switch (value) {
+        case 'bold': 
+          setUserFormData({ ...userFormData, [key]: userFormData[key].replace(matches[0],` **${matches[0]}** `) });
+          break;
+        case 'italics':
+          setUserFormData({ ...userFormData, [key]: userFormData[key].replace(matches[0],` *${matches[0]}* `) });
+          break;
+          case 'underline':
+            setUserFormData({ ...userFormData, [key]: userFormData[key].replace(matches[0],` <u>${matches[0]}</u> `) });
+            break;
+          case 'code':
+            setUserFormData({ ...userFormData, [key]: userFormData[key].replace(matches[0],` \`${matches[0]}\` `) });
+           break;
+           case 'code block':
+            setUserFormData({ ...userFormData, [key]: userFormData[key].replace(matches[0],` \`\`\`${matches[0]}\`\`\` `) });
+           break;
+           case 'bullet':
+            setUserFormData({ ...userFormData, [key]: userFormData[key].replace(matches[0],`\n * ${matches[0]}`) });
+           break;
+           case 'highlight':
+            setUserFormData({ ...userFormData, [key]: userFormData[key].replace(matches[0],` == ${matches[0]} == `) });
+           break;
+           case 'block quote':
+            setUserFormData({ ...userFormData, [key]: userFormData[key].replace(matches[0],`\n > ${matches[0]}`) });
+           break;
+           case 'strike through':
+            setUserFormData({ ...userFormData, [key]: userFormData[key].replace(matches[0],` ~~${matches[0]}~~ `) });
+           break;
+           case 'h1':
+            setUserFormData({ ...userFormData, [key]: userFormData[key].replace(matches[0],`\n # ${matches[0]} `) });
+           break;
+           case 'h2':
+            setUserFormData({ ...userFormData, [key]: userFormData[key].replace(matches[0],`\n ## ${matches[0]} `) });
+           break;
+           case 'h3':
+            setUserFormData({ ...userFormData, [key]: userFormData[key].replace(matches[0],`\n ### ${matches[0]} `) });
+           break;
+           case 'link':
+            setUserFormData({ ...userFormData, [key]: userFormData[key].replace(matches[0],`[${matches[0]}](${matches[0]}) `) });
+           break;
+        default:
+          // code to be executed if expression doesn't match any case
+      }
+    }
+
+
+
+
+
     const [userFormData, setUserFormData] = useState((props.readme ? props.readme : {
         title: '',
         description: '',
@@ -30,10 +101,9 @@ const ReadMeForm = (props) => {
         deployedLink: ''
     }));
     const [renderToggle, setRenderToggle] = useState('code');
-
+    // console.log(userFormData)
     const [addReadMe, {error}] = useMutation(ADD_README)
     const handleInputChange = (event) => {
-      console.log(event.target)
       const { id, value } = event.target;
        setUserFormData({ ...userFormData, [id]: value });
     };
@@ -84,6 +154,7 @@ const ReadMeForm = (props) => {
                     value={userFormData.title}
                     onChange={handleInputChange}
                     fullWidth
+                    multiline
                     margin="normal"
                     />
                     <TextField
@@ -92,6 +163,7 @@ const ReadMeForm = (props) => {
                     value={userFormData.description}
                     onChange={handleInputChange}
                     fullWidth
+                    multiline
                     margin="normal"
                     />
                     <TextField
@@ -100,6 +172,7 @@ const ReadMeForm = (props) => {
                     value={userFormData.tableOfContents}
                     onChange={handleInputChange}
                     fullWidth
+                    multiline
                     margin="normal"
                     />
                     <TextField
@@ -108,6 +181,7 @@ const ReadMeForm = (props) => {
                     value={userFormData.installation}
                     onChange={handleInputChange}
                     fullWidth
+                    multiline
                     margin="normal"
                     />
                     <TextField
@@ -124,6 +198,7 @@ const ReadMeForm = (props) => {
                     value={userFormData.credits}
                     onChange={handleInputChange}
                     fullWidth
+                    multiline
                     margin="normal"
                     />
                     <TextField
@@ -132,6 +207,7 @@ const ReadMeForm = (props) => {
                     value={userFormData.license}
                     onChange={handleInputChange}
                     fullWidth
+                    multiline
                     margin="normal"
                     />
                     <TextField
@@ -140,6 +216,7 @@ const ReadMeForm = (props) => {
                     value={userFormData.tests}
                     onChange={handleInputChange}
                     fullWidth
+                    multiline
                     margin="normal"
                     />
                     <TextField
@@ -148,6 +225,7 @@ const ReadMeForm = (props) => {
                     value={userFormData.repoLink}
                     onChange={handleInputChange}
                     fullWidth
+                    multiline
                     margin="normal"
                     />
                     <TextField
@@ -156,6 +234,7 @@ const ReadMeForm = (props) => {
                     value={userFormData.deployedLink}
                     onChange={handleInputChange}
                     fullWidth
+                    multiline
                     margin="normal"
                     />
                     <Button
@@ -175,22 +254,63 @@ const ReadMeForm = (props) => {
             <Grid xs={6}>
             <FormGroup>
                 <FormControlLabel  control={<Switch onChange={handleToggle}/>} label="Render" />
+                <ToggleButtonGroup
+                    value={formats}
+                    onChange={handleFormat}
+                    aria-label="text formatting">
+                <ToggleButton value="bold" aria-label="bold" >
+                  <strong>B</strong>
+                </ToggleButton>
+                <ToggleButton value="italics" aria-label="bold" >
+                  <em >I</em>
+                </ToggleButton>
+                <ToggleButton value="underline" aria-label="bold" >
+                  <u>U</u>
+                </ToggleButton>
+                <ToggleButton value="code" aria-label="bold" >
+                  code
+                </ToggleButton>
+                <ToggleButton value="code block" aria-label="bold" >
+                  code block
+                </ToggleButton>
+                <ToggleButton value="bullet" aria-label="bold" >
+                  •
+                </ToggleButton>
+                <ToggleButton value="highlight" aria-label="bold" >
+                  highlight
+                </ToggleButton>
+                <ToggleButton value="block quote" aria-label="bold" >
+                  blockquote
+                </ToggleButton>
+                <ToggleButton value="strike through" aria-label="bold" >
+                <p style={{ textDecoration: 'line-through' }}>Strike Through</p>
+                </ToggleButton>
+                <ToggleButton value="h1" aria-label="bold" >
+                  H1
+                </ToggleButton>
+                <ToggleButton value="h2" aria-label="bold" >
+                  H2
+                </ToggleButton>
+                <ToggleButton value="h3" aria-label="bold" >
+                  H3
+                </ToggleButton>
+                <ToggleButton value="link" aria-label="bold" >
+                  Link
+                </ToggleButton>
+                
+                </ToggleButtonGroup>
             </FormGroup>
                 {renderToggle === 'code' ?
-                  <TextField
-                  // onChange={handleInputChange}
-                  fullWidth
-                  multiline
-                  defaultValue={`${userFormData.title ? `# ${userFormData.title} \n` : ''}
-${userFormData.description ? `## Description\n${userFormData.deployedLink ? `[Visit the Deployed Site](${userFormData.deployedLink})\n` : ''}${userFormData.description}\n` : ''}
-${userFormData.tableOfContents ? `## Table of Contents\n ${userFormData.tableOfContents}\n` : ''}
-${userFormData.installation ? `## Installation\n ${userFormData.installation}\n` : ''}
-${userFormData.usage ? `## Usage\n ${userFormData.installation}\n` : ''}
-${userFormData.credits ? `## Credits\n ${userFormData.credits}\n` : ''}
-${userFormData.license ? `## License\n ${userFormData.license}\n` : ''}
-${userFormData.tests ? `## Test\n ${userFormData.tests}\n` : ''}
-                  `}
-                />
+                <pre>
+                  {userFormData.title ? `# ${userFormData.title} \n\n` : ''}
+                  {userFormData.description ? `## Description\n\n${userFormData.deployedLink ? `[Visit the Deployed Site](${userFormData.deployedLink})\n\n` : ''}${userFormData.description}\n\n` : ''}
+                  {userFormData.tableOfContents ? `## Table of Contents\n\n ${userFormData.tableOfContents}\n\n` : ''}
+                  {userFormData.installation ? `## Installation\n\n ${userFormData.installation}\n\n` : ''}
+                  {userFormData.usage ? `## Usage\n\n ${userFormData.installation}\n\n` : ''}
+                  {userFormData.credits ? `## Credits\n\n ${userFormData.credits}\n\n` : ''}
+                  {userFormData.license ? `## License\n\n ${userFormData.license}\n\n` : ''}
+                  {userFormData.tests ? `## Test\n\n ${userFormData.tests}\n\n` : ''}
+                </pre>
                 : 
                 <div >
                 < div dangerouslySetInnerHTML={{__html: md.render(`${
@@ -212,15 +332,3 @@ ${userFormData.tests ? `## Test\n ${userFormData.tests}\n` : ''}
 }
 
 export default ReadMeForm;
-
-{/* <TextField fullWidth multiline 
-defaultValue={`${userFormData.title ? `# ${userFormData.title} \n`:''}
-${userFormData.description ? `## Description\n\n${userFormData.deployedLink ? `[Visit the Deployed Site](${userFormData.deployedLink})\n\n` : ''}${userFormData.description}\n\n` : ''}
-${userFormData.tableOfContents ? `## Table of Contents\n\n ${userFormData.tableOfContents}\n\n`:''}
-${userFormData.installation ? `## Installation\n\n ${userFormData.installation}\n\n`:''}
-${userFormData.usage ? `## Usage\n\n ${userFormData.installation}\n\n`:''}
-${userFormData.credits ? `## Credits\n\n ${userFormData.credits}\n\n`:''}
-${userFormData.license ? `## License\n\n ${userFormData.license}\n\n`:''}
-${userFormData.tests ? `## Test\n\n ${userFormData.tests}\n\n`:''}
-`}
-/> */}
