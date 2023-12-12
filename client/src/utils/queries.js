@@ -78,6 +78,7 @@ export const GET_READMES = gql`
       deployedLink
       dateCreated
       author
+      markdown
     }
   }
 `;

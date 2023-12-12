@@ -17,39 +17,21 @@ const style = {
 };
 
 const Card = (props) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [clickedModal, setClickedModal] = useState();
-  const [selectedReadme, setSelectedReadme] = useState(null);
-
+  // const [isModalOpen, setIsModalOpen] = useState(false);
+  // const [clickedModal, setClickedModal] = useState();
+  // const [selectedReadme, setSelectedReadme] = useState(null);
+  const [markdown, setMarkdown] = useState();
   const [open, setOpen] = useState(false);
-  const handleOpen = () => {
-    console.log('click')
+  const handleOpen = (readme) => {
+    setMarkdown(readme)
     setOpen(true);
   }
   const handleClose = (event) => {
     event.stopPropagation();
-    console.log('close')
-    // console.log(readme.markdown)
     setOpen(false);
   }
 
-  console.log(props.ReadMes)
-  // const openModal = (id) => {
-  //   console.log(id);
-  //   setClickedModal(id);
-  //   setIsModalOpen(!isModalOpen);
-  // };
-  // const openModal = (readme) => {
-  //   console.log(readme)
-  //   setSelectedReadme(readme);
-  //   // setIsModalOpen(true);
-  //   // console.log(selectedReadme)
-  // }
 
-  // const closeModal = () => {
-  //   setSelectedReadme(null)
-  //   // setIsModalOpen(isModalOpen);
-  // };
 
   function noMoreThanWords(str) {
     if (str.split(" ").length > 30) {
@@ -75,7 +57,7 @@ const Card = (props) => {
   return (
     <div className="cardLayout">
       {props.ReadMes.map((readme) => (
-        <div key={readme._id} className="card" onClick={handleOpen}>
+        <div key={readme._id} className="card" onClick={()=>handleOpen(readme.markdown)}>
           <div className="card-header">
             <Link className="profile-link" to={`/profiles/${readme.author}`}>
               <h4>
@@ -110,6 +92,8 @@ const Card = (props) => {
               <button className="btnEnd" onClick={share}>Share</button>
               </div>
          </div>
+        </div>
+      ))}
         <Modal
           open={open}
           onClose={handleClose}
@@ -118,14 +102,12 @@ const Card = (props) => {
           >
             <Box sx={style}> 
                 <pre>
-                {readme.markdown}
+                  {markdown}
                 </pre>
                 <Button onClick={handleClose}>Close</Button>
 
             </Box>
           </Modal>
-        </div>
-      ))}
     </div>
   );
 };
@@ -141,3 +123,21 @@ export default Card;
               description={readme.description}
             />
           )} */}
+
+            // console.log(props.ReadMes)
+  // const openModal = (id) => {
+  //   console.log(id);
+  //   setClickedModal(id);
+  //   setIsModalOpen(!isModalOpen);
+  // };
+  // const openModal = (readme) => {
+  //   console.log(readme)
+  //   setSelectedReadme(readme);
+  //   // setIsModalOpen(true);
+  //   // console.log(selectedReadme)
+  // }
+
+  // const closeModal = () => {
+  //   setSelectedReadme(null)
+  //   // setIsModalOpen(isModalOpen);
+  // };

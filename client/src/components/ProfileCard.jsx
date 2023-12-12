@@ -2,16 +2,37 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import DisplayReadMe from "./DisplayReadMe";
 import Avatar from "./Avatar"
-import { Button } from "@mui/material";
+import { Button, Modal, Box } from "@mui/material";
 import { useMutation } from '@apollo/client';
 import { DELETE_README } from '../utils/mutations';
+
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "background.paper",
+  border: "2px solid #000",
+  boxShadow: 24,
+  p: 4,
+};
 
 const ProfileCard = (props) => {
 
 //   console.log(props.ReadMes)
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  // const [isModalOpen, setIsModalOpen] = useState(false);
   const [deleteId, setDeleteId] = useState();
-
+  const [markdown, setMarkdown] = useState();
+  const [open, setOpen] = useState(false);
+  const handleOpen = (readme) => {
+    setMarkdown(readme)
+    setOpen(true);
+  }
+  const handleClose = (event) => {
+    event.stopPropagation();
+    setOpen(false);
+  }
   const [deleteReadMe] = useMutation(DELETE_README, {
     variables: { readMeId: deleteId }
   });
@@ -57,23 +78,29 @@ const ProfileCard = (props) => {
             <i className="fa fa-link"></i>
           </a>
 
-          <Button onClick={openModal} variant="outlined">Show ReadMe</Button>
+          <Button onClick={()=>handleOpen(readme.markdown)} variant="outlined">Show ReadMe</Button>
           <Link to='/generate' state= {{ readme} }>
             <Button variant="outlined">Edit</Button>
             </Link>
           <Button onClick={() => callDelete(readme._id)}variant="outlined">Delete</Button>
         </div>
       </div>
-      {isModalOpen && (
-        <DisplayReadMe
-        onClose={closeModal}
-        username={readme.username}
-        title={readme.title}
-        description={readme.description}
-        />
-      )}
     </div>
   ))}
+          <Modal
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+          >
+            <Box sx={style}> 
+                <pre>
+                  {markdown}
+                </pre>
+                <Button onClick={handleClose}>Close</Button>
+
+            </Box>
+          </Modal>
   </div>
   );
 };
