@@ -11,48 +11,63 @@ import Switch from '@mui/material/Switch';
 import Grid from '@mui/material/Unstable_Grid2';
 import { useState } from 'react';
 import { useMutation } from '@apollo/client';
-import { ADD_README } from '../utils/mutations';
+import { ADD_README, UPDATE_README } from '../utils/mutations';
+import { Link } from "react-router-dom";
 
 
 const ReadMeForm = (props) => {
-  console.log(props)
-    const md = MarkdownIt()
-    const result =md.render('# markdown it rules')
-    const [userFormData, setUserFormData] = useState((props.readme ? props.readme : {
-        title: '',
-        description: '',
-        tableOfContents:'',
-        installation: '',
-        usage: '',
-        credits: '',
-        license: '',
-        tests:'',
-        repoLink: '',
-        deployedLink: ''
-    }));
+    console.log(props);
+    const md = MarkdownIt();
+    const result =md.render('# markdown it rules');
+    const [userFormData, setUserFormData] = useState(
+        props.readme
+            ? props.readme 
+            : {
+                title: '',
+                description: '',
+                tableOfContents:'',
+                installation: '',
+                usage: '',
+                credits: '',
+                license: '',
+                tests:'',
+                repoLink: '',
+                deployedLink: '',
+            }
+    );
     const [renderToggle, setRenderToggle] = useState('code');
 
-    const [addReadMe, {error}] = useMutation(ADD_README)
+    const [addReadMe, {error: addReadMeError }] = useMutation(ADD_README);
+    const [updateReadMe, {error: updateReadMeError }] = useMutation(UPDATE_README);
+
     const handleInputChange = (event) => {
         const { id, value } = event.target;
         setUserFormData({ ...userFormData, [id]: value });
-      };
+    };
+
     const handleToggle = () => {
-        setRenderToggle(renderToggle === 'render' ? 'code' : 'render')
-    }
-      const handleFormSubmit = async (event) => {
+        setRenderToggle(renderToggle === 'render' ? 'code' : 'render');
+    };
+
+    const handleFormSubmit = async (event) => {
         event.preventDefault();
         console.log('submit')
         try {
-          //creates a new user in the db
-          const { data } = await addReadMe({
-            variables: { ...userFormData },
-          });
-    
+            if (props.readme) {
+                // if the readme already exists (editing), then update it
+                await updateReadMe({
+                    variables: { readMeId: props.readme._id, ...userFormData },
+                });
+            } else {
+                // if the readme doesn't exist (adding), create a new one
+                await addReadMe({
+                    variables: { ...userFormData },
+                });
+            }
         } catch (e) {
           console.error(e);
         }
-    
+  
         setUserFormData({
             title: '',
             description: '',
@@ -63,9 +78,10 @@ const ReadMeForm = (props) => {
             license: '',
             tests:'',
             repoLink: '',
-            deployedLink: ''
+            deployedLink: '',
         });
-      };
+    };
+
     return (
         <Grid container spacing={2}>
             <Grid xs={6}>
@@ -86,6 +102,7 @@ const ReadMeForm = (props) => {
                     fullWidth
                     margin="normal"
                     />
+
                     <TextField
                     id='description'  
                     label="Description"
@@ -94,6 +111,7 @@ const ReadMeForm = (props) => {
                     fullWidth
                     margin="normal"
                     />
+
                     <TextField
                     id='tableOfContents'  
                     label="Table of Contents"
@@ -102,6 +120,7 @@ const ReadMeForm = (props) => {
                     fullWidth
                     margin="normal"
                     />
+
                     <TextField
                     id='installation'  
                     label="Installation"
@@ -118,6 +137,7 @@ const ReadMeForm = (props) => {
                     fullWidth
                     margin="normal"
                     />
+
                     <TextField
                     id='credits'  
                     label="Credits"
@@ -134,6 +154,7 @@ const ReadMeForm = (props) => {
                     fullWidth
                     margin="normal"
                     />
+
                     <TextField
                     id='tests'  
                     label="Tests"
@@ -150,6 +171,7 @@ const ReadMeForm = (props) => {
                     fullWidth
                     margin="normal"
                     />
+
                     <TextField
                     id='deployedLink'  
                     label="Deployed Link"
@@ -158,18 +180,24 @@ const ReadMeForm = (props) => {
                     fullWidth
                     margin="normal"
                     />
+
                     <Button
                     disabled={!(userFormData.title)}
                     type='submit'
-                    variant='contained'>
-                    Publish
+                    variant='contained'
+                    >
+                        Save
                     </Button>
-                    <Button
-                    disabled={!(userFormData.title)}
-                    type='submit'
-                    variant='contained'>
-                    Save
-                    </Button>
+
+                    <Link to='/me' >
+                        <Button
+                        type='button'
+                        variant='contained'
+                        >
+                            Cancel
+                        </Button>
+                    </Link>
+
                 </Box>
             </Grid>
             <Grid xs={6}>
@@ -203,7 +231,7 @@ const ReadMeForm = (props) => {
                 }
             </Grid>
         </Grid>
-    )
+    );
 
 }
 
