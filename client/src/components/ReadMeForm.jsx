@@ -137,7 +137,13 @@ const ReadMeForm = (props) => {
             if (props.readme) {
                 // if the readme already exists (editing), then update it
                 await updateReadMe({
-                    variables: { readMeId: props.readme._id, markdown:myElRef.current.textContent, ...userFormData },
+                    variables: {
+                      readMeId: props.readme._id,
+                      markdown:myElRef.current.textContent,
+                      datePublished: '',
+                      isPublished: false,
+                      ...userFormData
+                    },
                 });
             } else {
                 // if the readme doesn't exist (adding), create a new one

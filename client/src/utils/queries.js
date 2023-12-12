@@ -11,6 +11,8 @@ export const GET_USERS = gql`
         title
         shortDescription
         dateCreated
+        isPublished
+        datePublished
       }
     }
   }
@@ -43,6 +45,8 @@ export const GET_ME = gql`
         title
         shortDescription
         dateCreated
+        isPublished
+        datePublished
       }
     }
   }
@@ -56,6 +60,8 @@ export const GET_ALL_READMES = gql`
       description
       repoLink
       deployedLink
+      isPublished
+      datePublished
       author
       markdown
     }
@@ -77,6 +83,8 @@ export const GET_READMES = gql`
       repoLink
       deployedLink
       dateCreated
+      datePublished
+      isPublished
       author
       markdown
     }
@@ -101,11 +109,7 @@ export const GET_README_BY_ID = gql`
       dateCreated
       datePublished
       isPublished
-      markdown
-      author {
-        _id
-        username
-      }
+      author
     }
   }
 `;
