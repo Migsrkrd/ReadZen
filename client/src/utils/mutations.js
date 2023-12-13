@@ -45,8 +45,8 @@ export const UPDATE_PASSWORD = gql`
 `;
 
 export const DELETE_USER = gql`
-mutation deleteUser($userId: ID!) {
-  deleteUser(userId: $userId) {
+mutation deleteUser($id: ID!, $password: String!) {
+  deleteUser(id: $id, password: $password) {
     user {
       _id
       username

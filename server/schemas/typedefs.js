@@ -60,7 +60,7 @@ type Mutation {
         email: String!,
         password: String!
     ): Auth
-    updateUser(
+    updateUsername(
         id: ID!
         newUsername: String!,
     ): Auth
@@ -71,7 +71,7 @@ type Mutation {
     ): Auth
     deleteUser(
         id: ID!,
-        currentPassword: String!,
+        password: String!,
     ): Auth
     updateReadMe(
         _id: ID!,
