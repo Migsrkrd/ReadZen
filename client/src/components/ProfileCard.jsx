@@ -34,7 +34,6 @@ const style = {
 };
 
 const btn = {
-  color: "#a80038",
   border: "2px solid #fbf9fa ",
   backgroundColor: "#a80038",
   borderRadius: "10px",
@@ -57,6 +56,8 @@ const ProfileCard = (props) => {
   const [deleteReadMe] = useMutation(DELETE_README, {
     // variables: { readMeId: deleteId },
   });
+
+  const [isPinned, setIsPinned] = useState(false);
 
   const handleOpen = (readme) => {
     setMarkdown(readme)
@@ -98,18 +99,6 @@ const ProfileCard = (props) => {
 
   const [togglePublished] = useMutation(UPDATE_README);
 
-  const callDelete = (id, event) => {
-    event.stopPropagation();
-    // setDeleteId(id);
-    deleteReadMe(
-      {
-        variables: {
-          readMeId: id,
-        },
-      }
-    );
-  }
-
   const callPublish = (id, isPublished, event) => {
     event.stopPropagation();
     const newIsPublished = !isPublished;
@@ -134,7 +123,19 @@ const ProfileCard = (props) => {
     return str;
   }
 
-  console.log(props.ReadMes);
+  function pinThis(event){
+    event.stopPropagation();
+    //the query will decide the class selection instead of the isPinned state
+    setIsPinned(!isPinned);
+    if(isPinned === true){
+      event.target.classList.remove("unpinned");
+      event.target.classList.add("pinned");
+  } else if(isPinned === false) {
+    event.target.classList.remove("pinned");
+    event.target.classList.add("unpinned");
+  }
+}
+console.log(isPinned);
 
   return (
     
@@ -149,6 +150,7 @@ const ProfileCard = (props) => {
                 {readme.author}
               </h4>
             </Link>
+            <i onClick={pinThis} className="fa-solid fa-thumbtack pinned"></i>
             
           </div>
           

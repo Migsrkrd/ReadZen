@@ -7,6 +7,7 @@ const About = () => {
       color: "#fbf9fa",
       display: "flex",
       flexDirection: "column",
+      fontSize: "1.2rem",
       alignItems: "center",
       justifyContent: "center",
       margin: "0 5%",
@@ -23,7 +24,6 @@ const About = () => {
       flexDirection: "column",
       alignItems: "center",
       justifyContent: "center",
-      width: "70%",
       padding: "0 20px",
       margin: "30px 20px 30px 20px",
       borderRadius: "10px",
@@ -78,7 +78,6 @@ const About = () => {
       margin: "20px",
       borderRadius: "10px",
       lineHeight: "1.5",
-      width: "70%",
     },
     holder: {
       paddingTop: "150px",
