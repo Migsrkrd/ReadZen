@@ -18,7 +18,7 @@ const ReadMeForm = (props) => {
   const myElRef=useRef(null);
     const md = MarkdownIt()
     const [formats, setFormats] = useState(() => ['bold', 'italic']);
-
+    const [ToC, setToC] = useState(null);
     //bold, italics, code, bullets, quotes, code block, block quote, strike through, highlight
     const handleFormat = (event, newFormats) => {
       let target = event.target;
@@ -108,13 +108,29 @@ const ReadMeForm = (props) => {
     };
 
     const handleToggle = (event) => {
-      
+      setToC(string) 
       renderToggle === 'render' ? (
       setRenderToggle('code'), setAnchorEl(null))
       : (setRenderToggle('render'), setAnchorEl(event.currentTarget));
 
     };
+    let string;
+    const tableOfContents = (userFormData)=>{
+      // console.log(userFormData)
+      string = (userFormData.title ? `## Table of Contents\n\n- [Title](#title)\n\n` : '') + 
+      (userFormData.description ? `- [Description](#description)\n\n` : '') +
+      (userFormData.installation ? `- [Installation](#installation)\n\n` : '') +
+      (userFormData.usage ? `- [Usage](#usage)\n\n` : '') +
+      (userFormData.credits ? `- [Credits](#credits)\n\n` : '') +
+      (userFormData.license ? `- [License](#license)\n\n` : '') +
+      (userFormData.tests ? `- [Tests](#tests)` : '')
 
+      // userFormData.title ? setToC(string) : null
+      // setToC(string);
+      return (
+        string
+      )
+    }
     const open = Boolean(anchorEl);
     const id = open ? 'simple-popover' : undefined;
 
@@ -193,7 +209,7 @@ const ReadMeForm = (props) => {
                     multiline
                     margin="normal"
                     />
-
+{/* 
                     <TextField
                     id='tableOfContents'  
                     label="Table of Contents"
@@ -202,7 +218,7 @@ const ReadMeForm = (props) => {
                     fullWidth
                     multiline
                     margin="normal"
-                    />
+                    /> */}
 
                     <TextField
                     id='installation'  
@@ -352,7 +368,7 @@ const ReadMeForm = (props) => {
                 <pre ref={myElRef}>
                   {userFormData.title ? `# ${userFormData.title} \n\n` : ''}
                   {userFormData.description ? `## Description\n\n${userFormData.deployedLink ? `[Visit the Deployed Site](${userFormData.deployedLink})\n\n` : ''}${userFormData.description}\n\n` : ''}
-                  {userFormData.tableOfContents ? `## Table of Contents\n\n ${userFormData.tableOfContents}\n\n` : ''}
+                  {`${tableOfContents(userFormData)}\n\n`}
                   {userFormData.installation ? `## Installation\n\n ${userFormData.installation}\n\n` : ''}
                   {userFormData.usage ? `## Usage\n\n ${userFormData.installation}\n\n` : ''}
                   {userFormData.credits ? `## Credits\n\n ${userFormData.credits}\n\n` : ''}
@@ -364,7 +380,7 @@ const ReadMeForm = (props) => {
                 <div dangerouslySetInnerHTML={{__html: md.render(`${
                     (userFormData.title ? `# ${userFormData.title} \n\n` : '')}${
                     (userFormData.description ? `## Description\n\n${userFormData.deployedLink ? `[Visit the Deployed Site](${userFormData.deployedLink})\n\n` : ''}${userFormData.description}\n\n` : '')}${
-                    (userFormData.tableOfContents ? `## Table of Contents\n\n ${userFormData.tableOfContents}\n\n` : '')}${
+                    (`${ToC}\n\n`)}${
                     (userFormData.installation ? `## Installation\n\n ${userFormData.installation}\n\n` : '')}${
                     (userFormData.usage ? `## Usage\n\n ${userFormData.installation}\n\n`:'')}${
                     (userFormData.credits ? `## Credits\n\n ${userFormData.credits}\n\n`:'')}${
