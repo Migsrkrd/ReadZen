@@ -75,6 +75,102 @@ const resolvers = {
             return { token, user };
         },
 
+        // Update a user with a new username
+        updateUser: async (parent, { id, newUsername }, context) => {
+            if (context.user && context.user._id == id) {
+
+                // find and update the user
+                const updatedUser = await User.findByIdAndUpdate(
+                  id,
+                  { $set: { username: newUsername } },
+                  { new: true }
+                );
+          
+                if (!updatedUser) {
+                  throw new AuthenticationError('User not found');
+                }
+          
+                return updatedUser;
+            }
+            throw AuthenticationError;
+        },
+      
+        // Update a user with a new password
+        updatePassword: async (parent, { id, currentPassword, newPassword }, context) => {
+            if (context.user && context.user._id == id) {
+
+                // find the user
+                const user = await User.findById(id);
+          
+                if (!user) {
+                  throw new AuthenticationError('User not found');
+                }
+    
+                // check the password
+                const correctPass = await user.isCorrectPassword(currentPassword);
+          
+                if (!correctPass) {
+                  throw new AuthenticationError('Incorrect password');
+                }
+    
+                // update the password
+                user.password = newPassword;
+                await user.save();
+          
+                return user;
+            }
+            throw AuthenticationError;
+        },
+
+        deleteUser: async (parent, { id, currentPassword }, context) => {
+            if (context.user && context.user._id == id) {
+                
+                // find the user
+                const user = await User.findById(id);
+          
+                if (!user) {
+                  throw new AuthenticationError('User not found');
+                }
+    
+                // check the password
+                const correctPass = await user.isCorrectPassword(currentPassword);
+    
+                if (!correctPass) {
+                    throw new AuthenticationError('Incorrect password');
+                }
+            
+                // find readmes authored by the user
+                const userReadmes = await ReadMe.find({ author: user.username });
+    
+                // extract the IDs of user's readmes
+                const userReadmeIds = userReadmes.map(readme => readme._id);
+    
+                // delete comments made by others on the user's readmes
+                await Comment.deleteMany({
+                    readMeId: {
+                        $in: userReadmeIds
+                    },
+                    author: {
+                        $ne: user.username
+                    }
+                });
+    
+                // delete associated ReadMes and comments
+                await ReadMe.deleteMany({ author: user.username });
+                await Comment.deleteMany({ author: user.username });
+            
+                // delete the user
+                const deletedUser = await User.findByIdAndRemove(id);
+    
+                if (!deletedUser) {
+                    throw new AuthenticationError('User not found');
+                }
+            
+                return deletedUser;
+            }
+            throw AuthenticationError;
+        },
+              
         // Creates a new readme and adds it to user's readmes
         addReadMe: async (parent, args, context) => {
             if (context.user) {
