@@ -52,9 +52,9 @@ const Header = () => {
             <h2>About</h2>
           </Link>
         </div>
-        <div>
+        <div className="far-nav">
           {Auth.loggedIn() ? (
-            <div className="far-nav">
+            <div className="prof-logout">
               <Link className="btn btn-lg btn-info m-2 navlink" to="/me">
                 <h2>{Auth.getProfile().data.username}'s profile</h2>
               </Link>

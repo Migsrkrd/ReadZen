@@ -76,6 +76,12 @@ header h1{
     align-items: center;
 }
 
+.prof-logout{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .navlink:hover{
     color: var(--secondary-color);
     scale: 1.2;

@@ -1,11 +1,10 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import MarkdownIt from 'markdown-it';
+import MarkdownIt from "markdown-it";
 import { Box, Button, Modal, Typography } from "@mui/material";
 import Avatar from "./Avatar";
 import Comment from "./Comment";
 import { useEffect } from "react";
-
 
 const style = {
   position: "absolute",
@@ -20,8 +19,7 @@ const style = {
 };
 
 const Card = (props) => {
-
-  const md = MarkdownIt()
+  const md = MarkdownIt();
   const [isCommentsOpen, setIsCommentsOpen] = useState(false);
   const [expandedCardId, setExpandedCardId] = useState(null);
   const [expandedCardClass, setExpandedCardClass] = useState("card");
@@ -36,15 +34,13 @@ const Card = (props) => {
   }, [isCommentsOpen]);
 
   const handleOpen = (readme) => {
-    setMarkdown(readme)
+    setMarkdown(readme);
     setOpen(true);
-  }
+  };
   const handleClose = (event) => {
     event.stopPropagation();
     setOpen(false);
-  }
-
-
+  };
 
   function noMoreThanWords(str) {
     if (str.split(" ").length > 30) {
@@ -81,10 +77,37 @@ const Card = (props) => {
     event.stopPropagation();
     // Your custom click handling logic here, if needed
   };
+
+  function share(event, repoLink) {
+    event.stopPropagation();
+
+    // Create a temporary input element to hold the text
+    const tempInput = document.createElement("input");
+    tempInput.value = repoLink;
+
+    // Append the input element to the DOM
+    document.body.appendChild(tempInput);
+
+    // Select the text inside the input element
+    tempInput.select();
+    tempInput.setSelectionRange(0, 99999); // For mobile devices
+
+    // Copy the selected text to the clipboard
+    document.execCommand("copy");
+
+    // Remove the temporary input element
+    document.body.removeChild(tempInput);
+
+    console.log("Repo link copied:", repoLink);
+  }
   return (
     <div className="cardLayout">
       {props.ReadMes.map((readme) => (
-        <div key={readme._id} className={`card ${expandedCardId === readme._id ? "cardTwo" : ""}`} onClick={()=>handleOpen(readme.markdown)}>
+        <div
+          key={readme._id}
+          className={`card ${expandedCardId === readme._id ? "cardTwo" : ""}`}
+          onClick={() => handleOpen(readme.markdown)}
+        >
           <div className="card-header">
             <Link className="profile-link" to={`/profiles/${readme.author}`}>
               <h4>
@@ -92,9 +115,9 @@ const Card = (props) => {
                 {readme.author}
               </h4>
             </Link>
-            <h3>{readme.title}</h3>
           </div>
           <div className="card-body">
+            <h3>{readme.title}</h3>
             {/* limit words */}
             <p>{noMoreThanWords(readme.description)}</p>
             <div className="card-links">
@@ -116,8 +139,12 @@ const Card = (props) => {
             {isCommentsOpen && expandedCardId === readme._id && (
               <div className="comment-section">
                 <h4 className="comment-header">Comments</h4>
-                <Comment user={"User"} text={"text goes here"}/>
-                <textarea className="comment-input" onClick={handleInputClick} rows={4}/>
+                <Comment user={"User"} text={"text goes here"} />
+                <textarea
+                  className="comment-input"
+                  onClick={handleInputClick}
+                  rows={4}
+                />
                 <Button
                   sx={{
                     backgroundColor: "#a80038",
@@ -127,13 +154,14 @@ const Card = (props) => {
                     "&:hover": {
                       backgroundColor: "#fd0054",
                       color: "#fbf9fa",
-                      
                     },
                   }}
-                  >Submit</Button>
+                >
+                  Submit
+                </Button>
               </div>
             )}
-              <div className="interactions">
+            <div className="interactions">
               <button
                 className="btnBeg"
                 onClick={(event) => like(event, readme._id)}
@@ -148,27 +176,27 @@ const Card = (props) => {
               </button>
               <button
                 className="btnEnd"
-                onClick={(event) => share(event, readme._id)}
+                onClick={(event) => share(event, readme.repoLink)}
               >
                 Share
               </button>
-              </div>
-         </div>
+            </div>
+          </div>
         </div>
       ))}
-        <Modal
-          open={open}
-          onClose={handleClose}
-          aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description"
-          >
-            <Box sx={style}> 
-                <div dangerouslySetInnerHTML={{__html: md.render(`${markdown}`)}}>
-                </div>
-                <Button onClick={handleClose}>Close</Button>
-
-            </Box>
-          </Modal>
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <div
+            dangerouslySetInnerHTML={{ __html: md.render(`${markdown}`) }}
+          ></div>
+          <Button onClick={handleClose}>Close</Button>
+        </Box>
+      </Modal>
     </div>
   );
 };
