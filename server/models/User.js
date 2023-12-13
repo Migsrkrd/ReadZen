@@ -24,6 +24,12 @@ const userSchema = new Schema({
             type: Schema.Types.ObjectId,
             ref: 'ReadMe'
         }
+    ],
+    likes: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'ReadMe'
+        }
     ]
     // Add pinned ReadMes later
 });

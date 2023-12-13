@@ -4,6 +4,7 @@ type User {
     username: String!
     email: String!
     readMes: [ReadMe]
+    likes: [ReadMe]
 }
 
 type ReadMe {
@@ -28,7 +29,7 @@ type ReadMe {
 
 type Comment {
     _id: ID!
-    readMeId: String!
+    readMeId: ID!
     author: String!
     text: String!
     dateCreated: String
@@ -47,7 +48,7 @@ type Query {
     publishedReadmes: [ReadMe]
     readmes(username: String): [ReadMe]
     readme(_id: ID!): ReadMe
-    comments(readMeId: String!): [Comment]
+    comments(readMeId: ID): [Comment]
 }
 
 type Mutation {
@@ -111,15 +112,24 @@ type Mutation {
         isPinned: Boolean
         markdown: String
     ): ReadMe
+    likeReadMe(
+        _id:ID!
+        readMeId: ID!
+    ): User
+    unLikeReadMe(
+        _id:ID!
+        readMeId: ID!
+    ): User
     addComment(
-        readMeId: String!
+        _id: ID!
+        readMeId: ID!
         author: String!,
         text: String!,
         dateCreated: String
     ): Comment
     updateComment(
         _id: ID!
-        readMeId: String!,
+        readMeId: ID!
         author: String,
         text: String,
         dateCreated: String
