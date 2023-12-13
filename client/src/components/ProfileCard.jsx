@@ -4,7 +4,7 @@ import MarkdownIt from 'markdown-it';
 import { Button, Modal, Box, Typography } from '@mui/material';
 import { useQuery, useMutation } from '@apollo/client';
 import { UPDATE_README, DELETE_README } from '../utils/mutations';
-import { GET_READMES } from '../utils/queries';
+import { GET_READMES, GET_ALL_READMES } from '../utils/queries';
 import Avatar from './Avatar';
 import { saveAs } from 'file-saver';
 import Auth from '../utils/auth';
@@ -57,10 +57,9 @@ const ProfileCard = (props) => {
     refetchQueries: [
       GET_READMES, {
         variables: {
-          username: Auth.getProfile().data.username,
-        }
-      }
-    ]
+          username: Auth.getProfile().data.username
+        } 
+  }]
   });
 
   const [deleteReadMe] = useMutation(DELETE_README, {
@@ -116,33 +115,39 @@ const ProfileCard = (props) => {
       },
     });
   };
-  
-  const downloadFile= (readme, title, event) => {
-    event.stopPropagation();
-    const fileName = `${title}.README.md`;
-    const blob = new Blob([readme], { type: 'text/plain;charset=utf-8' });
-    saveAs(blob, fileName);
-  }
 
-  function pinThis(event){
-    event.stopPropagation();
-    //the query will decide the class selection instead of the isPinned state
-    setIsPinned(!isPinned);
-    if(isPinned === true){
-      event.target.classList.remove("unpinned");
-      event.target.classList.add("pinned");
-    } else if(isPinned === false) {
-      event.target.classList.remove("pinned");
-      event.target.classList.add("unpinned");
-    }
-    console.log(isPinned);
-  }
+    const togglePin = (id, isPinned, event) => {
+      event.stopPropagation();
+      setIsPinned(!isPinned);
+      if(isPinned === true){
+        event.target.classList.remove("unpinned");
+        event.target.classList.add("pinned");
+      } else if(isPinned === false) {
+        event.target.classList.remove("pinned");
+        event.target.classList.add("unpinned");
+      }
+      const newIsPinned = !isPinned;
+      togglePublished({
+        variables: {
+          readMeId: id,
+          isPinned: newIsPinned,
+        }
+      })
+      console.log("toggle pin")
+    } 
 
   function noMoreThanWords(str) {
     if (str.split(" ").length > 30) {
       return str.split(" ").splice(0, 30).join(" ") + "...";
     }
     return str;
+  }
+
+  const downloadFile= (readme, title, event) => {
+    event.stopPropagation();
+    const fileName = `${title}.README.md`;
+    const blob = new Blob([readme], { type: 'text/plain;charset=utf-8' });
+    saveAs(blob, fileName);
   }
 
   return (
@@ -158,7 +163,7 @@ const ProfileCard = (props) => {
                 {readme.author}
               </h4>
             </Link>
-            <i onClick={pinThis} className="fa-solid fa-thumbtack pinned"></i>
+            <i onClick={(event)=>togglePin(readme._id, readme.isPinned, event)} className="fa-solid fa-thumbtack pinned"></i>
             
           </div>
           
