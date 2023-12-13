@@ -1,4 +1,4 @@
-import Auth from "../utils/auth";
+import Auth from '../../utils/auth';
 
 import Backdrop   from '@mui/material/Backdrop';
 import Box        from '@mui/material/Box';

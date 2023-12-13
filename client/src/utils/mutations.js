@@ -24,10 +24,10 @@ export const LOGIN_USER = gql`
   }  
 `;  
 
-export const UPDATE_USER = gql`
-  mutation updateUser($userId: ID!, $newUsername: String!) {
-    updateUser(userId: $userId, newUsername: $newUsername) {
-      User {
+export const UPDATE_USERNAME = gql`
+  mutation updateUsername($id: ID!, $username: String!) {
+    updateUsername(id: $id, username: $username) {
+      user {
         _id
         username
       }
@@ -35,10 +35,19 @@ export const UPDATE_USER = gql`
   }
 `;
 
+export const UPDATE_PASSWORD = gql`
+  mutation updatePassword($id: ID!, $currentPassword: String!, $newPassword: String!) {
+    updatePassword(id: $id, currentPassword: $currentPassword, newPassword: $newPassword) {
+      _id
+      username
+    }
+  }
+`;
+
 export const DELETE_USER = gql`
 mutation deleteUser($userId: ID!) {
   deleteUser(userId: $userId) {
-    User {
+    user {
       _id
       username
     }
