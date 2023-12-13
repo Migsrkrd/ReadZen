@@ -46,16 +46,22 @@ const Header = () => {
     Auth.logout();
   };
 
+  function goHomeLogo() {
+    window.location.href = "/";
+  }
+
   return (
     <header>
       <div className="headers">
-        <div className="logo">
-        <img src="../src/assets/logo.png" alt="logo" />
-        <h1>ReadZen</h1>
+        <div onClick={goHomeLogo} className="logo">
+          <img src="../src/assets/logo.png" alt="logo" />
+          <h1>ReadZen</h1>
         </div>
         <div className="nav">
           <Link className="navlink-home" to="/">
-            <h2><i className="fa fa-home"></i></h2>
+            <h2>
+              <i className="fa fa-home"></i>
+            </h2>
           </Link>
           <Link className="navlink" to="/about">
             <h2>About</h2>
@@ -68,8 +74,9 @@ const Header = () => {
                 <h2>{Auth.getProfile().data.username}'s profile</h2>
               </Link>
 
-                <h2 className="navlink" onClick={logout}>Logout</h2>
-
+              <h2 className="navlink" onClick={logout}>
+                Logout
+              </h2>
             </div>
           ) : (
             <div className="far-nav">
@@ -83,11 +90,10 @@ const Header = () => {
 
       <div>
         <Modal
-        BackdropComponent={Backdrop}
-        BackdropProps={{
-          sx: { backdropFilter: 'blur(3px)'},
-        }}
-
+          BackdropComponent={Backdrop}
+          BackdropProps={{
+            sx: { backdropFilter: "blur(3px)" },
+          }}
           open={open}
           onClose={handleClose}
           aria-labelledby="modal-modal-title"
