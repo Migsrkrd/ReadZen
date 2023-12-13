@@ -6,9 +6,9 @@ import Button     from '@mui/material/Button'
 import Modal      from "@mui/material/Modal";
 import Typography from '@mui/material/Typography';
 
-import ChangeUsernameForm    from './ChangeUsernameForm';
-import ChangePasswordForm    from './ChangePasswordForm';
-import ConfirmDeleteUserForm from './ConfirmDeleteUserForm';
+import ChangeUsernameForm    from '../Forms/ChangeUsernameForm';
+import ChangePasswordForm    from '../Forms/ChangePasswordForm';
+import ConfirmDeleteUserForm from '../Forms/ConfirmDeleteUserForm';
 
 import { TOGGLE_PROFILE_CONTROL } from '../../utils/actions';
 
