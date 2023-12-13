@@ -105,9 +105,19 @@ const Card = (props) => {
     event.stopPropagation();
   }
 
+  let ReadMes=[];
+  const showPublished= () => {
+    ReadMes=props.ReadMes.filter(readme=>readme.isPublished);
+    // const unpinned=props.ReadMes.filter(readme=>!readme.isPinned);
+    // ReadMes=[pinned, unpinned].flat();
+    console.log("published")
+    console.log(ReadMes)
+  }
+  showPublished()
+
   return (
     <div className="cardLayout">
-      {props.ReadMes.map((readme) => (
+      {ReadMes.map((readme) => (
         <div
           key={readme._id}
           className={`card ${expandedCardId === readme._id ? "cardTwo" : ""}`}
