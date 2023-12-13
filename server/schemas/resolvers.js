@@ -43,8 +43,8 @@ const resolvers = {
         },
 
         // Returns all comments
-        comments: async () => {
-            return Comment.find({});
+        comments: async ({ readMeId}) => {
+            return Comment.find({ author: readMeId });
         }
     },
     
