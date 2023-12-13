@@ -56,6 +56,10 @@ const readMeSchema = new Schema({
     },
     author: {
         type: String
+    },
+    likeCount: {
+        type:Number,
+        default: 0
     }
 });
 
