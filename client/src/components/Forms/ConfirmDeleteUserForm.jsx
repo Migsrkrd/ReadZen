@@ -41,8 +41,12 @@ const ConfirmDeleteUserForm = () => {
   // const [showAlert, setShowAlert] = useState(false);
 
   // update the mutation for updating the username
+  const { _id: userId } = Auth.getProfile().data;
   const [deleteUser, { error }] = useMutation(DELETE_USER, {
-    variables: userFormData,
+    variables: {
+      id: userId,
+      ...userFormData,
+    }
   });
 
   const handleInputChange = (event) => {
