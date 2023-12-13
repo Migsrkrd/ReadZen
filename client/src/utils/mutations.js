@@ -60,6 +60,7 @@ export const ADD_README = gql`
     $deployedLink: String!,
     $datePublished: String,
     $isPublished: Boolean
+    $isPinned: Boolean
     $markdown: String
   ) {
     addReadMe(
@@ -75,6 +76,7 @@ export const ADD_README = gql`
       deployedLink: $deployedLink,
       datePublished: $datePublished,
       isPublished: $isPublished
+      isPinned: $isPinned
       markdown: $markdown
     ) {
       _id
@@ -91,6 +93,7 @@ export const ADD_README = gql`
       dateCreated
       datePublished
       isPublished
+      isPinned
       markdown
       author 
     }
