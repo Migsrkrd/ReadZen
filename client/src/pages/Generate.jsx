@@ -4,7 +4,10 @@ import { useLocation } from "react-router-dom";
 const Generate = () => {
   let { state } = useLocation();
   return (
-    <div className="createPage">
+    <div>
+      <div className="createPage">
+        Generate a README.md file for your project
+      </div>
       <ReadMeForm {...state} />
     </div>
   );
