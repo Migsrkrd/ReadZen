@@ -83,7 +83,7 @@ const SignupForm = () => {
     });
     if (messages.password) {
       const passString = messages.password;
-      const newPassString = 'Password' + passString.split(')')[1];
+      const newPassString = 'Password' + passString.split(')')[1] + ')';
       messages.password = newPassString;
     }
     console.log('error message', messages.main);
