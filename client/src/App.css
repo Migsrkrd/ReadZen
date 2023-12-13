@@ -68,6 +68,10 @@ header h1{
     cursor: pointer;
 }
 
+.prof-logout a{
+    text-decoration: none;
+}
+
 .navlink-home{
     margin: 0px 20px 0px 20px;
     text-decoration: none;

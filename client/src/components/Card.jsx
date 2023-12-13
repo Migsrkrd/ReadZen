@@ -5,6 +5,9 @@ import { Box, Button, Modal, Typography } from "@mui/material";
 import Avatar from "./Avatar";
 import Comment from "./Comment";
 import { useEffect } from "react";
+import { useMutation } from "@apollo/client";
+import { ADD_COMMENT } from "../utils/mutations";
+import Auth from "../utils/auth";
 
 const style = {
   position: "absolute",
@@ -25,6 +28,8 @@ const Card = (props) => {
   const [expandedCardClass, setExpandedCardClass] = useState("card");
   const [markdown, setMarkdown] = useState();
   const [open, setOpen] = useState(false);
+  const [addComment] = useMutation(ADD_COMMENT);
+  const [commentText, setCommentText] = useState('');
 
   useEffect(() => {
     // Reset expandedCardId to null when comments are closed
@@ -32,6 +37,34 @@ const Card = (props) => {
       setExpandedCardId(null);
     }
   }, [isCommentsOpen]);
+
+  async function handleCommentSubmit(event) {
+    event.stopPropagation();
+  
+    // Check if the comment text is not empty before submitting
+    try{
+    if (commentText.trim() !== '') {
+      console.log("Before add comment");
+      console.log("expandedCardId", expandedCardId);
+      addComment({
+        variables: {
+          author: Auth.getProfile().data.username,
+          readMeId: expandedCardId,
+          text: commentText,
+        },
+      })
+      console.log("comment created! here is your comment: ", commentText)
+        
+    } else {
+      console.log("Comment text is empty. Not submitting.");
+    }
+  } catch (err) {
+    console.log(err);
+  }
+  
+    // Close the comment section after submitting
+    setCommentText('');
+  }
 
   const handleOpen = (readme) => {
     setMarkdown(readme);
@@ -159,6 +192,9 @@ const Card = (props) => {
                   className="comment-input"
                   onClick={handleInputClick}
                   rows={4}
+                  placeholder="Add a comment..."
+                  value={commentText}
+                  onChange={event => setCommentText(event.target.value)}
                 />
                 <Button
                   onClick={handleCommentSubmit}
