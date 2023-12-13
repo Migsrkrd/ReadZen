@@ -222,14 +222,20 @@ header h1{
 .btnEnd{
     /* border: 1px solid var(--secondary-color); */
     border-bottom-right-radius: 9px;
+    font-size: 15px;
+    padding: 5px;
 }
 
 .btnBeg{
     border-bottom-left-radius: 9px;
+    font-size: 15px;
+    padding: 5px;
 }
 
 .btnMid{
     border-radius: 1px;
+    font-size: 15px;
+    padding: 5px;
 }
 
 .btnBeg:hover, .btnMid:hover, .btnEnd:hover{
