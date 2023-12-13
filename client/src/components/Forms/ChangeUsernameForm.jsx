@@ -112,8 +112,9 @@ const ChangeUsernameForm = ({ setOpen }) => {
         onSubmit={handleFormSubmit}
         noValidate
         autoComplete="off"
-      >
-
+        >
+        <h1>Change Username</h1>
+        
         <StyledTextField
           id='newUsername'  
           label="New Username"

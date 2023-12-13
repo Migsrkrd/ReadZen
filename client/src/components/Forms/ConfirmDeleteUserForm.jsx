@@ -119,22 +119,7 @@ const ConfirmDeleteUserForm = ({ setOpen }) => {
         noValidate
         autoComplete="off"
       >
-
-        <StyledTextField
-          id="currentPassword"  
-          label="Current Password"
-          type="password"
-          value={userFormData.currentPassword}
-          helperText={error ? errorMessages.main : ''}
-          onChange={handleInputChange}
-          fullWidth
-          margin="normal"
-          sx={{
-            '& .MuiInputLabel-root.Mui-focused': {
-              color: '#a80038',
-            },
-          }}
-        />
+        <h1>Confirm Account Delete</h1>
 
         <StyledTextField
           id="password"  
@@ -180,6 +165,12 @@ const ConfirmDeleteUserForm = ({ setOpen }) => {
         </Button>
 
       </Box>
+
+      {/* Note about Readmes and Comments deletion */}
+      <p style={{ marginTop: '16px', color: '#a80038' }}>
+        Warning: Deleting your account will also remove all of your ReadMes and Comments!
+      </p>
+
     </>
   );
 };

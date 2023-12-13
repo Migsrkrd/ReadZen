@@ -150,7 +150,7 @@ const resolvers = {
             throw AuthenticationError;
         },
 
-        deleteUser: async (parent, { id, currentPassword }, context) => {
+        deleteUser: async (parent, { id, password }, context) => {
             if (context.user && context.user._id == id) {
                 
                 // find the user
@@ -161,7 +161,7 @@ const resolvers = {
                 }
     
                 // check the password
-                const correctPass = await user.isCorrectPassword(currentPassword);
+                const correctPass = await user.isCorrectPassword(password);
     
                 if (!correctPass) {
                     throw new AuthenticationError('Incorrect password');

@@ -70,21 +70,21 @@ const ProfileControl = () => {
             className="pro-con-btn"
             onClick={() => handleOpen(UPDATE_USERNAME)}
           >
-              Update username
+              Change Username
           </Button>
 
           <Button
             className="pro-con-btn"
             onClick={() => handleOpen(UPDATE_PASSWORD)}
           >
-            Change password
+            Change Password
           </Button>
 
           <Button
             className="pro-con-btn"
             onClick={() => handleOpen(CONFIRM_DELETE_USER)}
           >
-            Delete my account
+            Delete My Account
           </Button>
           
           <Button
