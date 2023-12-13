@@ -43,8 +43,8 @@ const resolvers = {
         },
 
         // Returns all comments
-        comments: async () => {
-            return Comment.find({});
+        comments: async ({ readMeId}) => {
+            return Comment.find({ author: readMeId });
         }
     },
     
@@ -91,21 +91,23 @@ const resolvers = {
 
         // Edits a readme and updates a user's readmes
         updateReadMe: async (parent, args, context) => {
+            console.log('context.user', context.user);
             if (context.user) {
-                const { readMeId, ...updateArgs } = args;
-                const readmeAuthor = (await ReadMe.findOne({ _id: readMeId })).author;
+                const readmeAuthor = (await ReadMe.findOne({ _id: args._id })).author;
 
                 // Checks if the logged in user matches the readme author
                 if (readmeAuthor == context.user.username) {
                     const readme = await ReadMe.findOneAndUpdate(
-                        { _id: readMeId },
-                        { ...updateArgs },
+                        { _id: args._id },
+                        { ...args },
                         { new: true }
                     );
+                    
+                    console.log('readme', readme);
     
                     await User.findOneAndUpdate(
-                        { _id: readMeId },
-                        { $pull: { readMes: { _id: readMeId } } },
+                        { _id: context.user._id },
+                        { $pull: { readMes: { _id: args._id } } },
                         { $addToSet: { readMes: readme } }
                     );
                     return readme;
