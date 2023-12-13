@@ -47,7 +47,7 @@ type Query {
     publishedReadmes: [ReadMe]
     readmes(username: String): [ReadMe]
     readme(_id: ID!): ReadMe
-    comments: [Comment]
+    comments(readMeId: ID): [Comment]
 }
 
 type Mutation {
@@ -99,12 +99,14 @@ type Mutation {
         markdown: String
     ): ReadMe
     addComment(
+        _id: ID!
         readMeId: ID!
         author: String!,
         text: String!,
         dateCreated: String
     ): Comment
     updateComment(
+        _id: ID!
         readMeId: ID!
         author: String,
         text: String,

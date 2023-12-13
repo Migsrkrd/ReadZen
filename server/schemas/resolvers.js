@@ -43,8 +43,8 @@ const resolvers = {
         },
 
         // Returns all comments
-        comments: async () => {
-            return Comment.find({});
+        comments: async ({ readMeId}) => {
+            return Comment.find({ author: readMeId });
         }
     },
     
@@ -77,80 +77,108 @@ const resolvers = {
 
         // Creates a new readme and adds it to user's readmes
         addReadMe: async (parent, args, context) => {
-            const readme = await ReadMe.create({ ...args, author: context.user.username });
+            if (context.user) {
+                const readme = await ReadMe.create({ ...args, author: context.user.username });
 
-            await User.findOneAndUpdate(
-                { username: context.user.username },
-                { $addToSet: { readMes: readme }}
-            );
-            return readme;
+                await User.findOneAndUpdate(
+                    { username: context.user.username },
+                    { $addToSet: { readMes: readme }}
+                );
+                return readme;
+            }
+            throw AuthenticationError;
         },
 
         // Edits a readme and updates a user's readmes
         updateReadMe: async (parent, args, context) => {
-            const {
-                _id: readMeId,
-                ...updateArgs
-            } = args;
-            try {
-                const readme = await ReadMe.findOneAndUpdate(
-                    { _id: readMeId },
-                    { ...updateArgs },
-                    { new: true }
-                );
-                console.log('context.user.username');
-                console.log(context.user.username);
-                await User.findOneAndUpdate(
-                    { username: context.user.username },
-                    { $pull: { ReadMes: { _id: readMeId } } },
-                    { $addToSet: { ReadMes: readme } }
-                );
+            console.log('context.user', context.user);
+            if (context.user) {
+                const readmeAuthor = (await ReadMe.findOne({ _id: args._id })).author;
 
-                return readme;
-
-            } catch (error) {
-                console.error('Error updating ReadMe:', error);
-                throw error;
+                // Checks if the logged in user matches the readme author
+                if (readmeAuthor == context.user.username) {
+                    const readme = await ReadMe.findOneAndUpdate(
+                        { _id: args._id },
+                        { ...args },
+                        { new: true }
+                    );
+                    
+                    console.log('readme', readme);
+    
+                    await User.findOneAndUpdate(
+                        { _id: context.user._id },
+                        { $pull: { readMes: { _id: args._id } } },
+                        { $addToSet: { readMes: readme } }
+                    );
+                    return readme;
+                }
             }
-
+            throw AuthenticationError;
         },
 
         // Deletes a readme and removes it from a user's readmes
-        deleteReadMe: async (parent, args ) => {
-            const readme = await ReadMe.findOneAndDelete({ _id: args._id });
-            await User.findOneAndUpdate(
-                { _id: args._id },
-                { $pull: { readMes: { _id: args._id } } },
-                { new: true }
-            );
-            return readme;
+        deleteReadMe: async (parent, args, context ) => {
+            if (context.user) {
+                const readmeAuthor = (await ReadMe.findOne({ _id: args._id })).author;
+
+                // Checks if the logged in user matches the readme author
+                if (readmeAuthor == context.user.username) {
+                    const readme = await ReadMe.findOneAndDelete({ _id: args._id });
+                    await User.findOneAndUpdate(
+                        { _id: args._id },
+                        { $pull: { readMes: { _id: args._id } } },
+                        { new: true }
+                    );
+                    return readme;
+                }
+            }
+            throw AuthenticationError;
         },
 
         // Create a comment
-        addComment: async (parent, { text, readMeId }, context) => {
-            const comment = await Comment.create({
-                author: context.user.username, 
-                text, 
-                readMeId
-            });
-            return comment;
+        addComment: async (parent, args, context) => {
+            if (context.user) {
+                const comment = await Comment.create({
+                    author: context.user.username, 
+                    text: args.text, 
+                    readMeId: args.readMeId
+                });
+                return comment;
+            }
+            throw AuthenticationError;
         },
 
         // Updates a comment
-        updateComment: async (parent, { text, readMeId }) => {
-            const comment = await Comment.findOneAndUpdate(
-                { _id: commentId },
-                { text },
-                { new: true }
-            );
+        updateComment: async (parent, args, context) => {
+            if (context.user) {
+                const commentAuthor = (await Comment.findOne({ _id: args._id })).author;
 
-            return comment;
+                // Checks if the logged in user matches the comment author
+                if (commentAuthor == context.user.username) {
+                    const comment = await Comment.findOneAndUpdate(
+                        { _id: args._id },
+                        { text: args.text },
+                        { new: true }
+                    );
+        
+                    return comment;
+                }
+            }
+            throw AuthenticationError;
         },
 
         // Deletes a comment
-        deleteComment: async (parent, args ) => {
-            const comment = await Comment.findOneAndDelete({ _id: args._id });
-            return comment;
+        deleteComment: async (parent, args, context) => {
+            if(context.user) {
+                const commentAuthor = (await Comment.findOne({ _id: args._id })).author;
+
+                // Checks if the logged in user matches the comment author
+                if (commentAuthor == context.user.username) {
+                    const comment = await Comment.findOneAndDelete({ _id: args._id });
+                    return comment;
+                }
+            }
+            throw AuthenticationError;
         },
     }
 };
