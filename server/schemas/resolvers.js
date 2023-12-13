@@ -7,19 +7,19 @@ const resolvers = {
         // User's profile page
         me: async (parent, args, context) => {
             if (context.user) {
-                return User.findOne({ _id: context.user._id }).populate('readme');
+                return User.findOne({ _id: context.user._id }).populate('readMes');
             }
             throw AuthenticationError;
         },
 
         // Returns all users. Only for dev
         users: async () => {
-            return User.find().populate('readme');
+            return User.find().populate('readMes');
         },
 
         // Another user's profile page
         user: async (parent, { userId }) => {
-            return User.findOne({ _id: userId }).populate('readme');
+            return User.findOne({ _id: userId }).populate('readMes');
         },
 
         // Returns all readmes
@@ -81,7 +81,7 @@ const resolvers = {
 
             await User.findOneAndUpdate(
                 { username: context.user.username },
-                { $addToSet: { ReadMes: readme }}
+                { $addToSet: { readMes: readme }}
             );
             return readme;
         },
@@ -114,6 +114,7 @@ const resolvers = {
                 console.error('Error updating ReadMe:', error);
                 throw error;
             }
+
         },
 
         // Deletes a readme and removes it from a user's readmes
@@ -121,7 +122,7 @@ const resolvers = {
             const readme = await ReadMe.findOneAndDelete({ _id: args._id });
             await User.findOneAndUpdate(
                 { _id: args._id },
-                { $pull: { ReadMes: { _id: args._id } } },
+                { $pull: { readMes: { _id: args._id } } },
                 { new: true }
             );
             return readme;
