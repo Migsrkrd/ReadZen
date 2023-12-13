@@ -76,7 +76,7 @@ const resolvers = {
         },
 
         // Update a user with a new username
-        updateUser: async (parent, { id, newUsername }, context) => {
+        updateUsername: async (parent, { id, newUsername }, context) => {
             if (context.user && context.user._id == id) {
 
                 // find and update the user
