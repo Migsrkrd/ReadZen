@@ -28,7 +28,7 @@ const StyledTextField = styled(TextField)({
   },
 });
 
-const ConfirmDeleteUserForm = () => {
+const ConfirmDeleteUserForm = ({ setOpen }) => {
   // set initial form state
   const [userFormData, setUserFormData] = useState({ 
     password: '',

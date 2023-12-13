@@ -28,7 +28,7 @@ const StyledTextField = styled(TextField)({
   },
 });
 
-const ChangeUsernameForm = () => {
+const ChangeUsernameForm = ({ setOpen }) => {
   // set initial form state
   const [userFormData, setUserFormData] = useState({ username: ''});
   const [errorMessages, setErrorMessages] = useState({});
@@ -111,51 +111,49 @@ const ChangeUsernameForm = () => {
         noValidate
         autoComplete="off"
       >
-        <Box>
 
-          <StyledTextField
-            id='username'  
-            label="New Username"
-            value={userFormData.username}
-            helperText={error ? errorMessages.main : ''}
-            onChange={handleInputChange}
-            fullWidth
-            margin="normal"
-            sx={{
-              '& .MuiInputLabel-root.Mui-focused': {
-                color: '#a80038',
-              },
-            }}
-          />
+        <StyledTextField
+          id='username'  
+          label="New Username"
+          value={userFormData.username}
+          helperText={error ? errorMessages.main : ''}
+          onChange={handleInputChange}
+          fullWidth
+          margin="normal"
+          sx={{
+            '& .MuiInputLabel-root.Mui-focused': {
+              color: '#a80038',
+            },
+          }}
+        />
 
-          <Button
-            disabled={!userFormData.username}
-            type='submit'
-            variant='contained'
-            sx={{
-              backgroundColor: '#a80038',
-              '&:hover': {
-                backgroundColor: '#fd0054',
-              },
-            }}
-          >
-            Update Username
-          </Button>
+        <Button
+          disabled={!userFormData.username}
+          type='submit'
+          variant='contained'
+          sx={{
+            backgroundColor: '#a80038',
+            '&:hover': {
+              backgroundColor: '#fd0054',
+            },
+          }}
+        >
+          Update Username
+        </Button>
 
-          <Button
-            variant='contained'
-            onClick={handleCancel}
-            sx={{
-              backgroundColor: '#666',
-              '&:hover': {
-                backgroundColor: '#888',
-              },
-            }}
-          >
-            Cancel
-          </Button>
+        <Button
+          variant='contained'
+          onClick={handleCancel}
+          sx={{
+            backgroundColor: '#666',
+            '&:hover': {
+              backgroundColor: '#888',
+            },
+          }}
+        >
+          Cancel
+        </Button>
 
-        </Box>
       </Box>
     </>
   );

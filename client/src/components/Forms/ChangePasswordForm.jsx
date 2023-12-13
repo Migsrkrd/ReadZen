@@ -28,7 +28,7 @@ const StyledTextField = styled(TextField)({
   },
 });
 
-const ChangePasswordForm = () => {
+const ChangePasswordForm = ({ setOpen }) => {
   // set initial form state
   const [userFormData, setUserFormData] = useState({ 
     currentPassword: '',
