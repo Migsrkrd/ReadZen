@@ -34,9 +34,9 @@ const ChangeUsernameForm = () => {
   const [errorMessages, setErrorMessages] = useState({});
 
   // set state for form validation
-  const [validated] = useState(false);
+  // const [validated] = useState(false);
   // set state for alert
-  const [showAlert, setShowAlert] = useState(false);
+  // const [showAlert, setShowAlert] = useState(false);
 
   // update the mutation for updating the username
   const [updateUsername, { error }] = useMutation(UPDATE_USERNAME, {
@@ -58,7 +58,7 @@ const ChangeUsernameForm = () => {
     } catch (e) {
       console.error(e);
       handleError(e)
-      setShowAlert(true);
+      // setShowAlert(true);
     }
 
     setUserFormData({
@@ -89,43 +89,43 @@ const ChangeUsernameForm = () => {
         {/* <Alert dismissible onClose={() => setShowAlert(false)} show={showAlert} variant='danger'>
           Something went wrong with your signup!
         </Alert> */}
-    <Box
-      component="form"
-      sx={{
-        '& > :not(style)': { m: 1 },
-      }}
-      onSubmit={handleFormSubmit}
-      noValidate
-      autoComplete="off"
-    >
-      <StyledTextField
-        id='username'  
-        label="New Username"
-        value={userFormData.username}
-        helperText={error ? errorMessages.main : ''}
-        onChange={handleInputChange}
-        fullWidth
-        margin="normal"
+      <Box
+        component="form"
         sx={{
-          '& .MuiInputLabel-root.Mui-focused': {
-            color: '#a80038',
-          },
+          '& > :not(style)': { m: 1 },
         }}
-      />
+        onSubmit={handleFormSubmit}
+        noValidate
+        autoComplete="off"
+      >
+        <StyledTextField
+          id='username'  
+          label="New Username"
+          value={userFormData.username}
+          helperText={error ? errorMessages.main : ''}
+          onChange={handleInputChange}
+          fullWidth
+          margin="normal"
+          sx={{
+            '& .MuiInputLabel-root.Mui-focused': {
+              color: '#a80038',
+            },
+          }}
+        />
 
-      <Button
-        disabled={!userFormData.username}
-        type='submit'
-        variant='contained'
-        sx={{
-          backgroundColor: '#a80038',
-          '&:hover': {
-            backgroundColor: '#fd0054',
-          },
-        }}>
+        <Button
+          disabled={!userFormData.username}
+          type='submit'
+          variant='contained'
+          sx={{
+            backgroundColor: '#a80038',
+            '&:hover': {
+              backgroundColor: '#fd0054',
+            },
+          }}
+        >
           Update Username
         </Button>
-        
       </Box>
     </>
   );
