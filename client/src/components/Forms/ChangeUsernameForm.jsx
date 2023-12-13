@@ -61,10 +61,19 @@ const ChangeUsernameForm = () => {
       // setShowAlert(true);
     }
 
+    clearForm()
+  };
+
+  const handleCancel = () => {
+    setOpen(false);
+    clearForm();
+  };
+
+  const clearForm = () => {
     setUserFormData({
       username: '',
     });
-  };
+  }
 
   const handleError = (error) => {
     const message = error.message;
@@ -126,6 +135,20 @@ const ChangeUsernameForm = () => {
         >
           Update Username
         </Button>
+
+        <Button
+          variant='contained'
+          onClick={handleCancel}
+          sx={{
+            backgroundColor: '#666',
+            '&:hover': {
+              backgroundColor: '#888',
+            },
+          }}
+        >
+          Cancel
+        </Button>
+
       </Box>
     </>
   );

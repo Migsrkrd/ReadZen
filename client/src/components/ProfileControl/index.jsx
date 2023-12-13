@@ -132,11 +132,11 @@ const ProfileControl = () => {
               {(() => {
                 switch (activeForm) {
                   case UPDATE_USERNAME:
-                    return <ChangeUsernameForm />;
+                    return <ChangeUsernameForm setOpen={setOpen} />;
                   case UPDATE_PASSWORD:
-                    return <ChangePasswordForm />;
+                    return <ChangePasswordForm setOpen={setOpen} />;
                   case CONFIRM_DELETE_USER:
-                    return <ConfirmDeleteUserForm />;
+                    return <ConfirmDeleteUserForm setOpen={setOpen} />;
                   default:
                     return null;
                 }
