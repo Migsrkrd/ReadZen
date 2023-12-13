@@ -36,7 +36,6 @@ const style = {
 };
 
 const btn = {
-  color: "#a80038",
   border: "2px solid #fbf9fa ",
   backgroundColor: "#a80038",
   borderRadius: "10px",
@@ -52,6 +51,7 @@ const ProfileCard = (props) => {
   const [open, setOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [deleteId, setDeleteId] = useState();
+  const [isPinned, setIsPinned] = useState(false);
 
   const [togglePublished] = useMutation(UPDATE_README, {
     refetchQueries: [
@@ -99,8 +99,8 @@ const ProfileCard = (props) => {
       },  
     });  
     setIsModalOpen(false);
-  };  
-  
+  };
+
   const callPublish = (id, isPublished, event) => {
     event.stopPropagation();
     const newIsPublished = !isPublished;
@@ -124,6 +124,20 @@ const ProfileCard = (props) => {
     saveAs(blob, fileName);
   }
 
+  function pinThis(event){
+    event.stopPropagation();
+    //the query will decide the class selection instead of the isPinned state
+    setIsPinned(!isPinned);
+    if(isPinned === true){
+      event.target.classList.remove("unpinned");
+      event.target.classList.add("pinned");
+    } else if(isPinned === false) {
+      event.target.classList.remove("pinned");
+      event.target.classList.add("unpinned");
+    }
+    console.log(isPinned);
+  }
+
   function noMoreThanWords(str) {
     if (str.split(" ").length > 30) {
       return str.split(" ").splice(0, 30).join(" ") + "...";
@@ -144,6 +158,7 @@ const ProfileCard = (props) => {
                 {readme.author}
               </h4>
             </Link>
+            <i onClick={pinThis} className="fa-solid fa-thumbtack pinned"></i>
             
           </div>
           
