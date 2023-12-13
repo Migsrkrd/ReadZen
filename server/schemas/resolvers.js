@@ -214,6 +214,41 @@ const resolvers = {
             }
             throw AuthenticationError;
         },
+
+        // Stores a liked readme to a user, and increments the readme's likeCount
+        likeReadMe: async (parent, args, context) => {
+            if (context.user) {
+                const readme = ReadMe.findOneAndUpdate(
+                    { _id: args.readMeId },
+                    { likeCount: likeCount++ },
+                    { new: true }
+                );
+                const user = User.findOneAndUpdate(
+                    { _id: args._id },
+                    { $addToSet: { likes: readme }},
+                    { new: true }
+                );
+                return user;
+            }
+            throw AuthenticationError;
+        },
+
+        unLikeReadMe: async (parent, args, context) => {
+            if (context.user) {
+                const readme = ReadMe.findOneAndUpdate(
+                    { _id: args.readMeId },
+                    { likeCount: likeCount-- },
+                    { new: true }
+                );
+                const user = User.findOneAndUpdate(
+                    { _id: args._id },
+                    { $pull: { likes: { _id: args.readMeId } }},
+                    { new: true }
+                );
+                return user;
+            }
+            throw AuthenticationError;
+        },
               
         // Creates a new readme and adds it to user's readmes
         addReadMe: async (parent, args, context) => {
