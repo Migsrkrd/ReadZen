@@ -224,7 +224,7 @@ const resolvers = {
                     { new: true }
                 );
                 const user = User.findOneAndUpdate(
-                    { _id: args._id },
+                    { _id: context.user._id },
                     { $addToSet: { likes: readme }},
                     { new: true }
                 );

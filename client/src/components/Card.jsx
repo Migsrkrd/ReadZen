@@ -7,8 +7,8 @@ import Comment from "./Comment";
 import { useEffect } from "react";
 import { useMutation } from "@apollo/client";
 import { useQuery } from "@apollo/client";
-import { GET_ALL_READMES, GET_COMMENTS } from "../utils/queries";
-import { ADD_COMMENT } from "../utils/mutations";
+import { GET_COMMENTS } from "../utils/queries";
+import { ADD_COMMENT, LIKE_README } from "../utils/mutations";
 import Auth from "../utils/auth";
 
 const style = {
@@ -30,7 +30,7 @@ const Card = (props) => {
   const [expandedCardClass, setExpandedCardClass] = useState("card");
   const [markdown, setMarkdown] = useState();
   const [open, setOpen] = useState(false);
-
+  const [likeReadMe] = useMutation(LIKE_README)
   const [addComment] = useMutation(ADD_COMMENT,{
     refetchQueries: [
     GET_COMMENTS ]
@@ -101,9 +101,15 @@ const Card = (props) => {
     console.log("share");
   }
 
-  function like(event) {
+  function like(id, event) {
     event.stopPropagation();
     console.log("like");
+    console.log(id)
+    likeReadMe({
+      variables:{
+        readMeId: id
+      }
+    })
   }
 
   const comment = (event, cardId) => {
@@ -231,7 +237,7 @@ const Card = (props) => {
             <div className="interactions">
               <button
                 className="btnBeg"
-                onClick={(event) => like(event, readme._id)}
+                onClick={(event) => like(readme._id, event)}
               >
                 Like
               </button>
