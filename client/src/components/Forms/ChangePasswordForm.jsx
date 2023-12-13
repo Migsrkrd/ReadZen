@@ -64,10 +64,21 @@ const ChangePasswordForm = () => {
       // setShowAlert(true);
     }
 
-    setUserFormData({
-      password: '',
-    });
+    clearForm()
   };
+
+  const handleCancel = () => {
+    setOpen(false);
+    clearForm();
+  };
+
+  const clearForm = () => {
+    setUserFormData({
+      currentPassword: '',
+      newPassword: '',
+    });
+  }
+
 
   const handleError = (error) => {
     const message = error.message;
@@ -131,6 +142,20 @@ const ChangePasswordForm = () => {
         >
           Confirm Delete Account
         </Button>
+
+        <Button
+          variant='contained'
+          onClick={handleCancel}
+          sx={{
+            backgroundColor: '#666',
+            '&:hover': {
+              backgroundColor: '#888',
+            },
+          }}
+        >
+          Cancel
+        </Button>
+
       </Box>
 
       {/* Note about Readmes and Comments deletion */}
