@@ -100,7 +100,8 @@ const resolvers = {
                     { ...updateArgs },
                     { new: true }
                 );
-    
+                console.log('context.user.username');
+                console.log(context.user.username);
                 await User.findOneAndUpdate(
                     { username: context.user.username },
                     { $pull: { ReadMes: { _id: readMeId } } },
