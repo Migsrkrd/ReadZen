@@ -105,6 +105,7 @@ const Card = (props) => {
   };
   const handleClose = (event) => {
     event.stopPropagation();
+    setOpen(false);
     setIsLoggedIn(false);
   };
 
