@@ -51,7 +51,7 @@ const ProfileCard = (props) => {
   const [open, setOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [deleteId, setDeleteId] = useState();
-  const [isPinned, setIsPinned] = useState(false);
+  // const [isPinned, setIsPinned] = useState(false);
 
   const [togglePublished] = useMutation(UPDATE_README, {
     refetchQueries: [
@@ -118,14 +118,6 @@ const ProfileCard = (props) => {
 
     const togglePin = (id, isPinned, event) => {
       event.stopPropagation();
-      setIsPinned(!isPinned);
-      if(isPinned === true){
-        event.target.classList.remove("unpinned");
-        event.target.classList.add("pinned");
-      } else if(isPinned === false) {
-        event.target.classList.remove("pinned");
-        event.target.classList.add("unpinned");
-      }
       const newIsPinned = !isPinned;
       togglePublished({
         variables: {
@@ -149,11 +141,19 @@ const ProfileCard = (props) => {
     const blob = new Blob([readme], { type: 'text/plain;charset=utf-8' });
     saveAs(blob, fileName);
   }
+  let ReadMes=[];
+  const pinnedFirst= () => {
+    const pinned=props.ReadMes.filter(readme=>readme.isPinned);
+    const unpinned=props.ReadMes.filter(readme=>!readme.isPinned);
+    ReadMes=[pinned, unpinned].flat();
+    console.log(ReadMes)
+  }
+  pinnedFirst()
 
   return (
     
     <div className="cardLayout">
-      {props.ReadMes.map((readme) => (
+      {ReadMes.map((readme) => (
         <div key={readme._id} className="card" onClick={()=>handleOpen(readme.markdown)}>
         
           <div className="card-header">
@@ -163,7 +163,8 @@ const ProfileCard = (props) => {
                 {readme.author}
               </h4>
             </Link>
-            <i onClick={(event)=>togglePin(readme._id, readme.isPinned, event)} className="fa-solid fa-thumbtack pinned"></i>
+            <i onClick={(event)=>togglePin(readme._id, readme.isPinned, event)} className={`fa-solid fa-thumbtack 
+            ${readme.isPinned ? 'unpinned' : 'pinned'}`}></i>
             
           </div>
           
