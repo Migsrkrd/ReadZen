@@ -6,6 +6,8 @@ import Avatar from "./Avatar";
 import Comment from "./Comment";
 import { useEffect } from "react";
 import { useMutation } from "@apollo/client";
+import { useQuery } from "@apollo/client";
+import { GET_COMMENTS } from "../utils/queries";
 import { ADD_COMMENT } from "../utils/mutations";
 import Auth from "../utils/auth";
 
@@ -29,7 +31,14 @@ const Card = (props) => {
   const [markdown, setMarkdown] = useState();
   const [open, setOpen] = useState(false);
   const [addComment] = useMutation(ADD_COMMENT);
-  const [commentText, setCommentText] = useState('');
+  const [commentText, setCommentText] = useState("");
+  const { loading, data } = useQuery(GET_COMMENTS, {
+    variables: { readMeId: expandedCardId },
+  });
+
+  const comments = data?.comments || [];
+
+  console.log("comments", comments);
 
   useEffect(() => {
     // Reset expandedCardId to null when comments are closed
@@ -40,30 +49,29 @@ const Card = (props) => {
 
   async function handleCommentSubmit(event) {
     event.stopPropagation();
-  
+
     // Check if the comment text is not empty before submitting
-    try{
-    if (commentText.trim() !== '') {
-      console.log("Before add comment");
-      console.log("expandedCardId", expandedCardId);
-      addComment({
-        variables: {
-          author: Auth.getProfile().data.username,
-          readMeId: expandedCardId,
-          text: commentText,
-        },
-      })
-      console.log("comment created! here is your comment: ", commentText)
-        
-    } else {
-      console.log("Comment text is empty. Not submitting.");
+    try {
+      if (commentText.trim() !== "") {
+        console.log("Before add comment");
+        console.log("expandedCardId", expandedCardId);
+        addComment({
+          variables: {
+            author: Auth.getProfile().data.username,
+            readMeId: expandedCardId,
+            text: commentText,
+          },
+        });
+        console.log("comment created! here is your comment: ", commentText);
+      } else {
+        console.log("Comment text is empty. Not submitting.");
+      }
+    } catch (err) {
+      console.log(err);
     }
-  } catch (err) {
-    console.log(err);
-  }
-  
+
     // Close the comment section after submitting
-    setCommentText('');
+    setCommentText("");
   }
 
   const handleOpen = (readme) => {
@@ -134,19 +142,13 @@ const Card = (props) => {
     console.log("Repo link copied:", repoLink);
   }
 
-  function handleCommentSubmit(event) {
-    event.stopPropagation();
-  }
-
-  let ReadMes=[];
-  const showPublished= () => {
-    ReadMes=props.ReadMes.filter(readme=>readme.isPublished);
+  let ReadMes = [];
+  const showPublished = () => {
+    ReadMes = props.ReadMes.filter((readme) => readme.isPublished);
     // const unpinned=props.ReadMes.filter(readme=>!readme.isPinned);
     // ReadMes=[pinned, unpinned].flat();
-    console.log("published")
-    console.log(ReadMes)
-  }
-  showPublished()
+  };
+  showPublished();
 
   return (
     <div className="cardLayout">
@@ -160,6 +162,7 @@ const Card = (props) => {
             <Link className="profile-link" to={`/profiles/${readme.author}`}>
               <h4>
                 <Avatar letter={readme.author.charAt(0).toUpperCase()} />
+                &nbsp;
                 {readme.author}
               </h4>
             </Link>
@@ -187,14 +190,20 @@ const Card = (props) => {
             {isCommentsOpen && expandedCardId === readme._id && (
               <div className="comment-section">
                 <h4 className="comment-header">Comments</h4>
-                <Comment user={"User"} text={"text goes here"} />
+                {comments.map((comment) => (
+                  <Comment
+                    key={comment._id}
+                    user={comment.author}
+                    text={comment.text}
+                  />
+                ))}
                 <textarea
                   className="comment-input"
                   onClick={handleInputClick}
                   rows={4}
                   placeholder="Add a comment..."
                   value={commentText}
-                  onChange={event => setCommentText(event.target.value)}
+                  onChange={(event) => setCommentText(event.target.value)}
                 />
                 <Button
                   onClick={handleCommentSubmit}
