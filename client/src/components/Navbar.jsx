@@ -59,24 +59,27 @@ const Header = () => {
         </div>
         <div className="nav">
           <Link className="navlink-home" to="/">
-            <h2>
+            <h3>
               <i className="fa fa-home"></i>
-            </h2>
+            </h3>
           </Link>
           <Link className="navlink" to="/about">
-            <h2>About</h2>
+            <h3>About</h3>
           </Link>
         </div>
         <div className="far-nav">
           {Auth.loggedIn() ? (
             <div className="prof-logout">
+              <Link to="/generate">
+                <h3 className="navlink">Generate</h3>
+              </Link>
               <Link className="btn btn-lg btn-info m-2 navlink" to="/me">
-                <h2>{Auth.getProfile().data.username}'s profile</h2>
+                <h3>{Auth.getProfile().data.username}'s profile</h3>
               </Link>
 
-              <h2 className="navlink" onClick={logout}>
+              <h3 className="navlink" onClick={logout}>
                 Logout
-              </h2>
+              </h3>
             </div>
           ) : (
             <div className="far-nav">

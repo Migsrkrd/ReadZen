@@ -23,9 +23,6 @@ const Profile = () => {
           <div>
             <div className="dashboard">
               <h2>Welcome {Auth.getProfile().data.username}!</h2>
-              <Link to="/generate">
-                <button className="generate">Generate</button>
-              </Link>
             </div>
             <ProfileCard ReadMes={ReadMes} />
           </div>

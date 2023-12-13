@@ -3,7 +3,7 @@ const dateFormat = require('../utils/dateFormat');
 
 const commentSchema = new Schema({
     readMeId: {
-        type: Number,
+        type: String,
         required: 'You need a readme to comment to!'
     },
     author: {

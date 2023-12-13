@@ -168,3 +168,22 @@ export const DELETE_README = gql`
     }
   }
 `;
+
+export const ADD_COMMENT = gql`
+  mutation addComment(
+    $readMeId: String!,
+    $text: String!,
+    $author: String!,
+  ) {
+    addComment(
+      readMeId: $readMeId,
+      text: $text
+      author: $author
+    ) {
+      _id
+      text
+      author
+      dateCreated
+    }
+  }
+`;
