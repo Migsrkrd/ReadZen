@@ -25,8 +25,8 @@ export const LOGIN_USER = gql`
 `;  
 
 export const UPDATE_USERNAME = gql`
-  mutation updateUsername($id: ID!, $username: String!) {
-    updateUsername(id: $id, username: $username) {
+  mutation updateUsername($id: ID!, $newUsername: String!) {
+    updateUsername(id: $id, newUsername: $newUsername) {
       user {
         _id
         username

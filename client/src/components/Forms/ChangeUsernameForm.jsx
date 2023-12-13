@@ -30,7 +30,7 @@ const StyledTextField = styled(TextField)({
 
 const ChangeUsernameForm = ({ setOpen }) => {
   // set initial form state
-  const [userFormData, setUserFormData] = useState({ username: ''});
+  const [userFormData, setUserFormData] = useState({ newUsername: ''});
   const [errorMessages, setErrorMessages] = useState({});
 
   // set state for form validation
@@ -75,7 +75,7 @@ const ChangeUsernameForm = ({ setOpen }) => {
 
   const clearForm = () => {
     setUserFormData({
-      username: '',
+      newUsername: '',
     });
   }
 
