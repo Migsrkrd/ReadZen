@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import MarkdownIt from "markdown-it";
-import { Box, Button, Modal, Typography } from "@mui/material";
+import { Box, Button, Modal} from "@mui/material";
 import Avatar from "./Avatar";
 import Comment from "./Comment";
 import { useEffect } from "react";
@@ -10,6 +10,11 @@ import { useQuery } from "@apollo/client";
 import { GET_ALL_READMES, GET_COMMENTS } from "../utils/queries";
 import { ADD_COMMENT } from "../utils/mutations";
 import Auth from "../utils/auth";
+import LoginForm from "./LoginForm";
+import SignupForm from "./SignupForm";
+import Backdrop from "@mui/material/Backdrop";
+import Typography from "@mui/material/Typography";
+
 
 const style = {
   position: "absolute",
@@ -17,10 +22,20 @@ const style = {
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: 400,
-  bgcolor: "background.paper",
-  border: "2px solid #000",
+  bgcolor: "#fbf9fa",
+  border: "2px solid #a80038",
+  borderRadius: "10px",
   boxShadow: 24,
   p: 4,
+};
+
+const btn = {
+  color: "#a80038",
+  border: "2px solid #a80038 ",
+  backgroundColor: "#fbf9fa",
+  borderRadius: "10px",
+  boxShadow: 24,
+  m: 1,
 };
 
 const Card = (props) => {
@@ -38,13 +53,13 @@ const Card = (props) => {
 
   
   const [commentText, setCommentText] = useState("");
+  const [isLoggedIn , setIsLoggedIn] = useState(false);
+  const [activeForm, setActiveForm] = useState("login");
   const { loading, data } = useQuery(GET_COMMENTS, {
     variables: { readMeId: expandedCardId },
   });
 
   const comments = data?.comments || [];
-
-  console.log("comments", comments);
 
   useEffect(() => {
     // Reset expandedCardId to null when comments are closed
@@ -55,6 +70,10 @@ const Card = (props) => {
 
   async function handleCommentSubmit(event) {
     event.stopPropagation();
+    if(!Auth.loggedIn()){
+      setIsLoggedIn(true);
+      return;
+    }
 
     // Check if the comment text is not empty before submitting
     try {
@@ -86,7 +105,7 @@ const Card = (props) => {
   };
   const handleClose = (event) => {
     event.stopPropagation();
-    setOpen(false);
+    setIsLoggedIn(false);
   };
 
   function noMoreThanWords(str) {
@@ -106,18 +125,18 @@ const Card = (props) => {
     console.log("like");
   }
 
-  const comment = (event, cardId) => {
+  const openCommentSection = (event, cardId) => {
     event.stopPropagation();
-    if (expandedCardId === cardId) {
-      // If the same card is clicked again, reset the expandedCardId
-      setExpandedCardId(null);
-      setExpandedCardClass("card");
-    } else {
-      // Otherwise, set the expandedCardId to the clicked cardId
-      setExpandedCardId(cardId);
-      setExpandedCardClass("cardTwo");
-    }
-    setIsCommentsOpen(!isCommentsOpen);
+    setExpandedCardId(cardId);
+    setExpandedCardClass("cardTwo");
+    setIsCommentsOpen(true);
+  };
+
+  const closeCommentSection = (event) => {
+    event.stopPropagation();
+    setExpandedCardId(null);
+    setExpandedCardClass("card");
+    setIsCommentsOpen(false);
   };
 
   const handleInputClick = (event) => {
@@ -148,6 +167,11 @@ const Card = (props) => {
     console.log("Repo link copied:", repoLink);
   }
 
+  function exit(event) {
+    event.stopPropagation();
+    setIsLoggedIn(false);
+  }
+
   let ReadMes = [];
   const showPublished = () => {
     ReadMes = props.ReadMes.filter((readme) => readme.isPublished);
@@ -155,6 +179,10 @@ const Card = (props) => {
     // ReadMes=[pinned, unpinned].flat();
   };
   showPublished();
+
+  const handleFormChange = (event) => {
+    setActiveForm(event.target.name === "login" ? "login" : "sign up");
+  };
 
   return (
     <div className="cardLayout">
@@ -182,6 +210,7 @@ const Card = (props) => {
                 href={readme.repoLink}
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={(event) => event.stopPropagation()}
               >
                 <i className="fa fa-github"></i>
               </a>
@@ -189,6 +218,7 @@ const Card = (props) => {
                 href={readme.deployedLink}
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={(event) => event.stopPropagation()}
               >
                 <i className="fa fa-link"></i>
               </a>
@@ -235,12 +265,21 @@ const Card = (props) => {
               >
                 Like
               </button>
-              <button
-                className="btnMid"
-                onClick={(event) => comment(event, readme._id)}
-              >
-                Comment
-              </button>
+              {isCommentsOpen && expandedCardId === readme._id ? (
+                <button
+                  className="btnMid"
+                  onClick={(event) => closeCommentSection(event)}
+                >
+                  Close
+                </button>
+              ) : (
+                <button
+                  className="btnMid"
+                  onClick={(event) => openCommentSection(event, readme._id)}
+                >
+                  Comment
+                </button>
+              )}
               <button
                 className="btnEnd"
                 onClick={(event) => share(event, readme.repoLink)}
@@ -264,6 +303,56 @@ const Card = (props) => {
           <Button onClick={handleClose}>Close</Button>
         </Box>
       </Modal>
+      <Modal
+          BackdropComponent={Backdrop}
+          BackdropProps={{
+            sx: { backdropFilter: "blur(3px)" },
+          }}
+          open={isLoggedIn}
+          onClose={handleClose}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <Box sx={style}>
+            <Typography id="modal-modal-title" variant="h6" component="h2">
+              <Button
+                sx={{
+                  ...btn,
+                  backgroundColor:
+                    activeForm === "login" ? "" : "#a80038",
+                  color: activeForm === "login" ? "#a80038" : "white",
+                  "&:hover": {
+                    backgroundColor: activeForm === "sign up" ? "" : "#a80038",
+                    color: activeForm === "sign up" ? "#a80038" : "white",
+                  },
+                }}
+                name="login"
+                onClick={handleFormChange}
+              >
+                Login
+              </Button>
+              <Button
+                sx={{
+                  ...btn,
+                  backgroundColor:
+                    activeForm === "sign up" ? "white" : "#a80038",
+                  color: activeForm === "sign up" ? "#a80038" : "white",
+                  "&:hover": {
+                    backgroundColor: activeForm === "login" ? "" : "#a80038",
+                    color: activeForm === "login" ? "#a80038" : "white",
+                  },
+                }}
+                name="sign up"
+                onClick={handleFormChange}
+              >
+                Sign Up
+              </Button>
+            </Typography>
+            <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+              {activeForm === "login" ? <LoginForm /> : <SignupForm />}
+            </Typography>
+          </Box>
+        </Modal>
     </div>
   );
 };
