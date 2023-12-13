@@ -1,6 +1,25 @@
 const { User, ReadMe, Comment } = require('../models');
 const { signToken, AuthenticationError } = require('../utils/auth');
 
+// Helper function to update author name in all readmes
+const updateAuthorNamenReadMes = async (oldUsername, newUsername) => {
+    try {
+        // find all readmes by user
+        const userReadMes = await ReadMe.find({ author: oldUsername });
+
+        // update author name in each readme
+        await Promise.all(
+            userReadMes.map(async (readme) => {
+                readme.author = newUsername;
+                return readme.save();
+            })
+        );
+    } catch (error) {
+        console.error('Error updating author name in readmes:', error);
+        throw error;
+    }
+};
+
 const resolvers = {
     Query: {
 
@@ -88,6 +107,114 @@ const resolvers = {
             return { token, user };
         },
 
+        // Update a user with a new username
+        updateUsername: async (parent, { id, newUsername }, context) => {
+            if (context.user && context.user._id == id) {
+                try {
+                    // find and update the user
+                    const updatedUser = await User.findByIdAndUpdate(
+                      id,
+                      { $set: { username: newUsername } },
+                      { new: true }
+                    );
+              
+                    if (!updatedUser) {
+                      throw new AuthenticationError('User not found');
+                    }
+    
+                    // update author name in readmes
+                    await updateAuthorNamenReadMes(context.user.username, newUsername);
+    
+                    const token = signToken(updatedUser);
+                    return { token, updatedUser };
+                } catch (error) {
+                    console.error('Error updating username:', error);
+                    throw error;
+                }
+            }
+            throw AuthenticationError;
+        },
+      
+        // Update a user with a new password
+        updatePassword: async (parent, { id, currentPassword, newPassword }, context) => {
+            if (context.user && context.user._id == id) {
+
+                // find the user
+                const user = await User.findById(id);
+          
+                if (!user) {
+                  throw new AuthenticationError('User not found');
+                }
+    
+                // check the password
+                const correctPass = await user.isCorrectPassword(currentPassword);
+          
+                if (!correctPass) {
+                  throw new AuthenticationError('Incorrect password');
+                }
+    
+                // update the password
+                user.password = newPassword;
+                await user.save();
+          
+                const token = signToken(user);
+                return { token, user };
+            }
+            throw AuthenticationError;
+        },
+
+        deleteUser: async (parent, { id, password }, context) => {
+            if (context.user && context.user._id == id) {
+                
+                // find the user
+                const user = await User.findById(id);
+                console.log('user');
+                console.log(user);
+
+                if (!user) {
+                  throw new AuthenticationError('User not found');
+                }
+    
+                // check the password
+                const correctPass = await user.isCorrectPassword(password);
+                console.log('correctPass');
+                console.log(correctPass);
+                
+                if (!correctPass) {
+                    throw new AuthenticationError('Incorrect password');
+                }
+            
+                // find readmes authored by the user
+                const userReadmes = await ReadMe.find({ author: user.username });
+    
+                // extract the IDs of user's readmes
+                const userReadmeIds = userReadmes.map(readme => readme._id);
+    
+                // delete comments made by others on the user's readmes
+                await Comment.deleteMany({
+                    readMeId: {
+                        $in: userReadmeIds
+                    },
+                    author: {
+                        $ne: user.username
+                    }
+                });
+    
+                // delete associated ReadMes and comments
+                await ReadMe.deleteMany({ author: user.username });
+                await Comment.deleteMany({ author: user.username });
+            
+                // delete the user
+                const deletedUser = await User.findByIdAndRemove(id);
+    
+                if (!deletedUser) {
+                    throw new AuthenticationError('User not found');
+                }
+                return deletedUser;
+            }
+            throw AuthenticationError;
+        },
+              
         // Creates a new readme and adds it to user's readmes
         addReadMe: async (parent, args, context) => {
             if (context.user) {
