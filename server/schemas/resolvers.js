@@ -87,20 +87,34 @@ const resolvers = {
         },
 
         // Edits a readme and updates a user's readmes
-        updateReadMe: async (parent, args) => {
-            const { readMeId, ...updateArgs } = args;
-            const readme = await ReadMe.findOneAndUpdate(
-                { _id: readMeId },
-                { ...updateArgs },
-                { new: true }
-            );
+        updateReadMe: async (parent, args, context) => {
 
-            await User.findOneAndUpdate(
-                { _id: readMeId },
-                { $pull: { readMes: { _id: readMeId } } },
-                { $addToSet: { readMes: readme } }
-            );
-            return readme;
+            const {
+                _id: readMeId,
+                ...updateArgs
+            } = args;
+            
+            try {
+                const readme = await ReadMe.findOneAndUpdate(
+                    { _id: readMeId },
+                    { ...updateArgs },
+                    { new: true }
+                );
+                console.log('context.user.username');
+                console.log(context.user.username);
+                await User.findOneAndUpdate(
+                    { username: context.user.username },
+                    { $pull: { ReadMes: { _id: readMeId } } },
+                    { $addToSet: { ReadMes: readme } }
+                );
+
+                return readme;
+
+            } catch (error) {
+                console.error('Error updating ReadMe:', error);
+                throw error;
+            }
+
         },
 
         // Deletes a readme and removes it from a user's readmes
