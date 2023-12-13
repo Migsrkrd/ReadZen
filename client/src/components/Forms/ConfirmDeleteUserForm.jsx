@@ -137,10 +137,10 @@ const ConfirmDeleteUserForm = ({ setOpen }) => {
         />
 
         <StyledTextField
-          id="newPassword"  
-          label="New Password"
+          id="password"  
+          label="Password"
           type="password"
-          value={userFormData.newPassword}
+          value={userFormData.password}
           helperText={error ? errorMessages.main : ''}
           onChange={handleInputChange}
           fullWidth
@@ -153,10 +153,7 @@ const ConfirmDeleteUserForm = ({ setOpen }) => {
         />
 
         <Button
-          disabled={
-            !userFormData.currentPassword ||
-            !userFormData.newPassword
-          }
+          disabled={!userFormData.password}
           type='submit'
           variant='contained'
           sx={{
@@ -166,7 +163,7 @@ const ConfirmDeleteUserForm = ({ setOpen }) => {
             },
           }}
         >
-          Update Password
+          Confirm Delete Account
         </Button>
 
         <Button

@@ -118,10 +118,10 @@ const ChangePasswordForm = ({ setOpen }) => {
       >
 
         <StyledTextField
-          id="password"  
-          label="Password"
+          id="newPassword"  
+          label="New Password"
           type="password"
-          value={userFormData.password}
+          value={userFormData.newPassword}
           helperText={error ? errorMessages.main : ''}
           onChange={handleInputChange}
           fullWidth
@@ -134,7 +134,10 @@ const ChangePasswordForm = ({ setOpen }) => {
         />
 
         <Button
-          disabled={!userFormData.password}
+          disabled={
+            !userFormData.currentPassword ||
+            !userFormData.newPassword
+          }
           type='submit'
           variant='contained'
           sx={{
@@ -144,7 +147,7 @@ const ChangePasswordForm = ({ setOpen }) => {
             },
           }}
         >
-          Confirm Delete Account
+          Update Password
         </Button>
 
         <Button
@@ -159,7 +162,7 @@ const ChangePasswordForm = ({ setOpen }) => {
         >
           Cancel
         </Button>
-
+        
       </Box>
 
       {/* Note about Readmes and Comments deletion */}
