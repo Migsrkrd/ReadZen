@@ -88,12 +88,10 @@ const resolvers = {
 
         // Edits a readme and updates a user's readmes
         updateReadMe: async (parent, args, context) => {
-
             const {
                 _id: readMeId,
                 ...updateArgs
             } = args;
-            
             try {
                 const readme = await ReadMe.findOneAndUpdate(
                     { _id: readMeId },

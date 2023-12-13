@@ -4,10 +4,10 @@ import MarkdownIt from 'markdown-it';
 import { Button, Modal, Box, Typography } from '@mui/material';
 import { useQuery, useMutation } from '@apollo/client';
 import { UPDATE_README, DELETE_README } from '../utils/mutations';
-import { GET_READMES } from '../utils/queries';
+import { GET_READMES, GET_ALL_READMES } from '../utils/queries';
 import Avatar from './Avatar';
 import { saveAs } from 'file-saver';
-import { GET_READMES } from '../utils/queries';
+// import { GET_READMES } from '../utils/queries';
 import Auth from '../utils/auth';
 
 const deleteStyle = {
@@ -112,10 +112,9 @@ const ProfileCard = (props) => {
     refetchQueries: [
       GET_READMES, {
         variables: {
-          username: Auth.getProfile().data.username,
-        }
-      }
-    ]
+          username: Auth.getProfile().data.username
+        } 
+  }]
   });
 
   const callDelete = (id, event) => {
@@ -146,6 +145,19 @@ const ProfileCard = (props) => {
     });
   };
 
+    const togglePin = (id, isPinned, event) => {
+      event.stopPropagation();
+      console.log(isPinned);
+      const newIsPinned = !isPinned;
+      console.log(newIsPinned);
+      togglePublished({
+        variables: {
+          readMeId: id,
+          isPinned: newIsPinned,
+        }
+      })
+      console.log("toggle pin")
+    } 
 
   function noMoreThanWords(str) {
     if (str.split(" ").length > 30) {
@@ -154,7 +166,7 @@ const ProfileCard = (props) => {
     return str;
   }
 
-  console.log(props.ReadMes);
+  // console.log(props.ReadMes);
 
   return (
     
@@ -169,7 +181,7 @@ const ProfileCard = (props) => {
                 {readme.author}
               </h4>
             </Link>
-            
+            <Button onClick={(event)=>togglePin(readme._id, readme.isPinned, event)}>Pin</Button>
           </div>
           
           <div className="card-body">
