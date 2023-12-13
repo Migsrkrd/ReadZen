@@ -7,7 +7,6 @@ import { UPDATE_README, DELETE_README } from '../utils/mutations';
 import { GET_READMES } from '../utils/queries';
 import Avatar from './Avatar';
 import { saveAs } from 'file-saver';
-import { GET_READMES } from '../utils/queries';
 import Auth from '../utils/auth';
 
 const deleteStyle = {
@@ -46,68 +45,13 @@ const btn = {
 };
 
 const ProfileCard = (props) => {
-  // console.log('props.ReadMes');
-  // console.log(props.ReadMes);
 
   const md = MarkdownIt()
   const [markdown, setMarkdown] = useState();
   const [open, setOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [deleteId, setDeleteId] = useState();
-  // const [deleteId, setDeleteId] = useState();
-
-  // const [deleteReadMe] = useMutation(DELETE_README, {
-    // variables: { readMeId: deleteId },
-  // });
-
   const [isPinned, setIsPinned] = useState(false);
-
-  const handleOpen = (readme) => {
-    setMarkdown(readme)
-    setOpen(true);
-  }
-  const handleClose = (event) => {
-    event.stopPropagation();
-    setOpen(false);
-  }
-
-  const handleDeleteOpen = (id, event) => {
-    event.stopPropagation();
-    setDeleteId(id);
-    setIsModalOpen(true);
-  };
-
-  const handleDeleteClose = () => {
-    setIsModalOpen(false);
-  };
-
-  const confirmDelete = () => {
-    deleteReadMe({
-      variables: {
-        readMeId: deleteId,
-      },
-    });
-    setIsModalOpen(false);
-    window.location.reload();
-  };
-
-  const downloadFile= (readme, title, event) => {
-    event.stopPropagation();
-    const fileName = `${title}.README.md`;
-    const blob = new Blob([readme], { type: 'text/plain;charset=utf-8' });
-    saveAs(blob, fileName);
-  }
-
-  const [deleteReadMe] = useMutation(DELETE_README, {
-    refetchQueries:[
-      GET_READMES, {
-      variables: {
-        username: Auth.getProfile().data.username
-      }
-    }]
-    // variables: { readMeId: deleteId },
-  });
-  const [readMeIsPublished, setReadMeIsPublished] = useState();
 
   const [togglePublished] = useMutation(UPDATE_README, {
     refetchQueries: [
@@ -119,28 +63,65 @@ const ProfileCard = (props) => {
     ]
   });
 
+  const [deleteReadMe] = useMutation(DELETE_README, {
+    refetchQueries:[
+      GET_READMES, {
+        variables: {
+          username: Auth.getProfile().data.username
+        }  
+      }  
+    ]  
+  });  
+    
+  const handleOpen = (readme) => {
+    setMarkdown(readme)
+    setOpen(true);
+  }  
+  const handleClose = (event) => {
+    event.stopPropagation();
+    setOpen(false);
+  }  
+
+  const handleDeleteOpen = (id, event) => {
+    event.stopPropagation();
+    setDeleteId(id);
+    setIsModalOpen(true);
+  };  
+
+  const handleDeleteClose = () => {
+    setIsModalOpen(false);
+  };  
+
+  const confirmDelete = () => {
+    deleteReadMe({
+      variables: {
+        readMeId: deleteId,
+      },  
+    });  
+    setIsModalOpen(false);
+  };
+
   const callPublish = (id, isPublished, event) => {
     event.stopPropagation();
     const newIsPublished = !isPublished;
     const newDatePublished = newIsPublished
-      ? new Date().toISOString()
-      : null;
-
+    ? new Date().toISOString()
+    : null;
+    
     togglePublished({
       variables: { 
         readMeId: id,
         isPublished: newIsPublished,
         datePublished: newDatePublished,
-        },
+      },
     });
   };
-
-
-  function noMoreThanWords(str) {
-    if (str.split(" ").length > 30) {
-      return str.split(" ").splice(0, 30).join(" ") + "...";
-    }
-    return str;
+  
+  const downloadFile= (readme, title, event) => {
+    event.stopPropagation();
+    const fileName = `${title}.README.md`;
+    const blob = new Blob([readme], { type: 'text/plain;charset=utf-8' });
+    saveAs(blob, fileName);
   }
 
   function pinThis(event){
@@ -150,12 +131,19 @@ const ProfileCard = (props) => {
     if(isPinned === true){
       event.target.classList.remove("unpinned");
       event.target.classList.add("pinned");
-  } else if(isPinned === false) {
-    event.target.classList.remove("pinned");
-    event.target.classList.add("unpinned");
+    } else if(isPinned === false) {
+      event.target.classList.remove("pinned");
+      event.target.classList.add("unpinned");
+    }
+    console.log(isPinned);
   }
-}
-console.log(isPinned);
+
+  function noMoreThanWords(str) {
+    if (str.split(" ").length > 30) {
+      return str.split(" ").splice(0, 30).join(" ") + "...";
+    }
+    return str;
+  }
 
   return (
     
@@ -221,37 +209,53 @@ console.log(isPinned);
             </div>
           </div>
         </div>
-  ))}
-          <Modal
-          open={open}
-          onClose={handleClose}
-          aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description"
-          >
-            <Box sx={style}> 
-            <div dangerouslySetInnerHTML={{__html: md.render(`${markdown}`)}}>
-                </div>
-                <Button onClick={handleClose}>Close</Button>
-            </Box>
-          </Modal>
-          <Modal
+      ))}
+
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}> 
+          <div dangerouslySetInnerHTML={{__html: md.render(`${markdown}`)}}>
+          </div>
+
+          <Button onClick={handleClose}>
+            Close
+          </Button>
+
+        </Box>
+      </Modal>
+
+      <Modal
         open={isModalOpen}
         onClose={handleDeleteClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
         <Box sx={deleteStyle}>
+
           <Typography id="modal-modal-title" variant="h6" component="h2">
             Confirm Delete
           </Typography>
+
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
             Are you sure you want to delete this card?
           </Typography>
-          <Button sx={btn} onClick={confirmDelete}>Delete</Button>
-          <Button sx={btn} onClick={handleDeleteClose}>Cancel</Button>
+
+          <Button sx={btn} onClick={confirmDelete}>
+            Delete
+          </Button>
+
+          <Button sx={btn} onClick={handleDeleteClose}>
+            Cancel
+          </Button>
+
         </Box>
       </Modal>
-  </div>
+
+    </div>
   );
 };
 
