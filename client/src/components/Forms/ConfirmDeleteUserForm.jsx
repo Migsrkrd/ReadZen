@@ -62,11 +62,19 @@ const ConfirmDeleteUserForm = () => {
       // setShowAlert(true);
     }
 
-    setUserFormData({
-      currentPassword: '',
-      newPassword: '',
-    });
+    clearForm()
   };
+
+  const handleCancel = () => {
+    setOpen(false);
+    clearForm();
+  };
+
+  const clearForm = () => {
+    setUserFormData({
+      password: '',
+    });
+  }
 
   const handleError = (error) => {
     // single error message for any validation error:
@@ -156,6 +164,20 @@ const ConfirmDeleteUserForm = () => {
         >
           Update Password
         </Button>
+
+        <Button
+          variant='contained'
+          onClick={handleCancel}
+          sx={{
+            backgroundColor: '#666',
+            '&:hover': {
+              backgroundColor: '#888',
+            },
+          }}
+        >
+          Cancel
+        </Button>
+
       </Box>
     </>
   );
