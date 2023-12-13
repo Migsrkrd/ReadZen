@@ -27,6 +27,7 @@ export const LOGIN_USER = gql`
 export const UPDATE_USERNAME = gql`
   mutation updateUsername($id: ID!, $newUsername: String!) {
     updateUsername(id: $id, newUsername: $newUsername) {
+      token
       user {
         _id
         username
@@ -38,8 +39,11 @@ export const UPDATE_USERNAME = gql`
 export const UPDATE_PASSWORD = gql`
   mutation updatePassword($id: ID!, $currentPassword: String!, $newPassword: String!) {
     updatePassword(id: $id, currentPassword: $currentPassword, newPassword: $newPassword) {
-      _id
-      username
+      token
+      user {
+        _id
+        username
+      }
     }
   }
 `;

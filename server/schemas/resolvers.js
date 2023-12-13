@@ -89,8 +89,9 @@ const resolvers = {
                 if (!updatedUser) {
                   throw new AuthenticationError('User not found');
                 }
-          
-                return updatedUser;
+
+                const token = signToken(updatedUser);
+                return { token, updatedUser };
             }
             throw AuthenticationError;
         },
@@ -117,7 +118,8 @@ const resolvers = {
                 user.password = newPassword;
                 await user.save();
           
-                return user;
+                const token = signToken(user);
+                return { token, user };
             }
             throw AuthenticationError;
         },
