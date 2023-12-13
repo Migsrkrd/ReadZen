@@ -1,6 +1,25 @@
 const { User, ReadMe, Comment } = require('../models');
 const { signToken, AuthenticationError } = require('../utils/auth');
 
+// Helper function to update author name in all readmes
+const updateAuthorNamenReadMes = async (oldUsername, newUsername) => {
+    try {
+        // find all readmes by user
+        const userReadMes = await ReadMe.find({ author: oldUsername });
+
+        // update author name in each readme
+        await Promise.all(
+            userReadMes.map(async (readme) => {
+                readme.author = newUsername;
+                return readme.save();
+            })
+        );
+    } catch (error) {
+        console.error('Error updating author name in readmes:', error);
+        throw error;
+    }
+};
+
 const resolvers = {
     Query: {
 
@@ -78,20 +97,27 @@ const resolvers = {
         // Update a user with a new username
         updateUsername: async (parent, { id, newUsername }, context) => {
             if (context.user && context.user._id == id) {
-
-                // find and update the user
-                const updatedUser = await User.findByIdAndUpdate(
-                  id,
-                  { $set: { username: newUsername } },
-                  { new: true }
-                );
-          
-                if (!updatedUser) {
-                  throw new AuthenticationError('User not found');
+                try {
+                    // find and update the user
+                    const updatedUser = await User.findByIdAndUpdate(
+                      id,
+                      { $set: { username: newUsername } },
+                      { new: true }
+                    );
+              
+                    if (!updatedUser) {
+                      throw new AuthenticationError('User not found');
+                    }
+    
+                    // update author name in readmes
+                    await updateAuthorNamenReadMes(context.user.username, newUsername);
+    
+                    const token = signToken(updatedUser);
+                    return { token, updatedUser };
+                } catch (error) {
+                    console.error('Error updating username:', error);
+                    throw error;
                 }
-
-                const token = signToken(updatedUser);
-                return { token, updatedUser };
             }
             throw AuthenticationError;
         },

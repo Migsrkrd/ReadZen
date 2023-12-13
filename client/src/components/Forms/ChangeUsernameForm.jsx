@@ -46,6 +46,8 @@ const ChangeUsernameForm = ({ setOpen }) => {
       ...userFormData,
     }
   });
+  console.log('userFormData');
+  console.log(userFormData);
 
   const handleInputChange = (event) => {
     const { id, value } = event.target;
@@ -113,9 +115,9 @@ const ChangeUsernameForm = ({ setOpen }) => {
       >
 
         <StyledTextField
-          id='username'  
+          id='newUsername'  
           label="New Username"
-          value={userFormData.username}
+          value={userFormData.newUsername}
           helperText={error ? errorMessages.main : ''}
           onChange={handleInputChange}
           fullWidth
@@ -128,7 +130,7 @@ const ChangeUsernameForm = ({ setOpen }) => {
         />
 
         <Button
-          disabled={!userFormData.username}
+          disabled={!userFormData.newUsername}
           type='submit'
           variant='contained'
           sx={{
