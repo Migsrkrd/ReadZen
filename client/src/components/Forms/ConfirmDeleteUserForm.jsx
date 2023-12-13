@@ -58,7 +58,11 @@ const ConfirmDeleteUserForm = ({ setOpen }) => {
     event.preventDefault();
     try {
       // use the mutation for updating the username
-      await deleteUser();
+      const { data } = await deleteUser();
+      
+      if (data) {
+        Auth.logout();
+      }
 
     } catch (e) {
       console.error(e);

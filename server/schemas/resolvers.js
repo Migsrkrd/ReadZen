@@ -155,14 +155,18 @@ const resolvers = {
                 
                 // find the user
                 const user = await User.findById(id);
-          
+                console.log('user');
+                console.log(user);
+
                 if (!user) {
                   throw new AuthenticationError('User not found');
                 }
     
                 // check the password
                 const correctPass = await user.isCorrectPassword(password);
-    
+                console.log('correctPass');
+                console.log(correctPass);
+                
                 if (!correctPass) {
                     throw new AuthenticationError('Incorrect password');
                 }
@@ -193,7 +197,6 @@ const resolvers = {
                 if (!deletedUser) {
                     throw new AuthenticationError('User not found');
                 }
-            
                 return deletedUser;
             }
             throw AuthenticationError;
