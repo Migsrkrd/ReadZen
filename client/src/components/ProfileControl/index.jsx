@@ -42,10 +42,6 @@ const ProfileControl = () => {
     Auth.logout();
   };
 
-  console.log('Auth.getProfile().data');
-  console.log(Auth.getProfile().data);
-
-
   if (!state.profileControlOpen) {
     return (
       <button

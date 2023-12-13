@@ -39,8 +39,12 @@ const ChangeUsernameForm = () => {
   // const [showAlert, setShowAlert] = useState(false);
 
   // update the mutation for updating the username
+  const { _id: userId } = Auth.getProfile().data;
   const [updateUsername, { error }] = useMutation(UPDATE_USERNAME, {
-    variables: userFormData,
+    variables: {
+      id: userId,
+      ...userFormData,
+    }
   });
 
   const handleInputChange = (event) => {
