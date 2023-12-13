@@ -79,13 +79,10 @@ const About = () => {
       borderRadius: "10px",
       lineHeight: "1.5",
     },
-    holder: {
-      paddingTop: "150px",
-    }
   };
 
   return (
-    <div style={styles.holder}>
+    <div>
     <div style={styles.aboutUs}>
       <div style={styles.main}>
         <h1>About ReadZen</h1>
