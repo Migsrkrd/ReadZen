@@ -134,12 +134,12 @@ const resolvers = {
         },
 
         // Create a comment
-        addComment: async (parent, { text, readMeId }, context) => {
+        addComment: async (parent, args, context) => {
             if (context.user) {
                 const comment = await Comment.create({
                     author: context.user.username, 
-                    text, 
-                    readMeId
+                    text: args.text, 
+                    readMeId: args.readMeId
                 });
                 return comment;
             }
@@ -147,15 +147,20 @@ const resolvers = {
         },
 
         // Updates a comment
-        updateComment: async (parent, { text, readMeId }, context) => {
+        updateComment: async (parent, args, context) => {
             if (context.user) {
-                const comment = await Comment.findOneAndUpdate(
-                    { _id: commentId },
-                    { text },
-                    { new: true }
-                );
-    
-                return comment;
+                const commentAuthor = (await Comment.findOne({ _id: args._id })).author;
+
+                // Checks if the logged in user matches the comment author
+                if (commentAuthor == context.user.username) {
+                    const comment = await Comment.findOneAndUpdate(
+                        { _id: args._id },
+                        { text: args.text },
+                        { new: true }
+                    );
+        
+                    return comment;
+                }
             }
             throw AuthenticationError;
         },
@@ -163,8 +168,13 @@ const resolvers = {
         // Deletes a comment
         deleteComment: async (parent, args, context) => {
             if(context.user) {
-                const comment = await Comment.findOneAndDelete({ _id: args._id });
-                return comment;
+                const commentAuthor = (await Comment.findOne({ _id: args._id })).author;
+
+                // Checks if the logged in user matches the comment author
+                if (commentAuthor == context.user.username) {
+                    const comment = await Comment.findOneAndDelete({ _id: args._id });
+                    return comment;
+                }
             }
             throw AuthenticationError;
         },

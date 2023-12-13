@@ -96,12 +96,14 @@ type Mutation {
         markdown: String
     ): ReadMe
     addComment(
+        _id: ID!
         readMeId: ID!
         author: String!,
         text: String!,
         dateCreated: String
     ): Comment
     updateComment(
+        _id: ID!
         readMeId: ID!
         author: String,
         text: String,
