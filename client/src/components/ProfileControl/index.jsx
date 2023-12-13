@@ -1,4 +1,6 @@
+import React, { useState } from 'react';
 import Auth from '../../utils/auth';
+import { useStoreContext } from '../../utils/GlobalState';
 
 import Backdrop   from '@mui/material/Backdrop';
 import Box        from '@mui/material/Box';
@@ -40,17 +42,20 @@ const ProfileControl = () => {
     Auth.logout();
   };
 
+  console.log('Auth.getProfile().data');
+  console.log(Auth.getProfile().data);
+
 
   if (!state.profileControlOpen) {
     return (
-      <Button
+      <button
         className="profile-control-closed"
         onClick={toggleProfileControl}
       >
         <span role="img" aria-label="profile-control">
           ⚙️
         </span>
-      </Button>
+      </button>
     );
   }
 

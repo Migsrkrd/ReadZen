@@ -1,4 +1,4 @@
-import { TOGGLE_PROFILE_CONTROL } from '../../utils/actions';
+import { TOGGLE_PROFILE_CONTROL } from '../utils/actions';
 
 export const reducer = (state, action) => {
   switch (action.type) {
