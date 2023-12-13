@@ -282,7 +282,7 @@ header h1{
     width: 100%;
 }
 
-.dashboard{
+.dashboard, .createPage{
     display: flex;
     justify-content: center;
     align-items: center;
@@ -319,7 +319,7 @@ header h1{
 }
 
 .createPage{
-    padding-top: 150px;
+    
 }
 
 .comment-section{
