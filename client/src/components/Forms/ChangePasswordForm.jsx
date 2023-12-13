@@ -42,8 +42,12 @@ const ChangePasswordForm = () => {
   // const [showAlert, setShowAlert] = useState(false);
 
   // update the mutation for updating the username
+  const { _id: userId } = Auth.getProfile().data;
   const [updatePassword, { error }] = useMutation(UPDATE_PASSWORD, {
-    variables: userFormData,
+    variables: {
+      id: userId,
+      ...userFormData,
+    }
   });
 
   const handleInputChange = (event) => {
