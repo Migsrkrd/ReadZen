@@ -1,14 +1,14 @@
-import { Link } from "react-router-dom";
-import { useState } from "react";
+import { Link } from 'react-router-dom';
+import { useState } from 'react';
 import MarkdownIt from 'markdown-it';
-import { Button, Modal, Box, Typography } from "@mui/material";
+import { Button, Modal, Box, Typography } from '@mui/material';
 import { useQuery, useMutation } from '@apollo/client';
 import { UPDATE_README, DELETE_README } from '../utils/mutations';
-import { GET_READMES } from "../utils/queries";
-import Avatar from "./Avatar";
+import { GET_READMES } from '../utils/queries';
+import Avatar from './Avatar';
 import { saveAs } from 'file-saver';
-import Auth from "../utils/auth";
-
+import { GET_READMES } from '../utils/queries';
+import Auth from '../utils/auth';
 
 const deleteStyle = {
   position: "absolute",
@@ -108,7 +108,15 @@ const ProfileCard = (props) => {
   });
   const [readMeIsPublished, setReadMeIsPublished] = useState();
 
-  const [togglePublished] = useMutation(UPDATE_README);
+  const [togglePublished] = useMutation(UPDATE_README, {
+    refetchQueries: [
+      GET_READMES, {
+        variables: {
+          username: Auth.getProfile().data.username,
+        }
+      }
+    ]
+  });
 
   const callDelete = (id, event) => {
     event.stopPropagation();

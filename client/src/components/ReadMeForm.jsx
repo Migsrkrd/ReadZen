@@ -88,18 +88,34 @@ const ReadMeForm = (props) => {
       }
     }
 
-    const [userFormData, setUserFormData] = useState((props.readme ? props.readme : {
-        title: '',
-        description: '',
-        tableOfContents:'',
-        installation: '',
-        usage: '',
-        credits: '',
-        license: '',
-        tests:'',
-        repoLink: '',
-        deployedLink: ''
-    }));
+    const [userFormData, setUserFormData] = useState(
+        props.readme
+          ? {
+            title:           props.readme.title,
+            description:     props.readme.description,
+            tableOfContents: props.readme.tableOfContents,
+            installation:    props.readme.installation,
+            usage:           props.readme.usage,
+            credits:         props.readme.credits,
+            license:         props.readme.license,
+            tests:           props.readme.tests,
+            repoLink:        props.readme.repoLink,
+            deployedLink:    props.readme.deployedLink,
+          }
+          : {
+            title:           '',
+            description:     '',
+            tableOfContents: '',
+            installation:    '',
+            usage:           '',
+            credits:         '',
+            license:         '',
+            tests:           '',
+            repoLink:        '',
+            deployedLink:    '',
+          }
+    );
+
     const [renderToggle, setRenderToggle] = useState('code');
     const [anchorEl, setAnchorEl] = useState(null);
     const [addReadMe, {error: addReadMeError }] = useMutation(ADD_README);
@@ -144,7 +160,7 @@ const ReadMeForm = (props) => {
                 await updateReadMe({
                     variables: {
                       readMeId: props.readme._id,
-                      markdown:myElRef.current.textContent,
+                      markdown: myElRef.current.textContent,
                       datePublished: '',
                       isPublished: false,
                       ...userFormData
