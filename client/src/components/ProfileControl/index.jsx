@@ -62,8 +62,7 @@ const ProfileControl = () => {
         <div className="close" onClick={toggleProfileControl}>
           [close]
         </div>
-        <h2>{Auth.getProfile().data.username}'s</h2>
-        <h2>Profile Control</h2>
+        <h2>{Auth.getProfile().data.username}'s Profile Control</h2>
         <div>
           
           <Button
