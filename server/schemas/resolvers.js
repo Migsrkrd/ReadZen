@@ -7,19 +7,19 @@ const resolvers = {
         // User's profile page
         me: async (parent, args, context) => {
             if (context.user) {
-                return User.findOne({ _id: context.user._id }).populate('readme');
+                return User.findOne({ _id: context.user._id }).populate('readMes');
             }
             throw AuthenticationError;
         },
 
         // Returns all users. Only for dev
         users: async () => {
-            return User.find().populate('readme');
+            return User.find().populate('readMes');
         },
 
         // Another user's profile page
         user: async (parent, { userId }) => {
-            return User.findOne({ _id: userId }).populate('readme');
+            return User.findOne({ _id: userId }).populate('readMes');
         },
 
         // Returns all readmes
@@ -81,26 +81,38 @@ const resolvers = {
 
             await User.findOneAndUpdate(
                 { username: context.user.username },
-                { $addToSet: { ReadMes: readme }}
+                { $addToSet: { readMes: readme }}
             );
             return readme;
         },
 
         // Edits a readme and updates a user's readmes
-        updateReadMe: async (parent, args) => {
-            const { readMeId, ...updateArgs } = args;
-            const readme = await ReadMe.findOneAndUpdate(
-                { _id: readMeId },
-                { ...updateArgs },
-                { new: true }
-            );
+        updateReadMe: async (parent, args, context) => {
+            const {
+                _id: readMeId,
+                ...updateArgs
+            } = args;
+            try {
+                const readme = await ReadMe.findOneAndUpdate(
+                    { _id: readMeId },
+                    { ...updateArgs },
+                    { new: true }
+                );
+                console.log('context.user.username');
+                console.log(context.user.username);
+                await User.findOneAndUpdate(
+                    { username: context.user.username },
+                    { $pull: { ReadMes: { _id: readMeId } } },
+                    { $addToSet: { ReadMes: readme } }
+                );
 
-            await User.findOneAndUpdate(
-                { _id: readMeId },
-                { $pull: { ReadMes: { _id: readMeId } } },
-                { $addToSet: { ReadMes: readme } }
-            );
-            return readme;
+                return readme;
+
+            } catch (error) {
+                console.error('Error updating ReadMe:', error);
+                throw error;
+            }
+
         },
 
         // Deletes a readme and removes it from a user's readmes
@@ -108,7 +120,7 @@ const resolvers = {
             const readme = await ReadMe.findOneAndDelete({ _id: args._id });
             await User.findOneAndUpdate(
                 { _id: args._id },
-                { $pull: { ReadMes: { _id: args._id } } },
+                { $pull: { readMes: { _id: args._id } } },
                 { new: true }
             );
             return readme;
