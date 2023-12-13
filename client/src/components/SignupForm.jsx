@@ -81,6 +81,11 @@ const SignupForm = () => {
       const property = index.split(':')[0].trim();
       messages[property] = index.split(':')[1].trim();
     });
+    if (messages.password) {
+      const passString = messages.password;
+      const newPassString = 'Password' + passString.split(')')[1];
+      messages.password = newPassString;
+    }
     console.log('error message', messages.main);
     console.log('error array', messageArray);
     console.log('error object', messages);
