@@ -100,6 +100,11 @@ const Card = (props) => {
 
     console.log("Repo link copied:", repoLink);
   }
+
+  function handleCommentSubmit(event) {
+    event.stopPropagation();
+  }
+
   return (
     <div className="cardLayout">
       {props.ReadMes.map((readme) => (
@@ -146,6 +151,7 @@ const Card = (props) => {
                   rows={4}
                 />
                 <Button
+                  onClick={handleCommentSubmit}
                   sx={{
                     backgroundColor: "#a80038",
                     color: "#fbf9fa",

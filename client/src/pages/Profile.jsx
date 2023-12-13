@@ -22,13 +22,20 @@ const Profile = () => {
         useParams().username === `${Auth.getProfile().data.username}` ? (
           <div>
             <div className="dashboard">
-              <h2>Dashboard</h2>
-              <Link className="generate" to="/generate">Generate</Link>
+              <h2>Welcome {Auth.getProfile().data.username}!</h2>
+              <Link to="/generate">
+                <button className="generate">Generate</button>
+              </Link>
             </div>
             <ProfileCard ReadMes={ReadMes} />
           </div>
         ) : (
-          <Card ReadMes={ReadMes} />
+          <div>
+            <div className="dashboard">
+              <h2>{useParams().username}'s Profile</h2>
+            </div>
+            <Card ReadMes={ReadMes} />
+          </div>
         )}
       </div>
     </>
