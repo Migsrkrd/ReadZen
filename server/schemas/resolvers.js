@@ -43,9 +43,22 @@ const resolvers = {
         },
 
         // Returns all comments
-        comments: async ({ readMeId}) => {
-            return Comment.find({ author: readMeId });
-        }
+        comments: async (_, { readMeId }) => {
+            try {
+              // Ensure readMeId is defined
+              if (!readMeId) {
+                throw new Error("readMeId is required.");
+              }
+      
+              // Use Mongoose to find comments based on readMeId
+              const comments = await Comment.find({ readMeId });
+      
+              return comments;
+            } catch (error) {
+              console.error("Error in comments resolver:", error.message);
+              throw new Error("Internal server error. Please try again later.");
+            }
+          },
     },
     
     Mutation: {

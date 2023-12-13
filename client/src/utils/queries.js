@@ -118,3 +118,15 @@ export const GET_README_BY_ID = gql`
     }
   }
 `;
+
+export const GET_COMMENTS = gql`
+  query getComments($readMeId: String!) {
+    comments(readMeId: $readMeId) {
+      _id
+      author
+      text
+      dateCreated
+    }
+  }
+`;
+
