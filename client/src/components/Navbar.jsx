@@ -101,10 +101,36 @@ const Header = () => {
         >
           <Box sx={style}>
             <Typography id="modal-modal-title" variant="h6" component="h2">
-              <Button sx={btn} name="login" onClick={handleFormChange}>
+              <Button
+                sx={{
+                  ...btn,
+                  backgroundColor:
+                    activeForm === "login" ? "" : "#a80038",
+                  color: activeForm === "login" ? "#a80038" : "white",
+                  "&:hover": {
+                    backgroundColor: activeForm === "sign up" ? "" : "#a80038",
+                    color: activeForm === "sign up" ? "#a80038" : "white",
+                  },
+                }}
+                name="login"
+                onClick={handleFormChange}
+              >
                 Login
               </Button>
-              <Button sx={btn} name="sign up" onClick={handleFormChange}>
+              <Button
+                sx={{
+                  ...btn,
+                  backgroundColor:
+                    activeForm === "sign up" ? "white" : "#a80038",
+                  color: activeForm === "sign up" ? "#a80038" : "white",
+                  "&:hover": {
+                    backgroundColor: activeForm === "login" ? "" : "#a80038",
+                    color: activeForm === "login" ? "#a80038" : "white",
+                  },
+                }}
+                name="sign up"
+                onClick={handleFormChange}
+              >
                 Sign Up
               </Button>
             </Typography>

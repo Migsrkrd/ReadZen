@@ -135,7 +135,6 @@ const ProfileCard = (props) => {
     event.target.classList.add("unpinned");
   }
 }
-console.log(isPinned);
 
   return (
     

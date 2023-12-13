@@ -4,6 +4,7 @@
     --third-color: #a80038;
     --fourth-color: #2b2024;
     background: var(--primary-color);
+    padding-top: 150px;
 }
 
 body{
@@ -27,6 +28,7 @@ header h1{
     position: fixed;
     background: var(--primary-color);
     opacity: 0.9;
+    margin-top: -150px;
 }
 
 .headers img{
@@ -226,7 +228,6 @@ header h1{
     width: 100%;
     display: flex;
     align-items: center;
-    padding-top: 150px;
 }
 
 .interactions{
@@ -285,7 +286,6 @@ header h1{
     background-color: var(--fourth-color);
     padding-bottom: 20px;
     color: var(--primary-color);
-    padding-top: 150px;
 }
 
 .dashboard h2{
