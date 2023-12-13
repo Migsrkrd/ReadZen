@@ -2,10 +2,13 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import MarkdownIt from 'markdown-it';
 import { Button, Modal, Box, Typography } from "@mui/material";
-import { useMutation } from '@apollo/client';
+import { useQuery, useMutation } from '@apollo/client';
 import { UPDATE_README, DELETE_README } from '../utils/mutations';
+import { GET_READMES } from "../utils/queries";
 import Avatar from "./Avatar";
 import { saveAs } from 'file-saver';
+import Auth from "../utils/auth";
+
 
 const deleteStyle = {
   position: "absolute",
@@ -54,9 +57,9 @@ const ProfileCard = (props) => {
   const [deleteId, setDeleteId] = useState();
   // const [deleteId, setDeleteId] = useState();
 
-  const [deleteReadMe] = useMutation(DELETE_README, {
+  // const [deleteReadMe] = useMutation(DELETE_README, {
     // variables: { readMeId: deleteId },
-  });
+  // });
 
   const handleOpen = (readme) => {
     setMarkdown(readme)
@@ -94,6 +97,15 @@ const ProfileCard = (props) => {
     saveAs(blob, fileName);
   }
 
+  const [deleteReadMe] = useMutation(DELETE_README, {
+    refetchQueries:[
+      GET_READMES, {
+      variables: {
+        username: Auth.getProfile().data.username
+      }
+    }]
+    // variables: { readMeId: deleteId },
+  });
   const [readMeIsPublished, setReadMeIsPublished] = useState();
 
   const [togglePublished] = useMutation(UPDATE_README);
