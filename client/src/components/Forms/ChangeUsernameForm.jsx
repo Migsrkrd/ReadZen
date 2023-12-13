@@ -111,48 +111,51 @@ const ChangeUsernameForm = () => {
         noValidate
         autoComplete="off"
       >
-        <StyledTextField
-          id='username'  
-          label="New Username"
-          value={userFormData.username}
-          helperText={error ? errorMessages.main : ''}
-          onChange={handleInputChange}
-          fullWidth
-          margin="normal"
-          sx={{
-            '& .MuiInputLabel-root.Mui-focused': {
-              color: '#a80038',
-            },
-          }}
-        />
+        <Box>
 
-        <Button
-          disabled={!userFormData.username}
-          type='submit'
-          variant='contained'
-          sx={{
-            backgroundColor: '#a80038',
-            '&:hover': {
-              backgroundColor: '#fd0054',
-            },
-          }}
-        >
-          Update Username
-        </Button>
+          <StyledTextField
+            id='username'  
+            label="New Username"
+            value={userFormData.username}
+            helperText={error ? errorMessages.main : ''}
+            onChange={handleInputChange}
+            fullWidth
+            margin="normal"
+            sx={{
+              '& .MuiInputLabel-root.Mui-focused': {
+                color: '#a80038',
+              },
+            }}
+          />
 
-        <Button
-          variant='contained'
-          onClick={handleCancel}
-          sx={{
-            backgroundColor: '#666',
-            '&:hover': {
-              backgroundColor: '#888',
-            },
-          }}
-        >
-          Cancel
-        </Button>
+          <Button
+            disabled={!userFormData.username}
+            type='submit'
+            variant='contained'
+            sx={{
+              backgroundColor: '#a80038',
+              '&:hover': {
+                backgroundColor: '#fd0054',
+              },
+            }}
+          >
+            Update Username
+          </Button>
 
+          <Button
+            variant='contained'
+            onClick={handleCancel}
+            sx={{
+              backgroundColor: '#666',
+              '&:hover': {
+                backgroundColor: '#888',
+              },
+            }}
+          >
+            Cancel
+          </Button>
+
+        </Box>
       </Box>
     </>
   );
