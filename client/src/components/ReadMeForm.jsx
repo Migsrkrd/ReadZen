@@ -97,7 +97,7 @@ const ReadMeForm = (props) => {
             license:         props.readme.license,
             tests:           props.readme.tests,
             repoLink:        props.readme.repoLink,
-            deployedLink:    props.readme.deployedLink
+            deployedLink:    props.readme.deployedLink,
           }
           : {
             title:           '',
@@ -109,7 +109,7 @@ const ReadMeForm = (props) => {
             license:         '',
             tests:           '',
             repoLink:        '',
-            deployedLink:    ''
+            deployedLink:    '',
           }
     );
 
