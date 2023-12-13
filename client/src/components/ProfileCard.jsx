@@ -1,13 +1,27 @@
-import { Link } from "react-router-dom";
-import { useState } from "react";
+import { Link } from 'react-router-dom';
+import { useState } from 'react';
 import MarkdownIt from 'markdown-it';
-import { Button, Modal, Box } from "@mui/material";
-import { useMutation } from '@apollo/client';
+import { Button, Modal, Box, Typography } from '@mui/material';
+import { useQuery, useMutation } from '@apollo/client';
 import { UPDATE_README, DELETE_README } from '../utils/mutations';
-import Avatar from "./Avatar";
+import { GET_READMES, GET_ALL_READMES } from '../utils/queries';
+import Avatar from './Avatar';
 import { saveAs } from 'file-saver';
+import Auth from '../utils/auth';
 
-
+const deleteStyle = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "#2b2024",
+  border: "2px solid #a80038",
+  borderRadius: "10px",
+  boxShadow: 24,
+  p: 4,
+  color: "#fbf9fa",
+};
 
 const style = {
   position: "absolute",
@@ -21,67 +35,106 @@ const style = {
   p: 4,
 };
 
+const btn = {
+  border: "2px solid #fbf9fa ",
+  backgroundColor: "#a80038",
+  borderRadius: "10px",
+  boxShadow: 24,
+  color: "#fbf9fa",
+  m: 1,
+};
+
 const ProfileCard = (props) => {
-  // console.log('props.ReadMes');
-  // console.log(props.ReadMes);
 
   const md = MarkdownIt()
   const [markdown, setMarkdown] = useState();
   const [open, setOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  // const [deleteId, setDeleteId] = useState();
+  const [deleteId, setDeleteId] = useState();
+  const [isPinned, setIsPinned] = useState(false);
 
+  const [togglePublished] = useMutation(UPDATE_README, {
+    refetchQueries: [
+      GET_READMES, {
+        variables: {
+          username: Auth.getProfile().data.username
+        } 
+  }]
+  });
+
+  const [deleteReadMe] = useMutation(DELETE_README, {
+    refetchQueries:[
+      GET_READMES, {
+        variables: {
+          username: Auth.getProfile().data.username
+        }  
+      }  
+    ]  
+  });  
+    
   const handleOpen = (readme) => {
     setMarkdown(readme)
     setOpen(true);
-  }
+  }  
   const handleClose = (event) => {
     event.stopPropagation();
     setOpen(false);
-  }
-  const downloadFile= (readme, title, event) => {
+  }  
+
+  const handleDeleteOpen = (id, event) => {
     event.stopPropagation();
-    const fileName = `${title}.README.md`;
-    const blob = new Blob([readme], { type: 'text/plain;charset=utf-8' });
-    saveAs(blob, fileName);
-  }
-  const [deleteId, setDeleteId] = useState();
-  const [readMeIsPublished, setReadMeIsPublished] = useState();
+    setDeleteId(id);
+    setIsModalOpen(true);
+  };  
 
-  const [deleteReadMe] = useMutation(DELETE_README, {
-    // variables: { readMeId: deleteId },
-  });
+  const handleDeleteClose = () => {
+    setIsModalOpen(false);
+  };  
 
-  const [togglePublished] = useMutation(UPDATE_README);
-
-  const callDelete = (id, event) => {
-    event.stopPropagation();
-    // setDeleteId(id);
-    deleteReadMe(
-      {
-        variables: {
-          readMeId: id,
-        },
-      }
-    );
-  }
+  const confirmDelete = () => {
+    deleteReadMe({
+      variables: {
+        readMeId: deleteId,
+      },  
+    });  
+    setIsModalOpen(false);
+  };
 
   const callPublish = (id, isPublished, event) => {
     event.stopPropagation();
     const newIsPublished = !isPublished;
     const newDatePublished = newIsPublished
-      ? new Date().toISOString()
-      : null;
-
+    ? new Date().toISOString()
+    : null;
+    
     togglePublished({
       variables: { 
         readMeId: id,
         isPublished: newIsPublished,
         datePublished: newDatePublished,
-        },
+      },
     });
   };
 
+    const togglePin = (id, isPinned, event) => {
+      event.stopPropagation();
+      setIsPinned(!isPinned);
+      if(isPinned === true){
+        event.target.classList.remove("unpinned");
+        event.target.classList.add("pinned");
+      } else if(isPinned === false) {
+        event.target.classList.remove("pinned");
+        event.target.classList.add("unpinned");
+      }
+      const newIsPinned = !isPinned;
+      togglePublished({
+        variables: {
+          readMeId: id,
+          isPinned: newIsPinned,
+        }
+      })
+      console.log("toggle pin")
+    } 
 
   function noMoreThanWords(str) {
     if (str.split(" ").length > 30) {
@@ -90,7 +143,12 @@ const ProfileCard = (props) => {
     return str;
   }
 
-  console.log(props.ReadMes);
+  const downloadFile= (readme, title, event) => {
+    event.stopPropagation();
+    const fileName = `${title}.README.md`;
+    const blob = new Blob([readme], { type: 'text/plain;charset=utf-8' });
+    saveAs(blob, fileName);
+  }
 
   return (
     
@@ -105,6 +163,7 @@ const ProfileCard = (props) => {
                 {readme.author}
               </h4>
             </Link>
+            <i onClick={(event)=>togglePin(readme._id, readme.isPinned, event)} className="fa-solid fa-thumbtack pinned"></i>
             
           </div>
           
@@ -133,14 +192,13 @@ const ProfileCard = (props) => {
                 <i className="fa fa-link"></i>
               </Link>
             </div>
-          </div>
             <div className="interactions">
               <Link className="edit-link" to="/generate" state={{ readme }}>
                 <button className="btnBeg">Edit</button>
               </Link>
               <button
                 className="btnMid"
-                onClick={(event) => callDelete(readme._id, event)}
+                onClick={(event) => handleDeleteOpen(readme._id, event)}
               >
                 Delete
               </button>
@@ -154,44 +212,56 @@ const ProfileCard = (props) => {
                   Download
                 </button>
             </div>
+          </div>
         </div>
-  ))}
-          <Modal
-          open={open}
-          onClose={handleClose}
-          aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description"
-          >
-            <Box sx={style}> 
-            <div dangerouslySetInnerHTML={{__html: md.render(`${markdown}`)}}>
-                </div>
-                <Button onClick={handleClose}>Close</Button>
-            </Box>
-          </Modal>
-  </div>
+      ))}
+
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}> 
+          <div dangerouslySetInnerHTML={{__html: md.render(`${markdown}`)}}>
+          </div>
+
+          <Button onClick={handleClose}>
+            Close
+          </Button>
+
+        </Box>
+      </Modal>
+
+      <Modal
+        open={isModalOpen}
+        onClose={handleDeleteClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={deleteStyle}>
+
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            Confirm Delete
+          </Typography>
+
+          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+            Are you sure you want to delete this card?
+          </Typography>
+
+          <Button sx={btn} onClick={confirmDelete}>
+            Delete
+          </Button>
+
+          <Button sx={btn} onClick={handleDeleteClose}>
+            Cancel
+          </Button>
+
+        </Box>
+      </Modal>
+
+    </div>
   );
 };
 
 export default ProfileCard;
-
-
-{/* <div>
-    {props.ReadMes.map((readme) => (
-    <div key={readme._id} className="card">
-
-      <div className="card-header">
-        <h3>{readme.title}</h3>
-      </div>
-      <div className="card-body">
-        <p>{noMoreThanWords(readme.description)}</p>
-        <div className="card-links">
-          <a href={readme.reoLink} target="_blank" rel="noopener noreferrer">
-            <i className="fa fa-github"></i>
-          </a>
-          <a href={readme.deployedLink} target="_blank" rel="noopener noreferrer">
-            <i className="fa fa-link"></i>
-          </a>
-
-          <Button onClick={()=>handleOpen(readme.markdown)} variant="outlined">Show ReadMe</Button>
-          <Link to='/generate' state= {{ readme} }>
-            <Button variant="outlined">Edit</Button> */}

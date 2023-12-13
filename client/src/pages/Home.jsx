@@ -6,7 +6,8 @@ import { useState } from "react";
 const Home = () => {
 
   const { loading, data } = useQuery(GET_ALL_READMES);
-  // console.log(data)
+  console.log("load")
+  console.log(data)
   const ReadMes = data?.publishedReadmes || [];
     return (
       <main>

@@ -22,6 +22,15 @@ const style = {
   p: 4,
 };
 
+const btn = {
+  color: "#a80038",
+  border: "2px solid #a80038 ",
+  backgroundColor: "#fbf9fa",
+  borderRadius: "10px",
+  boxShadow: 24,
+  m: 1,
+};
+
 const Header = () => {
   const [showModal, setShowModal] = useState(false);
 
@@ -37,16 +46,22 @@ const Header = () => {
     Auth.logout();
   };
 
+  function goHomeLogo() {
+    window.location.href = "/";
+  }
+
   return (
     <header>
       <div className="headers">
-        <div className="logo">
-        <img src="../src/assets/logo.png" alt="logo" />
-        <h1>ReadZen</h1>
+        <div onClick={goHomeLogo} className="logo">
+          <img src="../src/assets/logo.png" alt="logo" />
+          <h1>ReadZen</h1>
         </div>
         <div className="nav">
           <Link className="navlink-home" to="/">
-            <h2><i className="fa fa-home"></i></h2>
+            <h2>
+              <i className="fa fa-home"></i>
+            </h2>
           </Link>
           <Link className="navlink" to="/about">
             <h2>About</h2>
@@ -59,8 +74,9 @@ const Header = () => {
                 <h2>{Auth.getProfile().data.username}'s profile</h2>
               </Link>
 
-                <h2 className="navlink" onClick={logout}>Logout</h2>
-
+              <h2 className="navlink" onClick={logout}>
+                Logout
+              </h2>
             </div>
           ) : (
             <div className="far-nav">
@@ -74,11 +90,10 @@ const Header = () => {
 
       <div>
         <Modal
-        BackdropComponent={Backdrop}
-        BackdropProps={{
-          sx: { backdropFilter: 'blur(3px)'},
-        }}
-
+          BackdropComponent={Backdrop}
+          BackdropProps={{
+            sx: { backdropFilter: "blur(3px)" },
+          }}
           open={open}
           onClose={handleClose}
           aria-labelledby="modal-modal-title"
@@ -86,10 +101,36 @@ const Header = () => {
         >
           <Box sx={style}>
             <Typography id="modal-modal-title" variant="h6" component="h2">
-              <Button name="login" onClick={handleFormChange}>
+              <Button
+                sx={{
+                  ...btn,
+                  backgroundColor:
+                    activeForm === "login" ? "" : "#a80038",
+                  color: activeForm === "login" ? "#a80038" : "white",
+                  "&:hover": {
+                    backgroundColor: activeForm === "sign up" ? "" : "#a80038",
+                    color: activeForm === "sign up" ? "#a80038" : "white",
+                  },
+                }}
+                name="login"
+                onClick={handleFormChange}
+              >
                 Login
               </Button>
-              <Button name="sign up" onClick={handleFormChange}>
+              <Button
+                sx={{
+                  ...btn,
+                  backgroundColor:
+                    activeForm === "sign up" ? "white" : "#a80038",
+                  color: activeForm === "sign up" ? "#a80038" : "white",
+                  "&:hover": {
+                    backgroundColor: activeForm === "login" ? "" : "#a80038",
+                    color: activeForm === "login" ? "#a80038" : "white",
+                  },
+                }}
+                name="sign up"
+                onClick={handleFormChange}
+              >
                 Sign Up
               </Button>
             </Typography>

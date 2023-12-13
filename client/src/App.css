@@ -4,6 +4,7 @@
     --third-color: #a80038;
     --fourth-color: #2b2024;
     background: var(--primary-color);
+    padding-top: 150px;
 }
 
 body{
@@ -27,6 +28,7 @@ header h1{
     position: fixed;
     background: var(--primary-color);
     opacity: 0.9;
+    margin-top: -150px;
 }
 
 .headers img{
@@ -39,6 +41,10 @@ header h1{
 .logo{
     display: flex;
     font-size: 30px;
+}
+
+.logo:hover{
+    cursor: pointer;
 }
 
 .logo h1{
@@ -146,12 +152,29 @@ header h1{
 
 .card-header{
     display: flex;
-    flex-direction: column;
-    width: fit-content;
-    
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
 }
 
+.pinned{
+    margin-right: 40px;
+    margin-top: auto;
+    font-size: 30px;
+}
 
+.unpinned{
+    margin-right: 40px;
+    margin-top: auto;
+    font-size: 30px;
+    color: var(--third-color);
+}
+
+.card-header i:hover{
+    color: var(--secondary-color);
+    transition: 0.2s;
+    cursor: pointer;
+}
 
 .card-header h3{
     font-size: 25px;
@@ -205,7 +228,6 @@ header h1{
     width: 100%;
     display: flex;
     align-items: center;
-    padding-top: 150px;
 }
 
 .interactions{
@@ -222,14 +244,20 @@ header h1{
 .btnEnd{
     /* border: 1px solid var(--secondary-color); */
     border-bottom-right-radius: 9px;
+    font-size: 15px;
+    padding: 5px;
 }
 
 .btnBeg{
     border-bottom-left-radius: 9px;
+    font-size: 15px;
+    padding: 5px;
 }
 
 .btnMid{
     border-radius: 1px;
+    font-size: 15px;
+    padding: 5px;
 }
 
 .btnBeg:hover, .btnMid:hover, .btnEnd:hover{
@@ -258,7 +286,6 @@ header h1{
     background-color: var(--fourth-color);
     padding-bottom: 20px;
     color: var(--primary-color);
-    padding-top: 150px;
 }
 
 .dashboard h2{
@@ -269,18 +296,17 @@ header h1{
 }
 
 .generate{
-    background: var(--primary-color);
-    color: var(--fourth-color);
-    border: 2px solid var(--secondary-color);
+    color: var(--primary-color);
+    background: var(--third-color);
     border-radius: 10px;
     padding: 5px;
     font-weight: bolder;
-    font-size: 30px;
+    font-size: 25px;
 }
 
 .generate:hover{
     background: var(--secondary-color);
-    color: var(--primary-color);
+    color: var(--fourth-color);
     cursor: pointer;
 }
 
@@ -335,5 +361,9 @@ header h1{
     background: var(--primary-color);
     display: flex;
     justify-content: center;
+}
+
+.pin-icon{
+    color: var(--primary-color);
 }
 
