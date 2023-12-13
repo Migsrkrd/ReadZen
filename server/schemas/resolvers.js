@@ -96,7 +96,36 @@ const resolvers = {
                 isPublished,   /*****\  in updateArgs           \*/
                 ...updateArgs
             } = args;
-            console.log(args);
+            
+            try {
+                const readme = await ReadMe.findOneAndUpdate(
+                    { _id: readMeId },
+                    { ...updateArgs },
+                    { new: true }
+                );
+    
+                await User.findOneAndUpdate(
+                    { username: context.user.username },
+                    { $pull: { ReadMes: { _id: readMeId } } },
+                    { $addToSet: { ReadMes: readme } }
+                );
+
+                return readme;
+
+            } catch (error) {
+                console.error('Error updating ReadMe:', error);
+                throw error;
+            }
+        },
+
+        // Edits a readme and updates the publish state
+        updateReadMeTogglePublish: async (parent, args, context) => {
+
+            const {
+                _id: readMeId,
+                ...updateArgs
+            } = args;
+            
             try {
                 const readme = await ReadMe.findOneAndUpdate(
                     { _id: readMeId },
