@@ -22,6 +22,15 @@ const style = {
   p: 4,
 };
 
+const btn = {
+  color: "#a80038",
+  border: "2px solid #a80038 ",
+  backgroundColor: "#fbf9fa",
+  borderRadius: "10px",
+  boxShadow: 24,
+  m: 1,
+};
+
 const Header = () => {
   const [showModal, setShowModal] = useState(false);
 
@@ -52,9 +61,9 @@ const Header = () => {
             <h2>About</h2>
           </Link>
         </div>
-        <div>
+        <div className="far-nav">
           {Auth.loggedIn() ? (
-            <div className="far-nav">
+            <div className="prof-logout">
               <Link className="btn btn-lg btn-info m-2 navlink" to="/me">
                 <h2>{Auth.getProfile().data.username}'s profile</h2>
               </Link>
@@ -86,10 +95,10 @@ const Header = () => {
         >
           <Box sx={style}>
             <Typography id="modal-modal-title" variant="h6" component="h2">
-              <Button name="login" onClick={handleFormChange}>
+              <Button sx={btn} name="login" onClick={handleFormChange}>
                 Login
               </Button>
-              <Button name="sign up" onClick={handleFormChange}>
+              <Button sx={btn} name="sign up" onClick={handleFormChange}>
                 Sign Up
               </Button>
             </Typography>

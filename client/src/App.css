@@ -76,6 +76,12 @@ header h1{
     align-items: center;
 }
 
+.prof-logout{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .navlink:hover{
     color: var(--secondary-color);
     scale: 1.2;
@@ -141,6 +147,7 @@ header h1{
 .card-header{
     display: flex;
     flex-direction: column;
+    width: fit-content;
     
 }
 
@@ -215,18 +222,24 @@ header h1{
 .btnEnd{
     /* border: 1px solid var(--secondary-color); */
     border-bottom-right-radius: 9px;
+    font-size: 15px;
+    padding: 5px;
 }
 
 .btnBeg{
     border-bottom-left-radius: 9px;
+    font-size: 15px;
+    padding: 5px;
 }
 
 .btnMid{
     border-radius: 1px;
+    font-size: 15px;
+    padding: 5px;
 }
 
 .btnBeg:hover, .btnMid:hover, .btnEnd:hover{
-    color: var(--secondary-color);
+    color: var(--fourth-color);
     cursor: pointer;
     background: var(--secondary-color);
     font-weight: bolder;
