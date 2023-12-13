@@ -3,10 +3,31 @@ import { useState } from 'react';
 // import { Form, Button, Alert } from 'react-bootstrap';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
+import { styled } from '@mui/material/styles';
 import Button from '@mui/material/Button'
 import { useMutation } from '@apollo/client';
 import { LOGIN_USER } from '../utils/mutations';
 import Auth from '../utils/auth';
+
+const StyledTextField = styled(TextField)({
+  '& label.Mui-focused': {
+    color: '#a80038',
+  },
+  '& .MuiInput-underline:after': {
+    borderBottomColor: '#a80038',
+  },
+  '& .MuiOutlinedInput-root': {
+    '& fieldset': {
+      borderColor: '#a80038',
+    },
+    '&:hover fieldset': {
+      borderColor: '#a80038',
+    },
+    '&.Mui-focused fieldset': {
+      borderColor: '#a80038',
+    },
+  },
+});
 
 const LoginForm = () => {
   const [userFormData, setUserFormData] = useState({ email: '', password: '' });
@@ -55,7 +76,7 @@ const LoginForm = () => {
           noValidate
           autoComplete="off"
           >
-        <TextField
+        <StyledTextField
         id='email'
         label="Email"
         value={userFormData.email}
@@ -70,7 +91,7 @@ const LoginForm = () => {
           
         }}
       />
-        <TextField
+        <StyledTextField
         id='password'
         label="Password"
         type='password'
