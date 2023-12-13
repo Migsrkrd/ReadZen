@@ -630,7 +630,7 @@ SOFTWARE.`}>MIT</MenuItem>
                   {userFormData.description ? `## Description\n\n${userFormData.deployedLink ? `[Visit the Deployed Site](${userFormData.deployedLink})\n\n` : ''}${userFormData.description}\n\n` : ''}
                   {`${tableOfContents(userFormData)}\n\n`}
                   {userFormData.installation ? `## Installation\n\n ${userFormData.installation}\n\n` : ''}
-                  {userFormData.usage ? `## Usage\n\n ${userFormData.installation}\n\n` : ''}
+                  {userFormData.usage ? `## Usage\n\n ${userFormData.usage}\n\n` : ''}
                   {userFormData.credits ? `## Credits\n\n ${userFormData.credits}\n\n` : ''}
                   {userFormData.license ? `## License\n\n ${userFormData.license}\n\n` : ''}
                   {userFormData.tests ? `## Test\n\n ${userFormData.tests}\n\n` : ''}
@@ -642,7 +642,7 @@ SOFTWARE.`}>MIT</MenuItem>
                     (userFormData.description ? `## Description\n\n${userFormData.deployedLink ? `[Visit the Deployed Site](${userFormData.deployedLink})\n\n` : ''}${userFormData.description}\n\n` : '')}${
                     (`${ToC}\n\n`)}${
                     (userFormData.installation ? `## Installation\n\n ${userFormData.installation}\n\n` : '')}${
-                    (userFormData.usage ? `## Usage\n\n ${userFormData.installation}\n\n`:'')}${
+                    (userFormData.usage ? `## Usage\n\n ${userFormData.usage}\n\n`:'')}${
                     (userFormData.credits ? `## Credits\n\n ${userFormData.credits}\n\n`:'')}${
                     (userFormData.license ? `## License\n\n ${userFormData.license}\n\n`:'')}${
                     (userFormData.tests ? `## Test\n\n ${userFormData.tests}\n\n`:'')}
