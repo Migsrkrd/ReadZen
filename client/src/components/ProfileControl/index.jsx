@@ -1,33 +1,18 @@
 import Auth from "../utils/auth";
-import Button from '@mui/material/Button'
-import Modal from "@mui/material/Modal";
-import ChangeUsernameForm from "./ChangeUsernameForm";
-import ChangePasswordForm from "./ChangePasswordForm";
+
+import Backdrop   from '@mui/material/Backdrop';
+import Box        from '@mui/material/Box';
+import Button     from '@mui/material/Button'
+import Modal      from "@mui/material/Modal";
+import Typography from '@mui/material/Typography';
+
+import ChangeUsernameForm    from './ChangeUsernameForm';
+import ChangePasswordForm    from './ChangePasswordForm';
+import ConfirmDeleteUserForm from './ConfirmDeleteUserForm';
 
 import { TOGGLE_PROFILE_CONTROL } from '../../utils/actions';
+
 import './style.css';
-
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 400,
-  bgcolor: "#fbf9fa",
-  border: "2px solid #a80038",
-  borderRadius: "10px",
-  boxShadow: 24,
-  p: 4,
-};
-
-const btn = {
-  color: "#a80038",
-  border: "2px solid #a80038 ",
-  backgroundColor: "#fbf9fa",
-  borderRadius: "10px",
-  boxShadow: 24,
-  m: 1,
-};
 
 const ProfileControl = () => {
   const [state, dispatch] = useStoreContext();
@@ -36,18 +21,18 @@ const ProfileControl = () => {
     dispatch({ type: TOGGLE_PROFILE_CONTROL });
   }
 
-
-  const [showModal, setShowModal] = useState(false);
   const [activeForm, setActiveForm] = useState();
   const [open, setOpen] = useState(false);
 
   const UPDATE_USERNAME = 'UPDATE_USERNAME';
   const UPDATE_PASSWORD = 'UPDATE_PASSWORD';
+  const CONFIRM_DELETE_USER = 'CONFIRM_DELETE_USER';
 
   const handleOpen = (formState) => {
     setActiveForm(formState);
     setOpen(true);
   }
+
   const handleClose = () => setOpen(false);
 
   const logout = (event) => {
@@ -58,11 +43,14 @@ const ProfileControl = () => {
 
   if (!state.profileControlOpen) {
     return (
-      <div className="profile-control-closed" onClick={toggleProfileControl}>
+      <Button
+        className="profile-control-closed"
+        onClick={toggleProfileControl}
+      >
         <span role="img" aria-label="profile-control">
           ⚙️
         </span>
-      </div>
+      </Button>
     );
   }
 
@@ -77,23 +65,23 @@ const ProfileControl = () => {
         <h2>Profile Control</h2>
         <div>
           
-        <Button
+          <Button
             className="pro-con-btn"
-            onClick={handleOpen(UPDATE_USERNAME)}
+            onClick={() => handleOpen(UPDATE_USERNAME)}
           >
-            Update username
+              Update username
           </Button>
 
           <Button
             className="pro-con-btn"
-            onClick={handleOpen(UPDATE_PASSWORD)}
+            onClick={() => handleOpen(UPDATE_PASSWORD)}
           >
             Change password
           </Button>
 
           <Button
             className="pro-con-btn"
-            onClick={deleteAccount}
+            onClick={() => handleOpen(CONFIRM_DELETE_USER)}
           >
             Delete my account
           </Button>
@@ -104,25 +92,50 @@ const ProfileControl = () => {
           >
             Logout
           </Button>
+
         </div>
       </div>
 
       <div>
         <Modal
-          BackdropComponent={Backdrop}
-          BackdropProps={{
-            sx: { backdropFilter: "blur(3px)" },
-          }}
           open={open}
           onClose={handleClose}
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
-        >
-          <Box sx={style}>
+          slots={{
+            backdrop: Backdrop,
+          }}
+          slotProps={{
+            backdrop: {
+              sx: { backdropFilter: 'blur(3px)' },
+            },
+          }}
+          >
+          <Box sx={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: 400,
+            bgcolor: "#fbf9fa",
+            border: "2px solid #a80038",
+            borderRadius: "10px",
+            boxShadow: 24,
+            p: 4,
+          }}>
             <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-              {activeForm === UPDATE_USERNAME
-                ? <ChangeUsernameForm />
-                : <ChangePasswordForm />}
+              {(() => {
+                switch (activeForm) {
+                  case UPDATE_USERNAME:
+                    return <ChangeUsernameForm />;
+                  case UPDATE_PASSWORD:
+                    return <ChangePasswordForm />;
+                  case CONFIRM_DELETE_USER:
+                    return <ConfirmDeleteUserForm />;
+                  default:
+                    return null;
+                }
+              })()}
             </Typography>
           </Box>
         </Modal>
