@@ -65,19 +65,11 @@ const ChangePasswordForm = () => {
     }
 
     setUserFormData({
-      currentPassword: '',
-      newPassword: '',
+      password: '',
     });
   };
 
   const handleError = (error) => {
-    // single error message for any validation error:
-    // const message = error.message;
-    // const messages = {};
-    // messages.main = message.split(':')[0];
-    // setErrorMessages(messages);
-    // console.log('error message', messages.main);
-  
     const message = error.message;
     const messageArray = message.slice(message.indexOf(':') + 1).split(',');
     const messages = {};
@@ -111,26 +103,10 @@ const ChangePasswordForm = () => {
       >
 
         <StyledTextField
-          id="currentPassword"  
-          label="Current Password"
+          id="password"  
+          label="Password"
           type="password"
-          value={userFormData.currentPassword}
-          helperText={error ? errorMessages.main : ''}
-          onChange={handleInputChange}
-          fullWidth
-          margin="normal"
-          sx={{
-            '& .MuiInputLabel-root.Mui-focused': {
-              color: '#a80038',
-            },
-          }}
-        />
-
-        <StyledTextField
-          id="newPassword"  
-          label="New Password"
-          type="password"
-          value={userFormData.newPassword}
+          value={userFormData.password}
           helperText={error ? errorMessages.main : ''}
           onChange={handleInputChange}
           fullWidth
@@ -143,10 +119,7 @@ const ChangePasswordForm = () => {
         />
 
         <Button
-          disabled={
-            !userFormData.currentPassword ||
-            !userFormData.newPassword
-          }
+          disabled={!userFormData.password}
           type='submit'
           variant='contained'
           sx={{
@@ -156,9 +129,15 @@ const ChangePasswordForm = () => {
             },
           }}
         >
-          Update Password
+          Confirm Delete Account
         </Button>
       </Box>
+
+      {/* Note about Readmes and Comments deletion */}
+      <p style={{ marginTop: '16px', color: '#a80038' }}>
+        Warning: Deleting your account will also remove all Readmes and Comments associated with your account.
+      </p>
+
     </>
   );
 };
