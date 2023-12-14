@@ -113,7 +113,6 @@ type Mutation {
         markdown: String
     ): ReadMe
     likeReadMe(
-        _id:ID!
         readMeId: ID!
     ): User
     unLikeReadMe(

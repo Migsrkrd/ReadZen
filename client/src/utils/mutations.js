@@ -182,9 +182,22 @@ export const DELETE_README = gql`
   }
 `;
 
+
+export const LIKE_README = gql`
+mutation likeReadMe(
+  $readMeId: ID!
+  ){
+    likeReadMe(
+      readMeId: $readMeId
+      ){
+      _id
+    }
+  }
+`
+
 export const ADD_COMMENT = gql`
   mutation addComment(
-    $readMeId: String!,
+    $readMeId: ID!,
     $text: String!,
     $author: String!,
   ) {
