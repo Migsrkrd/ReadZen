@@ -116,7 +116,7 @@ const ChangePasswordForm = ({ setOpen }) => {
         noValidate
         autoComplete="off"
         >
-        <h1>Change Password</h1>
+        <h1 className='confirm-header'>Change Password</h1>
         
         <StyledTextField
           id="currentPassword"  
@@ -171,9 +171,9 @@ const ChangePasswordForm = ({ setOpen }) => {
           variant='contained'
           onClick={handleCancel}
           sx={{
-            backgroundColor: '#666',
+            backgroundColor: '#a80038',
             '&:hover': {
-              backgroundColor: '#888',
+              backgroundColor: '#fd0054',
             },
           }}
         >

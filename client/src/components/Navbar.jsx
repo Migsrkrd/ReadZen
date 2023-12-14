@@ -8,6 +8,7 @@ import Modal from "@mui/material/Modal";
 import LoginForm from "./LoginForm";
 import SignupForm from "./SignupForm";
 import Backdrop from "@mui/material/Backdrop";
+import ProfileControl from "./ProfileControl";
 
 const style = {
   position: "absolute",
@@ -80,6 +81,7 @@ const Header = () => {
               <h3 className="navlink" onClick={logout}>
                 Logout
               </h3>
+              <ProfileControl />
             </div>
           ) : (
             <div className="far-nav">

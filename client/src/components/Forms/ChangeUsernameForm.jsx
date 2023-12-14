@@ -113,7 +113,7 @@ const ChangeUsernameForm = ({ setOpen }) => {
         noValidate
         autoComplete="off"
         >
-        <h1>Change Username</h1>
+        <h1 className='confirm-header'>Change Username</h1>
         
         <StyledTextField
           id='newUsername'  
@@ -148,9 +148,9 @@ const ChangeUsernameForm = ({ setOpen }) => {
           variant='contained'
           onClick={handleCancel}
           sx={{
-            backgroundColor: '#666',
+            backgroundColor: '#a80038',
             '&:hover': {
-              backgroundColor: '#888',
+              backgroundColor: '#fd0054',
             },
           }}
         >
