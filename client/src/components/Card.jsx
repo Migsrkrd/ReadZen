@@ -74,6 +74,7 @@ const Card = (props) => {
     event.stopPropagation();
     if(!Auth.loggedIn()){
       setIsLoggedIn(true);
+      console.log("not logged in")
       return;
     }
 
