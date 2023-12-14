@@ -35,15 +35,35 @@ const Home = () => {
           {(loading || searching) ? 
           <h2>loading</h2> 
           : 
-          <div>
+          <div className="homePage">
               <TextField
                     id='search'  
                     label="Search"
                     value={search}
                     onChange={handleInputChange}
-                    fullWidth
                     multiline
                     margin="normal"
+                    sx={{width: '50%', marginLeft: '25%', marginRight: '25%', '& .MuiInputLabel-root.Mui-focused': {
+                      color: '#a80038',
+                    },
+                    '& label.Mui-focused': {
+                      color: '#a80038',
+                    },
+                    '& .MuiInput-underline:after': {
+                      borderBottomColor: '#a80038',
+                    },
+                    '& .MuiOutlinedInput-root': {
+                      '& fieldset': {
+                        borderColor: '#a80038',
+                      },
+                      '&:hover fieldset': {
+                        borderColor: '#a80038',
+                      },
+                      '&.Mui-focused fieldset': {
+                        borderColor: '#a80038',
+                      },
+                    
+                  }}}
                     />
           {search !== '' ? 
             <Card ReadMes={searched} /> :
