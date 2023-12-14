@@ -55,11 +55,16 @@ const ProfileCard = (props) => {
 
   const [togglePublished] = useMutation(UPDATE_README, {
     refetchQueries: [
-      GET_READMES, {
+      {
+        query: GET_READMES, 
         variables: {
           username: Auth.getProfile().data.username
-        } 
-  }]
+        }
+      },
+      {
+        query: GET_ALL_READMES
+      }
+  ]
   });
 
   const [deleteReadMe] = useMutation(DELETE_README, {
