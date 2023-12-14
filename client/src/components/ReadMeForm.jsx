@@ -31,63 +31,104 @@ const ReadMeForm = (props) => {
       }
       const value = target.getAttribute('value');
       const selection = window.getSelection().toString();
+      const range = window.getSelection().getRangeAt(0)
+      const containerNode = range.commonAncestorContainer;
+      const textContent = containerNode.textContent;
+      const startOffset = range.startOffset;
+      const endOffset = range.endOffset;
+    
+      const maxBefore = 20; // Maximum number of characters before the selection
+      const maxAfter = 20; // Maximum number of characters after the selection
+    
+      const start = Math.max(0, startOffset - maxBefore);
+      const end = Math.min(textContent.length, endOffset + maxAfter);
+    
+      const textBefore = textContent.slice(start, startOffset);
+      const selectedText = textContent.slice(startOffset, endOffset);
+      const textAfter = textContent.slice(endOffset, end);
+    
+      console.log("Text before selection:", textBefore);
+      console.log("Selected text:", selectedText);
+      console.log("Text after selection:", textAfter);
+    
+      const selected = textBefore + selectedText + textAfter;
+      console.log(selected);
+
       if(selection){
-      const regex = new RegExp(window.getSelection().toString(), "g");
-      const matchesRight = myElRef.current.textContent.match(regex)
-      let matchesInput;
+      const regex = new RegExp(selected, "g");
+      // const matchesRight = [...myElRef.current.textContent.matchAll(regex)]
+      // const matches = [...myElRef.current.textContent.matchAll(regex)];
+
+      // let matchesInput;
       for (let key in userFormData) {
-             matchesInput = userFormData[key].match(regex);
-            
-            if(matchesInput){
-              cases(value, key, matchesInput);
+            const matches = userFormData[key].match(regex);
+            // console.log(matches);
+            if(matches){
+              // matches = selectedText;
+              console.log(matches);
+              cases(value, key, selectedText, selected);
             }
       }
-      console.log(matchesRight)
-      console.log(matchesInput)
+      // console.log(matchesRight)
+      // console.log(matchesInput)
     }
       setFormats(newFormats);
     };
 
-    const cases = (value, key, matches, selectionStart, selectionEnd) => {
+    const cases = (value, key, selectedText, selected) => {
+      let replaced
       switch (value) {
         case 'bold': 
-          setUserFormData({ ...userFormData, [key]: userFormData[key].replace(matches[0],` **${matches[0]}** `) });
+           replaced = selected.replace(selectedText, `**${selectedText}**`)
+          setUserFormData({ ...userFormData, [key]: userFormData[key].replace(selected, replaced) });
           break;
         case 'italics':
-          setUserFormData({ ...userFormData, [key]: userFormData[key].replace(matches[0],` *${matches[0]}* `) });
+           replaced = selected.replace(selectedText, `*${selectedText}*`)
+          setUserFormData({ ...userFormData, [key]: userFormData[key].replace(selected, replaced) });
           break;
         case 'underline':
-          setUserFormData({ ...userFormData, [key]: userFormData[key].replace(matches[0],` <u>${matches[0]}</u> `) });
+           replaced = selected.replace(selectedText, `<u>${selectedText}</u>`)
+          setUserFormData({ ...userFormData, [key]: userFormData[key].replace(selected, replaced) });
           break;
         case 'code':
-          setUserFormData({ ...userFormData, [key]: userFormData[key].replace(matches[0],` \`${matches[0]}\` `) });
+           replaced = selected.replace(selectedText, `\`${selectedText}\``)
+          setUserFormData({ ...userFormData, [key]: userFormData[key].replace(selected, replaced) });
           break;
         case 'code block':
-          setUserFormData({ ...userFormData, [key]: userFormData[key].replace(matches[0],` \`\`\`${matches[0]}\`\`\` `) });
+           replaced = selected.replace(selectedText, `\`\`\`${selectedText}\`\`\``)
+          setUserFormData({ ...userFormData, [key]: userFormData[key].replace(selected, replaced) });
           break;
         case 'bullet':
-          setUserFormData({ ...userFormData, [key]: userFormData[key].replace(matches[0],`\n * ${matches[0]}`) });
+           replaced = selected.replace(selectedText, `\n * ${selectedText}`)
+          setUserFormData({ ...userFormData, [key]: userFormData[key].replace(selected, replaced) });
           break;
         case 'highlight':
-          setUserFormData({ ...userFormData, [key]: userFormData[key].replace(matches[0],` <mark> ${matches[0]} </mark> `) });
+           replaced = selected.replace(selectedText, `<mark>${selectedText}</mark>`)
+          setUserFormData({ ...userFormData, [key]: userFormData[key].replace(selected, replaced) });
           break;
         case 'block quote':
-          setUserFormData({ ...userFormData, [key]: userFormData[key].replace(matches[0],`\n > ${matches[0]}`) });
+           replaced = selected.replace(selectedText, `\n > ${selectedText}`)
+          setUserFormData({ ...userFormData, [key]: userFormData[key].replace(selected, replaced) });
           break;
         case 'strike through':
-          setUserFormData({ ...userFormData, [key]: userFormData[key].replace(matches[0],` ~~${matches[0]}~~ `) });
+           replaced = selected.replace(selectedText, `~~${selectedText}~~`)
+          setUserFormData({ ...userFormData, [key]: userFormData[key].replace(selected, replaced) });
           break;
         case 'h1':
-          setUserFormData({ ...userFormData, [key]: userFormData[key].replace(matches[0],`\n # ${matches[0]} `) });
+           replaced = selected.replace(selectedText, `\n # ${selectedText}`)
+          setUserFormData({ ...userFormData, [key]: userFormData[key].replace(selected, replaced) });
           break;
         case 'h2':
-          setUserFormData({ ...userFormData, [key]: userFormData[key].replace(matches[0],`\n ## ${matches[0]} `) });
+           replaced = selected.replace(selectedText, `\n ## ${selectedText}`)
+          setUserFormData({ ...userFormData, [key]: userFormData[key].replace(selected, replaced) });
           break;
         case 'h3':
-          setUserFormData({ ...userFormData, [key]: userFormData[key].replace(matches[0],`\n ### ${matches[0]} `) });
+           replaced = selected.replace(selectedText, `\n ### ${selectedText}`)
+          setUserFormData({ ...userFormData, [key]: userFormData[key].replace(selected, replaced) });
           break;
         case 'link':
-          setUserFormData({ ...userFormData, [key]: userFormData[key].replace(matches[0],`[${matches[0]}](${matches[0]}) `) });
+           replaced = selected.replace(selectedText, `[${selectedText}](${selectedText})`)
+          setUserFormData({ ...userFormData, [key]: userFormData[key].replace(selected, replaced) });
           break;
         default:
           // code to be executed if expression doesn't match any case
