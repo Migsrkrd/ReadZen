@@ -240,7 +240,7 @@ const ReadMeForm = (props) => {
   };
 
   return (
-    <Grid container spacing={0} style={{ paddingTop: "30px" }}>
+    <Grid container spacing={0} style={{ paddingTop: "30px", height: "100%"}}>
       <Grid xs={6}>
         <Box
           className="formBox"
@@ -632,7 +632,7 @@ const ReadMeForm = (props) => {
         </Box>
       </Grid>
       <Grid xs={6} style={{ paddingLeft: "20px", zIndex: "0"}}>
-        <FormGroup>
+        <FormGroup className="all-buttons">
           <FormControlLabel
             control={<Switch onChange={(event) => handleToggle(event)}
             sx={{
@@ -663,11 +663,11 @@ const ReadMeForm = (props) => {
             <ToggleButton
               value="bold"
               aria-label="bold"
-              className="tBtn"
               style={{
                 border: "1px solid #2b2024",
                 borderRadius: "0px",
                 marginBottom: "5px",
+                height: "100%",
               }}
             >
               <strong style={{ color: "#a80038" }}>B</strong>
@@ -677,6 +677,7 @@ const ReadMeForm = (props) => {
                 marginBottom: "5px",
                 border: "1px solid #2b2024",
                 borderRadius: "0px",
+                height: "100%",
               }}
               value="italics"
               aria-label="bold"
@@ -688,6 +689,7 @@ const ReadMeForm = (props) => {
                 marginBottom: "5px",
                 border: "1px solid #2b2024",
                 borderRadius: "0px",
+                height: "100%",
               }}
               value="underline"
               aria-label="bold"
@@ -700,6 +702,7 @@ const ReadMeForm = (props) => {
                 border: "1px solid #2b2024",
                 borderRadius: "0px",
                 color: "#a80038",
+                height: "100%",
               }}
               value="code"
               aria-label="bold"
@@ -712,6 +715,7 @@ const ReadMeForm = (props) => {
                 border: "1px solid #2b2024",
                 borderRadius: "0px",
                 color: "#a80038",
+                height: "100%",
               }}
               value="code block"
               aria-label="bold"
@@ -724,6 +728,7 @@ const ReadMeForm = (props) => {
                 border: "1px solid #2b2024",
                 borderRadius: "0px",
                 color: "#a80038",
+                height: "100%",
               }}
               value="bullet"
               aria-label="bold"
@@ -736,6 +741,7 @@ const ReadMeForm = (props) => {
                 border: "1px solid #2b2024",
                 borderRadius: "0px",
                 color: "#a80038",
+                height: "100%",
               }}
               value="highlight"
               aria-label="bold"
@@ -747,6 +753,7 @@ const ReadMeForm = (props) => {
                 marginBottom: "5px",
                 border: "1px solid #2b2024",
                 borderRadius: "0px",
+                height: "100%",
                 color: "#a80038",
               }}
               value="block quote"
@@ -759,18 +766,21 @@ const ReadMeForm = (props) => {
                 marginBottom: "5px",
                 border: "1px solid #2b2024",
                 borderRadius: "0px",
+                height: "100%",
                 color: "#a80038",
+                textDecoration: "line-through",
               }}
               value="strike through"
               aria-label="bold"
             >
-              <p style={{ textDecoration: "line-through" }}>Strike Through</p>
+              Strike Through
             </ToggleButton>
             <ToggleButton
               style={{
                 marginBottom: "5px",
                 border: "1px solid #2b2024",
                 borderRadius: "0px",
+                height: "100%",
                 color: "#a80038",
               }}
               value="h1"
@@ -783,6 +793,7 @@ const ReadMeForm = (props) => {
                 marginBottom: "5px",
                 border: "1px solid #2b2024",
                 borderRadius: "0px",
+                height: "100%",
                 color: "#a80038",
               }}
               value="h2"
@@ -795,6 +806,7 @@ const ReadMeForm = (props) => {
                 marginBottom: "5px",
                 border: "1px solid #2b2024",
                 borderRadius: "0px",
+                height: "100%",
                 color: "#a80038",
               }}
               value="h3"
@@ -807,6 +819,7 @@ const ReadMeForm = (props) => {
                 marginBottom: "5px",
                 border: "1px solid #2b2024",
                 borderRadius: "0px",
+                height: "100%",
                 color: "#a80038",
               }}
               value="link"
@@ -844,6 +857,7 @@ const ReadMeForm = (props) => {
         ) : (
           <div>
             <div
+            className="displaying-readme"
               dangerouslySetInnerHTML={{
                 __html: md.render(`${
                   userFormData.title ? `# ${userFormData.title} \n\n` : ""
