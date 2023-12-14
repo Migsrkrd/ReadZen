@@ -84,6 +84,7 @@ export const GET_ALL_READMES = gql`
       datePublished
       author
       markdown
+      likeCount
     }
   }`
 

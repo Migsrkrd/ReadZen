@@ -25,6 +25,7 @@ type ReadMe {
     isPinned: Boolean
     markdown: String
     author: String
+    likeCount: Int
 }
 
 type Comment {

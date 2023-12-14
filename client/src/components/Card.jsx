@@ -270,9 +270,12 @@ const Card = (props) => {
             <div className="interactions">
               <button
                 className="btnBeg"
-                onClick={(event) => like(readme._id, event)}
+                onClick={(event) => {
+                  console.log(readme.likeCount); 
+                  like(readme._id, event)
+                }}
               >
-                Like
+                {readme.likeCount} Like
               </button>
               {isCommentsOpen && expandedCardId === readme._id ? (
                 <button
