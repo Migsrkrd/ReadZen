@@ -18,8 +18,8 @@ const Profile = () => {
   return (
     <>
       <div>
-        {useLocation().pathname === "/me" ||
-        useParams().username === `${Auth.getProfile().data.username}` ? (
+        {(useLocation().pathname === "/me" && Auth.loggedIn()) ||
+        (Auth.loggedIn() && useParams().username === `${Auth.getProfile().data.username}`) ? (
           <div>
             <div className="dashboard">
               <h2>Welcome {Auth.getProfile().data.username}!</h2>
