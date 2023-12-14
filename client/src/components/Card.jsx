@@ -72,8 +72,6 @@ const Card = (props) => {
     variables: { readMeId: expandedCardId },
   });
 
-  // console.log("data", data)
-
   const comments = data?.comments || [];
 
   useEffect(() => {
@@ -94,8 +92,6 @@ const Card = (props) => {
     // Check if the comment text is not empty before submitting
     try {
       if (commentText.trim() !== "") {
-        // console.log("Before add comment");
-        // console.log("expandedCardId", expandedCardId);
         addComment({
           variables: {
             author: Auth.getProfile().data.username,
@@ -150,13 +146,6 @@ const Card = (props) => {
 
   function like(id, event) {
     event.stopPropagation();
-    // console.log("like");
-    // console.log(id);
-    // console.log("Like");
-    // console.log(props);
-    
-    // console.log(id);
-
     likeReadMe({
       variables:{
         readMeId: id
@@ -166,13 +155,6 @@ const Card = (props) => {
 
   function unLike(id, event) {
     event.stopPropagation();
-    // console.log("like");
-    // console.log(id);
-    // console.log("Unlike");
-    // console.log(props);
-    
-    // console.log(id);
-
     unLikeReadMe({
       variables:{
         _id: props.User._id,
@@ -184,11 +166,9 @@ const Card = (props) => {
   const isLiked = (id, userLikes) => {
     for (let i= 0; i < userLikes.length; i++) {
       if (id == userLikes[i]._id) {
-        // console.log('true');
         return true;
       }
     }
-    // console.log('false');
     return false;
   }
 
@@ -235,12 +215,9 @@ const Card = (props) => {
   }
 
   let ReadMes = [];
-  // console.log("card")
-  // console.log(props.ReadMes)
+
   const showPublished = () => {
     ReadMes = props.ReadMes.filter((readme) => readme.isPublished);
-    // const unpinned=props.ReadMes.filter(readme=>!readme.isPinned);
-    // ReadMes=[pinned, unpinned].flat();
   };
   showPublished();
 
@@ -267,7 +244,7 @@ const Card = (props) => {
           </div>
           <div className="card-body">
             <h3>{readme.title}</h3>
-            {/* limit words */}
+            {/* limits the number of words shown in the description */}
             <p>{noMoreThanWords(readme.description)}</p>
             <div className="card-links">
               <a
@@ -328,7 +305,6 @@ const Card = (props) => {
               <button
                 className="btnBeg"
                 onClick={(event) => {
-                  // console.log(readme.likeCount); 
                   isLiked(readme._id, props.User.likes) ? unLike(readme._id, event) : like(readme._id, event)
                 }}
               >
