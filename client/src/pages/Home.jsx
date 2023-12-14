@@ -34,12 +34,7 @@ const Home = () => {
     return (
       <main>
         <div className="divy">
-
-          {(loading || searching) ? 
-          <h2>loading</h2> 
-          : 
-          <div className="homePage">
-              <TextField
+        <TextField
                     id='search'  
                     label="Search"
                     value={search}
@@ -68,6 +63,11 @@ const Home = () => {
                     
                   }}}
                     />
+          {(loading || searching) ? 
+          <h2>loading</h2> 
+          : 
+          <div className="homePage">
+             
           {search !== '' ? 
             <Card ReadMes={searched} User={User} /> :
             <Card ReadMes={ReadMes} User={User} /> 
