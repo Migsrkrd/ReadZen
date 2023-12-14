@@ -182,6 +182,8 @@ const Card = (props) => {
   }
 
   let ReadMes = [];
+  console.log("card")
+  console.log(props.ReadMes)
   const showPublished = () => {
     ReadMes = props.ReadMes.filter((readme) => readme.isPublished);
     // const unpinned=props.ReadMes.filter(readme=>!readme.isPinned);
