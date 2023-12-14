@@ -1,33 +1,38 @@
 import Card from "../components/Card";
 import { useQuery, useLazyQuery } from "@apollo/client";
 import { GET_ALL_READMES, GET_SEARCHED_READMES } from "../utils/queries";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { TextField } from "@mui/material";
 
 const Home = () => {
 
-  const { loading, data } = useQuery(GET_ALL_READMES);
+  const { loading, data: allReadme } = useQuery(GET_ALL_READMES);
 
-  const ReadMes = data?.publishedReadmes || [];
+  let ReadMes = allReadme?.publishedReadmes || [];
 
-  const [getSearch, {load, error, dat }] = useLazyQuery(GET_SEARCHED_READMES)
+  const [getSearch, {loading: searching, data: searchReadme }] = useLazyQuery(GET_SEARCHED_READMES)
 
   const [search, setSearch] = useState('');
+  const [searched, setSearched] = useState([]);
 
-  let searchResults
   const handleInputChange = async (event) => {
     console.log(event.target.value)
     setSearch(event.target.value)
-    searchResults = await getSearch( {variables:{author: event.target.value}})
-    console.log(dat)
+    if(event.target.value!==''){
+      await getSearch( {variables:{query: event.target.value}})
+    }
   }
-  console.log(load)
-  console.log(search !== '' ? searchResults : "nothing")
+
+  useEffect(()=>{
+    if(searchReadme) {
+      setSearched(searchReadme.searchReadmes);
+    }
+  },[searchReadme])
 
     return (
       <main>
         <div className="divy">
-          {loading ? 
+          {(loading || searching) ? 
           <h2>loading</h2> 
           : 
           <div>
@@ -40,10 +45,10 @@ const Home = () => {
                     multiline
                     margin="normal"
                     />
-          {/* {search !== '' ? 
-            <Card ReadMes={searchResults.data.searchReadmes} /> :
+          {search !== '' ? 
+            <Card ReadMes={searched} /> :
             <Card ReadMes={ReadMes} /> 
-           } */}
+           }
           </div>
           }
         </div>

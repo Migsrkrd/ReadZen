@@ -54,15 +54,17 @@ const resolvers = {
         searchReadmes: async (parent, args) => {
             console.log('search')
             console.log(args)
-            const regex = new RegExp(args, 'i');
+            const regex = new RegExp(args.query, 'i');
+            console.log(regex)
             const readme = await ReadMe.find({    
                 $or: [
                 { author: { $regex: regex } },
-                { title: { $regex: regex } }
+                { title: { $regex: regex } },
+                { description: { $regex: regex} }
             ],
             isPublished: true
             })
-            console.log(readme)
+            // console.log(readme)
             return readme
         },
         // Returns all readmes of a given user
