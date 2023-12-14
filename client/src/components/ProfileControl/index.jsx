@@ -14,8 +14,6 @@ import ConfirmDeleteUserForm from '../Forms/ConfirmDeleteUserForm';
 
 import { TOGGLE_PROFILE_CONTROL } from '../../utils/actions';
 
-import './style.css';
-
 const ProfileControl = () => {
   const [state, dispatch] = useStoreContext();
 
@@ -44,14 +42,11 @@ const ProfileControl = () => {
 
   if (!state.profileControlOpen) {
     return (
-      <button
-        className="profile-control-closed"
-        onClick={toggleProfileControl}
-      >
-        <span role="img" aria-label="profile-control">
-          ⚙️
-        </span>
-      </button>
+      <h3>
+        <i class="fa-solid fa-gear navlink-home" onClick={toggleProfileControl} ></i>
+      </h3>
+        
+
     );
   }
 
@@ -62,11 +57,23 @@ const ProfileControl = () => {
         <div className="close" onClick={toggleProfileControl}>
           [close]
         </div>
-        <h2>{Auth.getProfile().data.username}'s Profile Control</h2>
-        <div>
+        <h2>Profile Settings</h2>
+        <div className='buttons-area'>
           
           <Button
             className="pro-con-btn"
+            sx={{
+              m: 1,
+              color: '#a80038',
+              fontWeight: 'bold',
+              border: '2px solid #a80038',
+              '&:hover': {
+                color: '#fbf9fa',
+                backgroundColor: '#a80038',
+                border: '2px solid #fbf9fa',
+                
+              },
+            }}
             onClick={() => handleOpen(UPDATE_USERNAME)}
           >
               Change Username
@@ -75,22 +82,45 @@ const ProfileControl = () => {
           <Button
             className="pro-con-btn"
             onClick={() => handleOpen(UPDATE_PASSWORD)}
+            sx={{
+              m: 1,
+              color: '#a80038',
+              fontWeight: 'bold',
+              border: '2px solid #a80038',
+              transition: 'all 0.2s ease',
+              '&:hover': {
+                color: '#fbf9fa',
+                transition: 'all 0.2s ease',
+                backgroundColor: '#a80038',
+                
+              },
+              '&:active': {
+                color: '#fbf9fa',
+                backgroundColor: '#fd0054',
+                
+              },
+            }}
           >
             Change Password
           </Button>
 
           <Button
             className="pro-con-btn"
+            sx={{
+              m: 1,
+              color: '#a80038',
+              fontWeight: 'bold',
+              border: '2px solid #a80038',
+              '&:hover': {
+                color: '#fbf9fa',
+                backgroundColor: '#a80038',
+                border: '2px solid #fbf9fa',
+                
+              },
+            }}
             onClick={() => handleOpen(CONFIRM_DELETE_USER)}
           >
             Delete My Account
-          </Button>
-          
-          <Button
-            className="pro-con-btn"
-            onClick={logout}
-          >
-            Logout
           </Button>
 
         </div>

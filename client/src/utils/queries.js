@@ -49,8 +49,8 @@ export const GET_ME = gql`
 `;
 
 export const GET_SEARCHED_READMES = gql`
-  query getSearchReadMes($author: String) {
-    searchReadmes(author: $author) {
+  query getSearchReadMes($query: String) {
+    searchReadmes(query: $query) {
       _id
       title
       description

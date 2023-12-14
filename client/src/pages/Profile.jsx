@@ -1,7 +1,6 @@
 import { Link, useLocation, useParams } from "react-router-dom";
 import Card from "../components/Card";
 import ProfileCard from "../components/ProfileCard";
-import ProfileControl from "../components/ProfileControl";
 import Auth from "../utils/auth";
 import { useQuery } from "@apollo/client";
 import { GET_READMES } from "../utils/queries";
@@ -36,7 +35,6 @@ const Profile = () => {
           </div>
         )}
       </div>
-      <ProfileControl />
     </>
   );
 };
