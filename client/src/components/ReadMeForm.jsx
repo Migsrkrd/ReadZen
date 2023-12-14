@@ -56,6 +56,7 @@ const ReadMeForm = (props) => {
 
       if(selection){
       const regex = new RegExp(selected, "g");
+      console.log(regex.split('\n'))
       // const matchesRight = [...myElRef.current.textContent.matchAll(regex)]
       // const matches = [...myElRef.current.textContent.matchAll(regex)];
 
