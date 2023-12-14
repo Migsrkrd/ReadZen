@@ -240,8 +240,8 @@ const ReadMeForm = (props) => {
   };
 
   return (
-    <Grid container spacing={0} style={{ paddingTop: "30px", height: "100%"}}>
-      <Grid xs={6}>
+    <Grid container spacing={0}>
+      <Grid xs={12} md={6} style={{paddingRight: "15px"}}>
         <Box
           className="formBox"
           component="form"
@@ -631,7 +631,7 @@ const ReadMeForm = (props) => {
           </div>
         </Box>
       </Grid>
-      <Grid xs={6} style={{ paddingLeft: "20px", zIndex: "0"}}>
+      <Grid xs={12} md={6} style={{ paddingLeft: "20px", zIndex: "0"}}>
         <FormGroup className="all-buttons">
           <FormControlLabel
             control={<Switch onChange={(event) => handleToggle(event)}
