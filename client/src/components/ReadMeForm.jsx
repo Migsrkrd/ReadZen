@@ -31,13 +31,18 @@ const ReadMeForm = (props) => {
       const value = target.getAttribute('value');
       const selection = window.getSelection().toString();
       if(selection){
-      const regex = new RegExp(window.getSelection().toString(), "gi");
+      const regex = new RegExp(window.getSelection().toString(), "g");
+      const matchesRight = myElRef.current.textContent.match(regex)
+      let matchesInput;
       for (let key in userFormData) {
-            const matches = userFormData[key].match(regex);
-            if(matches){
-              cases(value, key, matches);
+             matchesInput = userFormData[key].match(regex);
+            
+            if(matchesInput){
+              cases(value, key, matchesInput);
             }
       }
+      console.log(matchesRight)
+      console.log(matchesInput)
     }
       setFormats(newFormats);
     };
