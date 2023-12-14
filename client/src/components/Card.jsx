@@ -22,7 +22,8 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 600,
+  width: "80%",
+  maxWidth: "600px",
   bgcolor: "#fbf9fa",
   border: "2px solid #a80038",
   borderRadius: "10px",
@@ -344,7 +345,7 @@ const Card = (props) => {
           </div>
         </div>
       ))}
-      <Modal
+      <Modal xs={6} md={6} lg={4}
         open={open}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"

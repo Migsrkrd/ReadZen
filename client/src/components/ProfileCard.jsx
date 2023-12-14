@@ -28,7 +28,8 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 600,
+  width: "80%",
+  maxWidth: "600px",
   padding: "20px",
   backgroundColor: "#fbf9fa",
   border: "2px solid #a80038",
@@ -57,11 +58,16 @@ const ProfileCard = (props) => {
 
   const [togglePublished] = useMutation(UPDATE_README, {
     refetchQueries: [
-      GET_READMES, {
+      {
+        query: GET_READMES, 
         variables: {
           username: Auth.getProfile().data.username
-        } 
-  }]
+        }
+      },
+      {
+        query: GET_ALL_READMES
+      }
+  ]
   });
 
   const [deleteReadMe] = useMutation(DELETE_README, {
