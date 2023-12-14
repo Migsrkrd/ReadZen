@@ -28,9 +28,11 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 400,
-  bgcolor: "background.paper",
-  border: "2px solid #000",
+  width: 600,
+  padding: "20px",
+  backgroundColor: "#fbf9fa",
+  border: "2px solid #a80038",
+  borderRadius: "10px",
   boxShadow: 24,
   p: 4,
 };
@@ -228,11 +230,22 @@ const ProfileCard = (props) => {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={style}> 
-          <div dangerouslySetInnerHTML={{__html: md.render(`${markdown}`)}}>
+        <Box fontStyle={style}> 
+          <div className='markdown-body' dangerouslySetInnerHTML={{__html: md.render(`${markdown}`)}}>
           </div>
 
-          <Button onClick={handleClose}>
+          <Button
+          sx={{
+            backgroundColor: "#a80038",
+            color: "#fbf9fa",
+            fontWeight: "bold",
+            margin: "10px",
+            "&:hover": {
+              backgroundColor: "#fd0054",
+              color: "#fbf9fa",
+            },
+          }}
+           onClick={handleClose}>
             Close
           </Button>
 

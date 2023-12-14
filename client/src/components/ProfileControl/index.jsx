@@ -43,7 +43,7 @@ const ProfileControl = () => {
   if (!state.profileControlOpen) {
     return (
       <h3>
-        <i class="fa-solid fa-gear navlink-home" onClick={toggleProfileControl} ></i>
+        <i className="fa-solid fa-gear navlink-home" onClick={toggleProfileControl} ></i>
       </h3>
         
 

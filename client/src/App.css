@@ -401,10 +401,11 @@ header h1 {
 }
 
 .comments {
-  line-height: 0px;
+  line-height: 1px;
   border: 2px solid var(--secondary-color);
   padding: 0px;
   margin-bottom: 10px;
+  height: 100%;
 }
 
 .comment-user {
@@ -417,6 +418,10 @@ header h1 {
 .comment-text {
   display: flex;
   justify-content: left;
+  height: 100%;
+  width: 80%;
+  line-height: 1.5; /* Adjust this value to control the spacing between lines */
+  word-wrap: normal; /* Consider changing this to word-wrap: break-word; if needed */
   padding: 15px 20px 10px 20px;
   margin: 20px 10px 20px 10px;
 }
@@ -552,6 +557,11 @@ header h1 {
 
 .homePage {
   width: 100%;
+}
+
+
+.profile-readme a{
+  color: var(--secondary-color);
 }
 
 @media screen and (max-width: 1050px) {
