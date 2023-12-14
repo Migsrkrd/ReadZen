@@ -59,7 +59,7 @@ const Card = (props) => {
     variables: { readMeId: expandedCardId },
   });
 
-  console.log("data", data)
+  // console.log("data", data)
 
   const comments = data?.comments || [];
 

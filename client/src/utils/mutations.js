@@ -187,7 +187,9 @@ export const LIKE_README = gql`
 mutation likeReadMe(
   $readMeId: ID!
   ){
-    likeReadMe(_id: $readMeId){
+    likeReadMe(
+      readMeId: $readMeId
+      ){
       _id
     }
   }

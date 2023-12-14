@@ -217,13 +217,15 @@ const resolvers = {
 
         // Stores a liked readme to a user, and increments the readme's likeCount
         likeReadMe: async (parent, args, context) => {
+            console.log("likes")
             if (context.user) {
-                const readme = ReadMe.findOneAndUpdate(
+                const readme = await ReadMe.findOneAndUpdate(
                     { _id: args.readMeId },
-                    { likeCount: likeCount++ },
+                    { $inc: { likeCount: 1 } },
                     { new: true }
-                );
-                const user = User.findOneAndUpdate(
+                  ).exec()
+
+                const user = await User.findOneAndUpdate(
                     { _id: context.user._id },
                     { $addToSet: { likes: readme }},
                     { new: true }
@@ -237,9 +239,10 @@ const resolvers = {
             if (context.user) {
                 const readme = ReadMe.findOneAndUpdate(
                     { _id: args.readMeId },
-                    { likeCount: likeCount-- },
+                    { $inc: { likeCount: -1 } },
                     { new: true }
-                );
+                  ).exec();
+
                 const user = User.findOneAndUpdate(
                     { _id: args._id },
                     { $pull: { likes: { _id: args.readMeId } }},
@@ -266,7 +269,8 @@ const resolvers = {
 
         // Edits a readme and updates a user's readmes
         updateReadMe: async (parent, args, context) => {
-            console.log('context.user', context.user);
+            // console.log('context.user', context.user);
+            console.log('update');
             if (context.user) {
                 const readmeAuthor = (await ReadMe.findOne({ _id: args._id })).author;
 
@@ -278,7 +282,7 @@ const resolvers = {
                         { new: true }
                     );
                     
-                    console.log('readme', readme);
+                    // console.log('readme', readme);
     
                     await User.findOneAndUpdate(
                         { _id: context.user._id },

@@ -195,7 +195,7 @@ const ReadMeForm = (props) => {
     };
 
     return (
-        <Grid container spacing={2}>
+        <Grid container spacing={2} disableEqualOverflow>
             <Grid xs={6}>
                 <Box 
                 component="form"
