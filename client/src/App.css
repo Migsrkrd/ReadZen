@@ -239,6 +239,7 @@ header h1 {
   width: 100%;
   display: flex;
   align-items: center;
+  flex-direction: column;
 }
 
 .interactions {
@@ -298,7 +299,6 @@ header h1 {
   align-items: center;
   padding: 10px;
   width: 100%;
-  padding-bottom: 300px;
   margin-top: 90px;
 }
 
@@ -359,6 +359,30 @@ header h1 {
 }
 
 .createPage {
+}
+
+::-webkit-scrollbar {
+  width: 12px; /* width of the scrollbar */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--third-color); /* color of the thumb */
+  border-radius: 6px; 
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--secondary-color); /* color of the thumb on hover */
+}
+
+::-webkit-scrollbar-track {
+  background-color: #f1f1f1; /* color of the track */
+  border-radius: 6px;
+}
+
+.display-comments{
+  max-height: 500px;
+  overflow: auto;
+  padding: 10px;
 }
 
 .comment-section {
@@ -426,14 +450,12 @@ header h1 {
 .markDown-Results {
   width: 100%;
   white-space: pre-wrap;
-  margin-bottom: 400px;
   margin-top: 280px;
 }
 
 .displaying-readme {
   width: 100%;
   white-space: pre-wrap;
-  margin-bottom: 900px;
   margin-top: 300px;
 }
 

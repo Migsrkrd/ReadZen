@@ -289,6 +289,7 @@ const Card = (props) => {
             {isCommentsOpen && expandedCardId === readme._id && (
               <div className="comment-section">
                 <h4 className="comment-header">Comments</h4>
+                <div className="display-comments">
                 {comments.map((comment) => (
                   <Comment
                     key={comment._id}
@@ -296,6 +297,7 @@ const Card = (props) => {
                     text={comment.text}
                   />
                 ))}
+                </div>
                 <textarea
                   className="comment-input"
                   onClick={handleInputClick}
