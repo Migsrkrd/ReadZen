@@ -521,5 +521,19 @@ header h1{
     color: var(--fourth-color);
   }
   
+  .markdown-body{
+    max-height: 600px;
+    overflow: auto;
+    color: var(--fourth-color);
+  }
+
+  .markdown-body a{
+    color: var(--third-color);
+  }
+
+  .homePage{
+    width: 100%;
+  }
+  
   
 

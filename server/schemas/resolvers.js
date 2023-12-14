@@ -26,29 +26,30 @@ const resolvers = {
         // User's profile page
         me: async (parent, args, context) => {
             if (context.user) {
-                return User.findOne({ _id: context.user._id });
+                console.log("context.user", context.user)
+                return await User.findOne({ _id: context.user._id });
             }
             throw AuthenticationError;
         },
 
         // Returns all users. Only for dev
         users: async () => {
-            return User.find().populate('readMes');
+            return await User.find().populate('readMes');
         },
 
         // Another user's profile page
         user: async (parent, { userId }) => {
-            return User.findOne({ _id: userId }).populate('readMes');
+            return await User.findOne({ _id: userId }).populate('readMes');
         },
 
         // Returns all readmes
         allreadmes: async (parent, args) => {
-            return ReadMe.find({});
+            return await ReadMe.find({});
         },
 
         // Returns all readmes with isPublished: true
         publishedReadmes: async () => {
-            return ReadMe.find({ isPublished: true });
+            return await ReadMe.find({ isPublished: true });
         },
 
         searchReadmes: async (parent, args) => {

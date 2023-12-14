@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import MarkdownIt from "markdown-it";
 import { Box, Button, Modal} from "@mui/material";
+import Popover from '@mui/material/Popover';
 import Avatar from "./Avatar";
 import Comment from "./Comment";
 import { useEffect } from "react";
@@ -21,7 +22,7 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 400,
+  width: 600,
   bgcolor: "#fbf9fa",
   border: "2px solid #a80038",
   borderRadius: "10px",
@@ -40,6 +41,7 @@ const btn = {
 
 const Card = (props) => {
   const md = MarkdownIt();
+  const [anchorEl, setAnchorEl] = useState(null);
   const [isCommentsOpen, setIsCommentsOpen] = useState(false);
   const [expandedCardId, setExpandedCardId] = useState(null);
   const [expandedCardClass, setExpandedCardClass] = useState("card");
@@ -110,6 +112,14 @@ const Card = (props) => {
     // Close the comment section after submitting
     setCommentText("");
   }
+
+  const handlePopClose = (event) => {
+    event.stopPropagation()
+    setAnchorEl(null);
+  };
+
+  const openPop = Boolean(anchorEl);
+  const id = openPop ? 'simple-popover' : undefined;
 
   const handleOpen = (readme) => {
     setMarkdown(readme);
@@ -215,13 +225,13 @@ const Card = (props) => {
 
     // Remove the temporary input element
     document.body.removeChild(tempInput);
-
+    setAnchorEl(event.currentTarget);
     console.log("Repo link copied:", repoLink);
   }
 
   let ReadMes = [];
-  console.log("card")
-  console.log(props.ReadMes)
+  // console.log("card")
+  // console.log(props.ReadMes)
   const showPublished = () => {
     ReadMes = props.ReadMes.filter((readme) => readme.isPublished);
     // const unpinned=props.ReadMes.filter(readme=>!readme.isPinned);
@@ -338,6 +348,16 @@ const Card = (props) => {
               >
                 Share
               </button>
+              <Popover 
+                id={id}
+                open={openPop}
+                anchorEl={anchorEl}
+                onClose={handlePopClose}
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'left',
+                }}
+                >Copied To Clipboard</Popover>
             </div>
           </div>
         </div>
@@ -349,10 +369,21 @@ const Card = (props) => {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <div
+          <div className="markdown-body"
             dangerouslySetInnerHTML={{ __html: md.render(`${markdown}`) }}
           ></div>
-          <Button onClick={handleClose}>Close</Button>
+          <Button
+          sx={{
+            backgroundColor: "#a80038",
+            color: "#fbf9fa",
+            fontWeight: "bold",
+            margin: "10px",
+            "&:hover": {
+              backgroundColor: "#fd0054",
+              color: "#fbf9fa",
+            },
+          }}
+           onClick={handleClose}>Close</Button>
         </Box>
       </Modal>
       <Modal
