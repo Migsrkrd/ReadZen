@@ -121,7 +121,6 @@ type Mutation {
         readMeId: String!
     ): User
     addComment(
-        _id: ID!
         readMeId: ID!
         author: String!,
         text: String!,
