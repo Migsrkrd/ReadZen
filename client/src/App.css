@@ -554,6 +554,11 @@ header h1 {
   width: 100%;
 }
 
+
+.profile-readme a{
+  color: var(--secondary-color);
+}
+
 @media screen and (max-width: 1050px) {
   header {
     display: flex;
