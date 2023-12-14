@@ -601,14 +601,7 @@ header h1 {
   .displaying-readme {
     
   }
-    .markDown-Results {
-        
-    }
-
-    .dashboard {
-        padding-top: 0px;
-    }
-
+  
     .generate-page{
       display: flex;
       flex-direction: column;
