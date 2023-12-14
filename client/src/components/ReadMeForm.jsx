@@ -32,12 +32,12 @@ const ReadMeForm = (props) => {
       const value = target.getAttribute('value');
       const selection = window.getSelection().toString();
       if(selection){
-      const regex = new RegExp(window.getSelection().toString(), "gi");
+      const regex = new RegExp(window.getSelection().toString(), "g");
       for (let key in userFormData) {
-            const matches = userFormData[key].match(regex);
-            if(matches){
-              cases(value, key, matches);
-            }
+        const matches = userFormData[key].match(regex);
+        if(matches){
+          cases(value, key, matches);
+        }
       }
     }
       setFormats(newFormats);
@@ -46,52 +46,48 @@ const ReadMeForm = (props) => {
     const cases = (value, key, matches, selectionStart, selectionEnd) => {
       switch (value) {
         case 'bold': 
-          // setUserFormData({ ...userFormData, [key]: userFormData[key].replace(matches[0],` **${matches[0]}** `) });
-          setUserFormData({
-            ...userFormData,
-            [key]: applyFormatting(userFormData[key], matches[0], selectionStart, selectionEnd, '**'),
-          });
+          setUserFormData({ ...userFormData, [key]: userFormData[key].replace(matches[0],` **${matches[0]}** `) });
           break;
         case 'italics':
           setUserFormData({ ...userFormData, [key]: userFormData[key].replace(matches[0],` *${matches[0]}* `) });
           break;
-          case 'underline':
-            setUserFormData({ ...userFormData, [key]: userFormData[key].replace(matches[0],` <u>${matches[0]}</u> `) });
-            break;
-          case 'code':
-            setUserFormData({ ...userFormData, [key]: userFormData[key].replace(matches[0],` \`${matches[0]}\` `) });
-           break;
-           case 'code block':
-            setUserFormData({ ...userFormData, [key]: userFormData[key].replace(matches[0],` \`\`\`${matches[0]}\`\`\` `) });
-           break;
-           case 'bullet':
-            setUserFormData({ ...userFormData, [key]: userFormData[key].replace(matches[0],`\n * ${matches[0]}`) });
-           break;
-           case 'highlight':
-            setUserFormData({ ...userFormData, [key]: userFormData[key].replace(matches[0],` <mark> ${matches[0]} </mark> `) });
-           break;
-           case 'block quote':
-            setUserFormData({ ...userFormData, [key]: userFormData[key].replace(matches[0],`\n > ${matches[0]}`) });
-           break;
-           case 'strike through':
-            setUserFormData({ ...userFormData, [key]: userFormData[key].replace(matches[0],` ~~${matches[0]}~~ `) });
-           break;
-           case 'h1':
-            setUserFormData({ ...userFormData, [key]: userFormData[key].replace(matches[0],`\n # ${matches[0]} `) });
-           break;
-           case 'h2':
-            setUserFormData({ ...userFormData, [key]: userFormData[key].replace(matches[0],`\n ## ${matches[0]} `) });
-           break;
-           case 'h3':
-            setUserFormData({ ...userFormData, [key]: userFormData[key].replace(matches[0],`\n ### ${matches[0]} `) });
-           break;
-           case 'link':
-            setUserFormData({ ...userFormData, [key]: userFormData[key].replace(matches[0],`[${matches[0]}](${matches[0]}) `) });
-           break;
+        case 'underline':
+          setUserFormData({ ...userFormData, [key]: userFormData[key].replace(matches[0],` <u>${matches[0]}</u> `) });
+          break;
+        case 'code':
+          setUserFormData({ ...userFormData, [key]: userFormData[key].replace(matches[0],` \`${matches[0]}\` `) });
+          break;
+        case 'code block':
+          setUserFormData({ ...userFormData, [key]: userFormData[key].replace(matches[0],` \`\`\`${matches[0]}\`\`\` `) });
+          break;
+        case 'bullet':
+          setUserFormData({ ...userFormData, [key]: userFormData[key].replace(matches[0],`\n * ${matches[0]}`) });
+          break;
+        case 'highlight':
+          setUserFormData({ ...userFormData, [key]: userFormData[key].replace(matches[0],` <mark> ${matches[0]} </mark> `) });
+          break;
+        case 'block quote':
+          setUserFormData({ ...userFormData, [key]: userFormData[key].replace(matches[0],`\n > ${matches[0]}`) });
+          break;
+        case 'strike through':
+          setUserFormData({ ...userFormData, [key]: userFormData[key].replace(matches[0],` ~~${matches[0]}~~ `) });
+          break;
+        case 'h1':
+          setUserFormData({ ...userFormData, [key]: userFormData[key].replace(matches[0],`\n # ${matches[0]} `) });
+          break;
+        case 'h2':
+          setUserFormData({ ...userFormData, [key]: userFormData[key].replace(matches[0],`\n ## ${matches[0]} `) });
+          break;
+        case 'h3':
+          setUserFormData({ ...userFormData, [key]: userFormData[key].replace(matches[0],`\n ### ${matches[0]} `) });
+          break;
+        case 'link':
+          setUserFormData({ ...userFormData, [key]: userFormData[key].replace(matches[0],`[${matches[0]}](${matches[0]}) `) });
+          break;
         default:
           // code to be executed if expression doesn't match any case
       }
-    }
+    };
 
     const [userFormData, setUserFormData] = useState(
         props.readme
@@ -439,6 +435,7 @@ const ReadMeForm = (props) => {
                 </ToggleButtonGroup>
 
             </FormGroup>
+
                 {renderToggle === 'code' ?
                 <pre ref={myElRef}>
                   {userFormData.title ? `# ${userFormData.title} \n\n` : ''}
@@ -450,7 +447,21 @@ const ReadMeForm = (props) => {
                   {userFormData.license ? `## License\n\n ${userFormData.license}\n\n` : ''}
                   {userFormData.tests ? `## Test\n\n ${userFormData.tests}\n\n` : ''}
                 </pre>
-                : 
+                // <textarea 
+                //     ref={myElRef}
+                //     readOnly
+                //     value={
+                //         `${userFormData.title ? `# ${userFormData.title} \n\n` : ''}${
+                //         userFormData.description ? `## Description\n\n${userFormData.deployedLink ? `[Visit the Deployed Site](${userFormData.deployedLink})\n\n` : ''}${userFormData.description}\n\n` : ''}${
+                //         `${tableOfContents(userFormData)}\n\n`}${
+                //         userFormData.installation ? `## Installation\n\n ${userFormData.installation}\n\n` : ''}${
+                //         userFormData.usage ? `## Usage\n\n ${userFormData.usage}\n\n` : ''}${
+                //         userFormData.credits ? `## Credits\n\n ${userFormData.credits}\n\n` : ''}${
+                //         userFormData.license ? `## License\n\n ${userFormData.license}\n\n` : ''}${
+                //         userFormData.tests ? `## Test\n\n ${userFormData.tests}\n\n` : ''}`
+                //     }
+                // ></textarea>
+              : 
                 <div >
                 <div dangerouslySetInnerHTML={{__html: md.render(`${
                     (userFormData.title ? `# ${userFormData.title} \n\n` : '')}${
