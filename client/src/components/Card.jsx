@@ -8,8 +8,8 @@ import Comment from "./Comment";
 import { useEffect } from "react";
 import { useMutation } from "@apollo/client";
 import { useQuery } from "@apollo/client";
-import { GET_COMMENTS } from "../utils/queries";
-import { ADD_COMMENT, LIKE_README } from "../utils/mutations";
+import { GET_COMMENTS, GET_ALL_READMES } from "../utils/queries";
+import { ADD_COMMENT, LIKE_README, UNLIKE_README } from "../utils/mutations";
 import Auth from "../utils/auth";
 import LoginForm from "./LoginForm";
 import SignupForm from "./SignupForm";
@@ -46,11 +46,21 @@ const Card = (props) => {
   const [expandedCardId, setExpandedCardId] = useState(null);
   const [expandedCardClass, setExpandedCardClass] = useState("card");
   const [markdown, setMarkdown] = useState();
+  // const [isLiked, setIsLiked] = useState(props.User.likes.includes(props.ReadMes.));
   const [open, setOpen] = useState(false);
-  const [likeReadMe] = useMutation(LIKE_README)
+  const [likeReadMe] = useMutation(LIKE_README, {
+    refetchQueries: [
+      GET_ALL_READMES
+    ]
+  });
+  const [unLikeReadMe] = useMutation(UNLIKE_README, {
+    refetchQueries: [
+      GET_ALL_READMES
+    ]
+  });
   const [addComment] = useMutation(ADD_COMMENT,{
     refetchQueries: [
-    GET_COMMENTS ]
+      GET_ALL_READMES ]
   })
 
   
@@ -135,13 +145,46 @@ const Card = (props) => {
 
   function like(id, event) {
     event.stopPropagation();
-    console.log("like");
-    console.log(id)
+    // console.log("like");
+    // console.log(id);
+    console.log("Like");
+    console.log(props);
+    
+    console.log(id);
+
     likeReadMe({
       variables:{
         readMeId: id
       }
-    })
+    });
+  };
+
+  function unLike(id, event) {
+    event.stopPropagation();
+    // console.log("like");
+    // console.log(id);
+    console.log("Unlike");
+    console.log(props);
+    
+    console.log(id);
+
+    unLikeReadMe({
+      variables:{
+        _id: props.User._id,
+        readMeId: id
+      }
+    });
+  }
+
+  const isLiked = (id, userLikes) => {
+    for (let i= 0; i < userLikes.length; i++) {
+      if (id == userLikes[i]._id) {
+        console.log('true');
+        return true;
+      }
+    }
+    console.log('false');
+    return false;
   }
 
   const openCommentSection = (event, cardId) => {
@@ -277,9 +320,12 @@ const Card = (props) => {
             <div className="interactions">
               <button
                 className="btnBeg"
-                onClick={(event) => like(readme._id, event)}
+                onClick={(event) => {
+                  console.log(readme.likeCount); 
+                  isLiked(readme._id, props.User.likes) ? unLike(readme._id, event) : like(readme._id, event)
+                }}
               >
-                Like
+                {readme.likeCount} {readme.likeCount==1 ? 'Like' : 'Likes'}
               </button>
               {isCommentsOpen && expandedCardId === readme._id ? (
                 <button

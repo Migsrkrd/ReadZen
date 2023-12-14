@@ -26,29 +26,30 @@ const resolvers = {
         // User's profile page
         me: async (parent, args, context) => {
             if (context.user) {
-                return User.findOne({ _id: context.user._id }).populate('readMes');
+                console.log("context.user", context.user)
+                return await User.findOne({ _id: context.user._id });
             }
             throw AuthenticationError;
         },
 
         // Returns all users. Only for dev
         users: async () => {
-            return User.find().populate('readMes');
+            return await User.find().populate('readMes');
         },
 
         // Another user's profile page
         user: async (parent, { userId }) => {
-            return User.findOne({ _id: userId }).populate('readMes');
+            return await User.findOne({ _id: userId }).populate('readMes');
         },
 
         // Returns all readmes
         allreadmes: async (parent, args) => {
-            return ReadMe.find({});
+            return await ReadMe.find({});
         },
 
         // Returns all readmes with isPublished: true
         publishedReadmes: async () => {
-            return ReadMe.find({ isPublished: true });
+            return await ReadMe.find({ isPublished: true });
         },
 
         searchReadmes: async (parent, args) => {
@@ -99,7 +100,7 @@ const resolvers = {
     Mutation: {
 
         // Logs in a user and assigns a token
-        login: async (parent, { email, password }) => {
+        login: async (parent, { email, password }, context) => {
             const user = await User.findOne({ email });
             if (!user) {
                 throw AuthenticationError;
@@ -108,6 +109,14 @@ const resolvers = {
             const correctPass = await user.isCorrectPassword(password);
             if (!correctPass) {
                 throw AuthenticationError;
+            }
+
+            if (!user.likes) {
+                await User.findOneAndUpdate(
+                    { _id: context.user._id },
+                    { likes: [] },
+                    { new: true }
+                );
             }
 
             const token = signToken(user);
@@ -253,18 +262,22 @@ const resolvers = {
 
         unLikeReadMe: async (parent, args, context) => {
             if (context.user) {
-                const readme = ReadMe.findOneAndUpdate(
-                    { _id: args.readMeId },
-                    { $inc: { likeCount: -1 } },
-                    { new: true }
-                  ).exec();
+                console.log('context user', context.user);
+                    console.log('readMeId', args.readMeId);
+                    const readme = await ReadMe.findOneAndUpdate(
+                        { _id: args.readMeId },
+                        { $inc: { likeCount: -1 } },
+                        { new: true }
+                    ).exec();
 
-                const user = User.findOneAndUpdate(
-                    { _id: args._id },
-                    { $pull: { likes: { _id: args.readMeId } }},
-                    { new: true }
-                );
-                return user;
+                    const user = await User.findOneAndUpdate(
+                        { _id: context.user._id },
+                        { $pull: { likes: args.readMeId }},
+                        { new: true }
+                    );
+                
+                    console.log('user', user);
+                    return user;
             }
             throw AuthenticationError;
         },

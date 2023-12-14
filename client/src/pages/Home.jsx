@@ -1,14 +1,16 @@
 import Card from "../components/Card";
 import { useQuery, useLazyQuery } from "@apollo/client";
-import { GET_ALL_READMES, GET_SEARCHED_READMES } from "../utils/queries";
-import { useEffect, useState } from "react";
+import { GET_ALL_READMES, GET_SEARCHED_READMES, GET_ME } from "../utils/queries";
+import { useState, useEffect } from "react";
+
 import { TextField } from "@mui/material";
 
 const Home = () => {
-
   const { loading, data: allReadme } = useQuery(GET_ALL_READMES);
+  const { loading: loadingUser, data: dataUser } = useQuery(GET_ME);
 
   let ReadMes = allReadme?.publishedReadmes || [];
+  const User = dataUser?.me;
 
   const [getSearch, {loading: searching, data: searchReadme }] = useLazyQuery(GET_SEARCHED_READMES)
 
@@ -32,6 +34,7 @@ const Home = () => {
     return (
       <main>
         <div className="divy">
+
           {(loading || searching) ? 
           <h2>loading</h2> 
           : 
@@ -66,8 +69,8 @@ const Home = () => {
                   }}}
                     />
           {search !== '' ? 
-            <Card ReadMes={searched} /> :
-            <Card ReadMes={ReadMes} /> 
+            <Card ReadMes={searched} User={User} /> :
+            <Card ReadMes={ReadMes} User={User} /> 
            }
           </div>
           }
