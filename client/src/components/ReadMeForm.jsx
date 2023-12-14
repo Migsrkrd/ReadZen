@@ -655,6 +655,7 @@ const ReadMeForm = (props) => {
             style={{
               display: "flex",
               flexWrap: "wrap",
+              justifyContent: "center",
               maxWidth: "90%",
               width: "100%",
               padding: "0px",

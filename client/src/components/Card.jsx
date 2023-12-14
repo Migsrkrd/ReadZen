@@ -101,6 +101,9 @@ const Card = (props) => {
             readMeId: expandedCardId,
             text: commentText,
           },
+          refetchQueries: [
+            GET_COMMENTS
+          ]
         });
         console.log("comment created! here is your comment: ", commentText);
       } else {
