@@ -93,8 +93,8 @@ const Card = (props) => {
     // Check if the comment text is not empty before submitting
     try {
       if (commentText.trim() !== "") {
-        console.log("Before add comment");
-        console.log("expandedCardId", expandedCardId);
+        // console.log("Before add comment");
+        // console.log("expandedCardId", expandedCardId);
         addComment({
           variables: {
             author: Auth.getProfile().data.username,
@@ -151,10 +151,10 @@ const Card = (props) => {
     event.stopPropagation();
     // console.log("like");
     // console.log(id);
-    console.log("Like");
-    console.log(props);
+    // console.log("Like");
+    // console.log(props);
     
-    console.log(id);
+    // console.log(id);
 
     likeReadMe({
       variables:{
@@ -167,10 +167,10 @@ const Card = (props) => {
     event.stopPropagation();
     // console.log("like");
     // console.log(id);
-    console.log("Unlike");
-    console.log(props);
+    // console.log("Unlike");
+    // console.log(props);
     
-    console.log(id);
+    // console.log(id);
 
     unLikeReadMe({
       variables:{
@@ -183,11 +183,11 @@ const Card = (props) => {
   const isLiked = (id, userLikes) => {
     for (let i= 0; i < userLikes.length; i++) {
       if (id == userLikes[i]._id) {
-        console.log('true');
+        // console.log('true');
         return true;
       }
     }
-    console.log('false');
+    // console.log('false');
     return false;
   }
 
@@ -327,7 +327,7 @@ const Card = (props) => {
               <button
                 className="btnBeg"
                 onClick={(event) => {
-                  console.log(readme.likeCount); 
+                  // console.log(readme.likeCount); 
                   isLiked(readme._id, props.User.likes) ? unLike(readme._id, event) : like(readme._id, event)
                 }}
               >
