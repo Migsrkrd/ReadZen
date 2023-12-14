@@ -22,7 +22,7 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 400,
+  width: 600,
   bgcolor: "#fbf9fa",
   border: "2px solid #a80038",
   borderRadius: "10px",
@@ -323,10 +323,21 @@ const Card = (props) => {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <div
+          <div className="markdown-body"
             dangerouslySetInnerHTML={{ __html: md.render(`${markdown}`) }}
           ></div>
-          <Button onClick={handleClose}>Close</Button>
+          <Button
+          sx={{
+            backgroundColor: "#a80038",
+            color: "#fbf9fa",
+            fontWeight: "bold",
+            margin: "10px",
+            "&:hover": {
+              backgroundColor: "#fd0054",
+              color: "#fbf9fa",
+            },
+          }}
+           onClick={handleClose}>Close</Button>
         </Box>
       </Modal>
       <Modal
