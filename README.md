@@ -62,3 +62,4 @@ SOFTWARE.
 
  No automatic methods of testing are included in this project, however feel free to fork the project and add some! Otherwise feel free to just experiment with the project and create issues for any odd behavior.
 
+This README was generated with [ReadZen](https://read-zen.onrender.com/generate)!

@@ -50,7 +50,7 @@ const SignupForm = () => {
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
-    console.log('submit')
+    // console.log('submit')
     try {
       //creates a new user in the db
       const { data } = await addUser({
@@ -86,9 +86,9 @@ const SignupForm = () => {
       const newPassString = 'Password' + passString.split(')')[1] + ')';
       messages.password = newPassString;
     }
-    console.log('error message', messages.main);
-    console.log('error array', messageArray);
-    console.log('error object', messages);
+    // console.log('error message', messages.main);
+    // console.log('error array', messageArray);
+    // console.log('error object', messages);
     setErrorMessages(messages);
   }
 

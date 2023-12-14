@@ -100,9 +100,9 @@ const ConfirmDeleteUserForm = ({ setOpen }) => {
       const property = index.split(':')[0].trim();
       messages[property] = index.split(':')[1].trim();
     });
-    console.log('error message', messages.main);
-    console.log('error array', messageArray);
-    console.log('error object', messages);
+    // console.log('error message', messages.main);
+    // console.log('error array', messageArray);
+    // console.log('error object', messages);
     setErrorMessages(messages);
   }
 
