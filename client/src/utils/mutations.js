@@ -185,12 +185,30 @@ export const DELETE_README = gql`
 
 export const LIKE_README = gql`
 mutation likeReadMe(
-  $readMeId: ID!
+  $readMeId: String!
   ){
     likeReadMe(
       readMeId: $readMeId
       ){
       _id
+      likes {
+        _id
+      }
+    }
+  }
+`
+
+export const UNLIKE_README = gql`
+mutation unLikeReadMe(
+  $readMeId: String!
+  ){
+    unLikeReadMe(
+      readMeId: $readMeId
+      ){
+      _id
+      likes {
+        _id
+      }
     }
   }
 `

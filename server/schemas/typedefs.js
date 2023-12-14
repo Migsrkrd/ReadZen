@@ -9,7 +9,7 @@ type User {
 
 type ReadMe {
     _id: ID!
-    title: String!
+    title: String
     description: String!
     tableOfContents: String
     installation: String
@@ -115,11 +115,10 @@ type Mutation {
         markdown: String
     ): ReadMe
     likeReadMe(
-        readMeId: ID!
+        readMeId: String!
     ): User
     unLikeReadMe(
-        _id:ID!
-        readMeId: ID!
+        readMeId: String!
     ): User
     addComment(
         _id: ID!

@@ -9,7 +9,7 @@ export const GET_USERS = gql`
       readMes {
         _id
         title
-        shortDescription
+        description
         dateCreated
         isPublished
         isPinned
@@ -28,7 +28,7 @@ export const GET_USER_BY_ID = gql`
       readMes {
         _id
         title
-        shortDescription
+        description
         dateCreated
       }
     }
@@ -41,14 +41,8 @@ export const GET_ME = gql`
       _id
       username
       email
-      readMes {
+      likes {
         _id
-        title
-        shortDescription
-        dateCreated
-        isPublished
-        isPinned
-        datePublished
       }
     }
   }
@@ -118,7 +112,6 @@ export const GET_README_BY_ID = gql`
     readMe(_id: $readMeId) {
       _id
       title
-      shortDescription
       description
       tableOfContents
       installation
