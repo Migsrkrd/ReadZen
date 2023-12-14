@@ -18,7 +18,7 @@ const Home = () => {
   const [searched, setSearched] = useState([]);
 
   const handleInputChange = async (event) => {
-    console.log(event.target.value)
+    // console.log(event.target.value)
     setSearch(event.target.value)
     if(event.target.value!==''){
       await getSearch( {variables:{query: event.target.value}})
