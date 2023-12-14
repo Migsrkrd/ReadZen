@@ -1,232 +1,334 @@
-import MarkdownIt from 'markdown-it';
+import MarkdownIt from "markdown-it";
 // import renderHTML from 'react-render-html';
-import ToggleButton from '@mui/material/ToggleButton';
-import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
-import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
-import { Button, Popper, Select } from '@mui/material';
-import InputLabel from '@mui/material/InputLabel';
-import FormGroup from '@mui/material/FormGroup';
-import FormControl from '@mui/material/FormControl';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import MenuItem from '@mui/material/MenuItem';
-import Switch from '@mui/material/Switch';
-import Grid from '@mui/material/Unstable_Grid2';
-import { useState, useRef } from 'react';
-import { useMutation } from '@apollo/client';
-import { ADD_README, UPDATE_README } from '../utils/mutations';
+import ToggleButton from "@mui/material/ToggleButton";
+import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
+import Box from "@mui/material/Box";
+import TextField from "@mui/material/TextField";
+import { Button, Popper, Select } from "@mui/material";
+import InputLabel from "@mui/material/InputLabel";
+import FormGroup from "@mui/material/FormGroup";
+import FormControl from "@mui/material/FormControl";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import MenuItem from "@mui/material/MenuItem";
+import Switch from "@mui/material/Switch";
+import Grid from "@mui/material/Unstable_Grid2";
+import { useState, useRef } from "react";
+import { useMutation } from "@apollo/client";
+import { ADD_README, UPDATE_README } from "../utils/mutations";
 import { Link } from "react-router-dom";
+import styled from "@mui/material/styles/styled";
 
 const ReadMeForm = (props) => {
-  const myElRef=useRef(null);
-    const md = MarkdownIt()
-    const [formats, setFormats] = useState(() => ['bold', 'italic']);
-    const [ToC, setToC] = useState(null);
-    //bold, italics, code, bullets, quotes, code block, block quote, strike through, highlight
-    const handleFormat = (event, newFormats) => {
-      let target = event.target;
-      while (target && target.getAttribute && target.getAttribute('value') === null) {
-        target = target.parentNode;
-      }
-      const value = target.getAttribute('value');
-      const selection = window.getSelection().toString();
-      if(selection){
+  const myElRef = useRef(null);
+  const md = MarkdownIt();
+  const [formats, setFormats] = useState(() => ["bold", "italic"]);
+  const [ToC, setToC] = useState(null);
+  //bold, italics, code, bullets, quotes, code block, block quote, strike through, highlight
+  const handleFormat = (event, newFormats) => {
+    let target = event.target;
+    while (
+      target &&
+      target.getAttribute &&
+      target.getAttribute("value") === null
+    ) {
+      target = target.parentNode;
+    }
+    const value = target.getAttribute("value");
+    const selection = window.getSelection().toString();
+    if (selection) {
       const regex = new RegExp(window.getSelection().toString(), "gi");
       for (let key in userFormData) {
-            const matches = userFormData[key].match(regex);
-            if(matches){
-              cases(value, key, matches);
-            }
-      }
-    }
-      setFormats(newFormats);
-    };
-
-    const cases = (value, key, matches) => {
-      switch (value) {
-        case 'bold': 
-          setUserFormData({ ...userFormData, [key]: userFormData[key].replace(matches[0],` **${matches[0]}** `) });
-          break;
-        case 'italics':
-          setUserFormData({ ...userFormData, [key]: userFormData[key].replace(matches[0],` *${matches[0]}* `) });
-          break;
-          case 'underline':
-            setUserFormData({ ...userFormData, [key]: userFormData[key].replace(matches[0],` <u>${matches[0]}</u> `) });
-            break;
-          case 'code':
-            setUserFormData({ ...userFormData, [key]: userFormData[key].replace(matches[0],` \`${matches[0]}\` `) });
-           break;
-           case 'code block':
-            setUserFormData({ ...userFormData, [key]: userFormData[key].replace(matches[0],` \`\`\`${matches[0]}\`\`\` `) });
-           break;
-           case 'bullet':
-            setUserFormData({ ...userFormData, [key]: userFormData[key].replace(matches[0],`\n * ${matches[0]}`) });
-           break;
-           case 'highlight':
-            setUserFormData({ ...userFormData, [key]: userFormData[key].replace(matches[0],` <mark> ${matches[0]} </mark> `) });
-           break;
-           case 'block quote':
-            setUserFormData({ ...userFormData, [key]: userFormData[key].replace(matches[0],`\n > ${matches[0]}`) });
-           break;
-           case 'strike through':
-            setUserFormData({ ...userFormData, [key]: userFormData[key].replace(matches[0],` ~~${matches[0]}~~ `) });
-           break;
-           case 'h1':
-            setUserFormData({ ...userFormData, [key]: userFormData[key].replace(matches[0],`\n # ${matches[0]} `) });
-           break;
-           case 'h2':
-            setUserFormData({ ...userFormData, [key]: userFormData[key].replace(matches[0],`\n ## ${matches[0]} `) });
-           break;
-           case 'h3':
-            setUserFormData({ ...userFormData, [key]: userFormData[key].replace(matches[0],`\n ### ${matches[0]} `) });
-           break;
-           case 'link':
-            setUserFormData({ ...userFormData, [key]: userFormData[key].replace(matches[0],`[${matches[0]}](${matches[0]}) `) });
-           break;
-        default:
-          // code to be executed if expression doesn't match any case
-      }
-    }
-
-    const [userFormData, setUserFormData] = useState(
-        props.readme
-          ? {
-            title:           props.readme.title,
-            description:     props.readme.description,
-            tableOfContents: props.readme.tableOfContents,
-            installation:    props.readme.installation,
-            usage:           props.readme.usage,
-            credits:         props.readme.credits,
-            license:         props.readme.license,
-            tests:           props.readme.tests,
-            repoLink:        props.readme.repoLink,
-            deployedLink:    props.readme.deployedLink,
-          }
-          : {
-            title:           '',
-            description:     '',
-            tableOfContents: '',
-            installation:    '',
-            usage:           '',
-            credits:         '',
-            license:         '',
-            tests:           '',
-            repoLink:        '',
-            deployedLink:    '',
-          }
-    );
-
-    const [renderToggle, setRenderToggle] = useState('code');
-    const [anchorEl, setAnchorEl] = useState(null);
-    const [addReadMe, {error: addReadMeError }] = useMutation(ADD_README);
-    const [updateReadMe, {error: updateReadMeError }] = useMutation(UPDATE_README);
-
-    const handleInputChange = (event) => {
-      // console.log(event.target);
-        let { id, value } = event.target;
-        id=(id ? id : event.target.name);
-        setUserFormData({ ...userFormData, [id]: value });
-    };
-
-    const handleToggle = (event) => {
-      setToC(string) 
-      renderToggle === 'render' ? (
-      setRenderToggle('code'), setAnchorEl(null))
-      : (setRenderToggle('render'), setAnchorEl(event.currentTarget));
-
-    };
-    let string;
-    const tableOfContents = (userFormData)=>{
-      string = (userFormData.title ? `## Table of Contents\n\n- [Title](#title)\n\n` : '') + 
-      (userFormData.description ? `- [Description](#description)\n\n` : '') +
-      (userFormData.installation ? `- [Installation](#installation)\n\n` : '') +
-      (userFormData.usage ? `- [Usage](#usage)\n\n` : '') +
-      (userFormData.credits ? `- [Credits](#credits)\n\n` : '') +
-      (userFormData.license ? `- [License](#license)\n\n` : '') +
-      (userFormData.tests ? `- [Tests](#tests)` : '')
-      return (
-        string
-      )
-    }
-    const open = Boolean(anchorEl);
-    const id = open ? 'simple-popover' : undefined;
-
-    const handleFormSubmit = async (event) => {
-        event.preventDefault();
-        try {
-            if (props.readme) {
-                // if the readme already exists (editing), then update it
-                console.log('update')
-                await updateReadMe({
-                    variables: {
-                      readMeId: props.readme._id,
-                      markdown: myElRef.current.textContent,
-                      datePublished: '',
-                      isPublished: false,
-                      ...userFormData
-                    },
-                });
-
-            } else {
-                // if the readme doesn't exist (adding), create a new one
-                await addReadMe({
-                    variables: {markdown:myElRef.current.textContent, ...userFormData },
-                });
-                          
-            }
-        } catch (e) {
-          console.error(e);
+        const matches = userFormData[key].match(regex);
+        if (matches) {
+          cases(value, key, matches);
         }
-  
-        // clear the form
+      }
+    }
+    setFormats(newFormats);
+  };
+
+  const cases = (value, key, matches) => {
+    switch (value) {
+      case "bold":
         setUserFormData({
-            title: '',
-            description: '',
-            tableOfContents:'',
-            installation: '',
-            usage: '',
-            credits: '',
-            license: '',
-            tests:'',
-            repoLink: '',
-            deployedLink: '',
+          ...userFormData,
+          [key]: userFormData[key].replace(matches[0], ` **${matches[0]}** `),
         });
-        window.location.href = '/me';
-    };
+        break;
+      case "italics":
+        setUserFormData({
+          ...userFormData,
+          [key]: userFormData[key].replace(matches[0], ` *${matches[0]}* `),
+        });
+        break;
+      case "underline":
+        setUserFormData({
+          ...userFormData,
+          [key]: userFormData[key].replace(
+            matches[0],
+            ` <u>${matches[0]}</u> `
+          ),
+        });
+        break;
+      case "code":
+        setUserFormData({
+          ...userFormData,
+          [key]: userFormData[key].replace(matches[0], ` \`${matches[0]}\` `),
+        });
+        break;
+      case "code block":
+        setUserFormData({
+          ...userFormData,
+          [key]: userFormData[key].replace(
+            matches[0],
+            ` \`\`\`${matches[0]}\`\`\` `
+          ),
+        });
+        break;
+      case "bullet":
+        setUserFormData({
+          ...userFormData,
+          [key]: userFormData[key].replace(matches[0], `\n * ${matches[0]}`),
+        });
+        break;
+      case "highlight":
+        setUserFormData({
+          ...userFormData,
+          [key]: userFormData[key].replace(
+            matches[0],
+            ` <mark> ${matches[0]} </mark> `
+          ),
+        });
+        break;
+      case "block quote":
+        setUserFormData({
+          ...userFormData,
+          [key]: userFormData[key].replace(matches[0], `\n > ${matches[0]}`),
+        });
+        break;
+      case "strike through":
+        setUserFormData({
+          ...userFormData,
+          [key]: userFormData[key].replace(matches[0], ` ~~${matches[0]}~~ `),
+        });
+        break;
+      case "h1":
+        setUserFormData({
+          ...userFormData,
+          [key]: userFormData[key].replace(matches[0], `\n # ${matches[0]} `),
+        });
+        break;
+      case "h2":
+        setUserFormData({
+          ...userFormData,
+          [key]: userFormData[key].replace(matches[0], `\n ## ${matches[0]} `),
+        });
+        break;
+      case "h3":
+        setUserFormData({
+          ...userFormData,
+          [key]: userFormData[key].replace(matches[0], `\n ### ${matches[0]} `),
+        });
+        break;
+      case "link":
+        setUserFormData({
+          ...userFormData,
+          [key]: userFormData[key].replace(
+            matches[0],
+            `[${matches[0]}](${matches[0]}) `
+          ),
+        });
+        break;
+      default:
+      // code to be executed if expression doesn't match any case
+    }
+  };
 
-    return (
-        <Grid container spacing={2}>
-            <Grid xs={6}>
-                <Box 
-                component="form"
-                sx={{
-                '& > :not(style)': { m: 1 },
-                }}
-                onSubmit={handleFormSubmit}
-                noValidate
-                autoComplete="off"
-                >
-                    <TextField
-                    spellCheck='true'
-                    id='title'  
-                    label="Title"
-                    value={userFormData.title}
-                    onChange={handleInputChange}
-                    fullWidth
-                    multiline
-                    margin="normal"
-                    />
+  const [userFormData, setUserFormData] = useState(
+    props.readme
+      ? {
+          title: props.readme.title,
+          description: props.readme.description,
+          tableOfContents: props.readme.tableOfContents,
+          installation: props.readme.installation,
+          usage: props.readme.usage,
+          credits: props.readme.credits,
+          license: props.readme.license,
+          tests: props.readme.tests,
+          repoLink: props.readme.repoLink,
+          deployedLink: props.readme.deployedLink,
+        }
+      : {
+          title: "",
+          description: "",
+          tableOfContents: "",
+          installation: "",
+          usage: "",
+          credits: "",
+          license: "",
+          tests: "",
+          repoLink: "",
+          deployedLink: "",
+        }
+  );
 
-                    <TextField
-                    id='description'  
-                    label="Description"
-                    value={userFormData.description}
-                    onChange={handleInputChange}
-                    fullWidth
-                    multiline
-                    margin="normal"
-                    />
-{/* 
+  const [renderToggle, setRenderToggle] = useState("code");
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [addReadMe, { error: addReadMeError }] = useMutation(ADD_README);
+  const [updateReadMe, { error: updateReadMeError }] =
+    useMutation(UPDATE_README);
+
+  const handleInputChange = (event) => {
+    // console.log(event.target);
+    let { id, value } = event.target;
+    id = id ? id : event.target.name;
+    setUserFormData({ ...userFormData, [id]: value });
+  };
+
+  const handleToggle = (event) => {
+    setToC(string);
+    renderToggle === "render"
+      ? (setRenderToggle("code"), setAnchorEl(null))
+      : (setRenderToggle("render"), setAnchorEl(event.currentTarget));
+  };
+  let string;
+  const tableOfContents = (userFormData) => {
+    string =
+      (userFormData.title
+        ? `## Table of Contents\n\n- [Title](#title)\n\n`
+        : "") +
+      (userFormData.description ? `- [Description](#description)\n\n` : "") +
+      (userFormData.installation ? `- [Installation](#installation)\n\n` : "") +
+      (userFormData.usage ? `- [Usage](#usage)\n\n` : "") +
+      (userFormData.credits ? `- [Credits](#credits)\n\n` : "") +
+      (userFormData.license ? `- [License](#license)\n\n` : "") +
+      (userFormData.tests ? `- [Tests](#tests)` : "");
+    return string;
+  };
+  const open = Boolean(anchorEl);
+  const id = open ? "simple-popover" : undefined;
+
+  const handleFormSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      if (props.readme) {
+        // if the readme already exists (editing), then update it
+        console.log("update");
+        await updateReadMe({
+          variables: {
+            readMeId: props.readme._id,
+            markdown: myElRef.current.textContent,
+            datePublished: "",
+            isPublished: false,
+            ...userFormData,
+          },
+        });
+      } else {
+        // if the readme doesn't exist (adding), create a new one
+        await addReadMe({
+          variables: { markdown: myElRef.current.textContent, ...userFormData },
+        });
+      }
+    } catch (e) {
+      console.error(e);
+    }
+
+    // clear the form
+    setUserFormData({
+      title: "",
+      description: "",
+      tableOfContents: "",
+      installation: "",
+      usage: "",
+      credits: "",
+      license: "",
+      tests: "",
+      repoLink: "",
+      deployedLink: "",
+    });
+    window.location.href = "/me";
+  };
+
+  return (
+    <Grid container spacing={0} style={{ paddingTop: "30px" }}>
+      <Grid xs={6}>
+        <Box
+          className="formBox"
+          component="form"
+          sx={{
+            "& > :not(style)": { m: 1 },
+          }}
+          onSubmit={handleFormSubmit}
+          noValidate
+          autoComplete="off"
+        >
+          <TextField
+            className="textFields"
+            inputProps={{spellCheck:"true"}}
+            id="title"
+            label="Title"
+            value={userFormData.title}
+            onChange={handleInputChange}
+            fullWidth
+            multiline
+            margin="normal"
+            sx={{
+              '& .MuiInputLabel-root.Mui-focused': {
+                color: '#a80038',
+              },
+              '& label.Mui-focused': {
+                color: '#a80038',
+              },
+              '& .MuiInput-underline:after': {
+                borderBottomColor: '#a80038',
+              },
+              '& .MuiOutlinedInput-root': {
+                '& fieldset': {
+                  borderColor: '#a80038',
+                },
+                '&:hover fieldset': {
+                  borderColor: '#a80038',
+                },
+                '&.Mui-focused fieldset': {
+                  borderColor: '#a80038',
+                },
+              
+            }}}
+          />
+
+          <TextField
+            className="textFields"
+            id="description"
+            label="Description"
+            value={userFormData.description}
+            onChange={handleInputChange}
+            fullWidth
+            multiline
+            margin="normal"
+            sx={{
+              '& .MuiInputLabel-root.Mui-focused': {
+                color: '#a80038',
+              },
+              '& label.Mui-focused': {
+                color: '#a80038',
+              },
+              '& .MuiInput-underline:after': {
+                borderBottomColor: '#a80038',
+              },
+              '& .MuiOutlinedInput-root': {
+                '& fieldset': {
+                  borderColor: '#a80038',
+                },
+                '&:hover fieldset': {
+                  borderColor: '#a80038',
+                },
+                '&.Mui-focused fieldset': {
+                  borderColor: '#a80038',
+                },
+              
+            }}}
+          />
+          {/* 
                     <TextField
                     id='tableOfContents'  
                     label="Table of Contents"
@@ -237,37 +339,106 @@ const ReadMeForm = (props) => {
                     margin="normal"
                     /> */}
 
-                    <TextField
-                    id='installation'  
-                    label="Installation"
-                    value={userFormData.installation}
-                    onChange={handleInputChange}
-                    fullWidth
-                    multiline
-                    margin="normal"
-                    />
+          <TextField
+            className="textFields"
+            id="installation"
+            label="Installation"
+            value={userFormData.installation}
+            onChange={handleInputChange}
+            fullWidth
+            multiline
+            margin="normal"
+            sx={{
+              '& .MuiInputLabel-root.Mui-focused': {
+                color: '#a80038',
+              },
+              '& label.Mui-focused': {
+                color: '#a80038',
+              },
+              '& .MuiInput-underline:after': {
+                borderBottomColor: '#a80038',
+              },
+              '& .MuiOutlinedInput-root': {
+                '& fieldset': {
+                  borderColor: '#a80038',
+                },
+                '&:hover fieldset': {
+                  borderColor: '#a80038',
+                },
+                '&.Mui-focused fieldset': {
+                  borderColor: '#a80038',
+                },
+              
+            }}}
+          />
 
-                    <TextField
-                    id='usage'  
-                    label="Usage"
-                    value={userFormData.usage}
-                    onChange={handleInputChange}
-                    fullWidth
-                    multiline
-                    margin="normal"
-                    />
+          <TextField
+            className="textFields"
+            id="usage"
+            label="Usage"
+            value={userFormData.usage}
+            onChange={handleInputChange}
+            fullWidth
+            multiline
+            margin="normal"
+            sx={{
+              '& .MuiInputLabel-root.Mui-focused': {
+                color: '#a80038',
+              },
+              '& label.Mui-focused': {
+                color: '#a80038',
+              },
+              '& .MuiInput-underline:after': {
+                borderBottomColor: '#a80038',
+              },
+              '& .MuiOutlinedInput-root': {
+                '& fieldset': {
+                  borderColor: '#a80038',
+                },
+                '&:hover fieldset': {
+                  borderColor: '#a80038',
+                },
+                '&.Mui-focused fieldset': {
+                  borderColor: '#a80038',
+                },
+              
+            }}}
+          />
 
-                    <TextField
-                    id='credits'  
-                    label="Credits"
-                    value={userFormData.credits}
-                    onChange={handleInputChange}
-                    fullWidth
-                    multiline
-                    margin="normal"
-                    />
-                    
-                    {/* <TextField
+          <TextField
+            className="textFields"
+            id="credits"
+            label="Credits"
+            value={userFormData.credits}
+            onChange={handleInputChange}
+            fullWidth
+            multiline
+            margin="normal"
+            sx={{
+              '& .MuiInputLabel-root.Mui-focused': {
+                color: '#a80038',
+              },
+              '& label.Mui-focused': {
+                color: '#a80038',
+              },
+              '& .MuiInput-underline:after': {
+                borderBottomColor: '#a80038',
+              },
+              '& .MuiOutlinedInput-root': {
+                '& fieldset': {
+                  borderColor: '#a80038',
+                },
+                '&:hover fieldset': {
+                  borderColor: '#a80038',
+                },
+                '&.Mui-focused fieldset': {
+                  borderColor: '#a80038',
+                },
+              
+            }}}
+          />
+
+          {/* <TextField
                     id='license'  
                     label="License"
                     value={userFormData.license}
@@ -276,16 +447,47 @@ const ReadMeForm = (props) => {
                     multiline
                     margin="normal"
                     /> */}
-                    <FormControl fullWidth>
-                    <InputLabel id="demo-simple-select-label">License</InputLabel>
-                    <Select
-                    id='license'
-                    name='license'
-                    value={userFormData.license}
-                    label="License"
-                    onChange={handleInputChange}
-                    >
-                    <MenuItem value={`MIT License
+          <FormControl fullWidth
+           sx={{
+            '& .MuiInputLabel-root.Mui-focused': {
+              color: '#a80038',
+            },
+            '& label.Mui-focused': {
+              color: '#a80038',
+            },
+            '& .MuiInput-underline:after': {
+              borderBottomColor: '#a80038',
+            },
+            '& .MuiOutlinedInput-root': {
+              '& fieldset': {
+                borderColor: '#a80038',
+              },
+              '&:hover fieldset': {
+                borderColor: '#a80038',
+              },
+              '&.Mui-focused fieldset': {
+                borderColor: '#a80038',
+              },
+            
+          }}}>
+            <InputLabel id="demo-simple-select-label">License</InputLabel>
+            <Select
+              className="textFields"
+              id="license"
+              name="license"
+              value={userFormData.license}
+              label="License"
+              onChange={handleInputChange}
+              
+            >
+              <MenuItem
+              style={{
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'flex-start',
+      maxWidth: '100%', // Optionally set a maximum width
+    }}
+                value={`MIT License
 
 Copyright (c) 
 
@@ -305,8 +507,18 @@ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.`}>MIT</MenuItem>
-                    <MenuItem value={`The Unlicense
+SOFTWARE.`}
+              >
+                MIT
+              </MenuItem>
+              <MenuItem
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'flex-start',
+                maxWidth: '100%', // Optionally set a maximum width
+              }}
+                value={`The Unlicense
       
       This is free and unencumbered software released into the public domain.
 
@@ -314,9 +526,18 @@ SOFTWARE.`}>MIT</MenuItem>
       
       In jurisdictions that recognize copyright laws, the author or authors of this software dedicate any and all copyright interest in the software to the public domain. We make this dedication for the benefit of the public at large and to the detriment of our heirs and successors. We intend this dedication to be an overt act of relinquishment in perpetuity of all present and future rights to this software under copyright law.
       
-      THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.`
-    }>The Unlicense</MenuItem>
-                    <MenuItem value={`                                 Apache License
+      THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.`}
+              >
+                The Unlicense
+              </MenuItem>
+              <MenuItem
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'flex-start',
+                maxWidth: '100%', // Optionally set a maximum width
+              }}
+                value={`                                 Apache License
                            Version 2.0, January 2004
                         http://www.apache.org/licenses/
 
@@ -516,142 +737,392 @@ SOFTWARE.`}>MIT</MenuItem>
    distributed under the License is distributed on an "AS IS" BASIS,
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
-   limitations under the License`}>Apache License 2.0</MenuItem>
-                    </Select>
-                    </FormControl>
+   limitations under the License`}
+              >
+                Apache License 2.0
+              </MenuItem>
+            </Select>
+          </FormControl>
 
-                    <TextField
-                    id='tests'  
-                    label="Tests"
-                    value={userFormData.tests}
-                    onChange={handleInputChange}
-                    fullWidth
-                    multiline
-                    margin="normal"
-                    />
+          <TextField
+            className="textFields"
+            id="tests"
+            label="Tests"
+            value={userFormData.tests}
+            onChange={handleInputChange}
+            fullWidth
+            multiline
+            margin="normal"
+            sx={{
+              '& .MuiInputLabel-root.Mui-focused': {
+                color: '#a80038',
+              },
+              '& label.Mui-focused': {
+                color: '#a80038',
+              },
+              '& .MuiInput-underline:after': {
+                borderBottomColor: '#a80038',
+              },
+              '& .MuiOutlinedInput-root': {
+                '& fieldset': {
+                  borderColor: '#a80038',
+                },
+                '&:hover fieldset': {
+                  borderColor: '#a80038',
+                },
+                '&.Mui-focused fieldset': {
+                  borderColor: '#a80038',
+                },
+              
+            }}}
+          />
 
-                    <TextField
-                    id='repoLink'  
-                    label="Repository Link"
-                    value={userFormData.repoLink}
-                    onChange={handleInputChange}
-                    fullWidth
-                    multiline
-                    margin="normal"
-                    />
+          <TextField
+            className="textFields"
+            id="repoLink"
+            label="Repository Link"
+            value={userFormData.repoLink}
+            onChange={handleInputChange}
+            fullWidth
+            multiline
+            margin="normal"
+            sx={{
+              '& .MuiInputLabel-root.Mui-focused': {
+                color: '#a80038',
+              },
+              '& label.Mui-focused': {
+                color: '#a80038',
+              },
+              '& .MuiInput-underline:after': {
+                borderBottomColor: '#a80038',
+              },
+              '& .MuiOutlinedInput-root': {
+                '& fieldset': {
+                  borderColor: '#a80038',
+                },
+                '&:hover fieldset': {
+                  borderColor: '#a80038',
+                },
+                '&.Mui-focused fieldset': {
+                  borderColor: '#a80038',
+                },
+              
+            }}}
+          />
 
-                    <TextField
-                    id='deployedLink'  
-                    label="Deployed Link"
-                    value={userFormData.deployedLink}
-                    onChange={handleInputChange}
-                    fullWidth
-                    multiline
-                    margin="normal"
-                    />
-                    <Button
-                    disabled={!(userFormData.title) || renderToggle === 'render'}
-                    type='submit'
-                    variant='contained'
-                    >
-                        Save
-                    </Button>
-                    <Link to='/me' >
-                        <Button
-                        type='button'
-                        variant='contained'
-                        >
-                            Cancel
-                        </Button>
-                    </Link>
-
-                </Box>
-            </Grid>
-            <Grid xs={6}>
-            <FormGroup>
-                <FormControlLabel  control={<Switch onChange={(event) => handleToggle(event)}/>} label="Render" />
-                <Popper  
-                id={id}
-                open={open}
-                anchorEl={anchorEl}    
-                placement='top-start'
-                >
-                  Note: You can only save when rendering is off
-                </Popper>
-                <ToggleButtonGroup
-                    value={formats}
-                    onChange={handleFormat}
-                    aria-label="text formatting">
-                <ToggleButton value="bold" aria-label="bold" >
-                  <strong>B</strong>
-                </ToggleButton>
-                <ToggleButton value="italics" aria-label="bold" >
-                  <em >I</em>
-                </ToggleButton>
-                <ToggleButton value="underline" aria-label="bold" >
-                  <u>U</u>
-                </ToggleButton>
-                <ToggleButton value="code" aria-label="bold" >
-                  code
-                </ToggleButton>
-                <ToggleButton value="code block" aria-label="bold" >
-                  code block
-                </ToggleButton>
-                <ToggleButton value="bullet" aria-label="bold" >
-                  •
-                </ToggleButton>
-                <ToggleButton value="highlight" aria-label="bold" >
-                  highlight
-                </ToggleButton>
-                <ToggleButton value="block quote" aria-label="bold" >
-                  blockquote
-                </ToggleButton>
-                <ToggleButton value="strike through" aria-label="bold" >
-                <p style={{ textDecoration: 'line-through' }}>Strike Through</p>
-                </ToggleButton>
-                <ToggleButton value="h1" aria-label="bold" >
-                  H1
-                </ToggleButton>
-                <ToggleButton value="h2" aria-label="bold" >
-                  H2
-                </ToggleButton>
-                <ToggleButton value="h3" aria-label="bold" >
-                  H3
-                </ToggleButton>
-                <ToggleButton value="link" aria-label="bold" >
-                  Link
-                </ToggleButton>
-                
-                </ToggleButtonGroup>
-            </FormGroup>
-                {renderToggle === 'code' ?
-                <pre ref={myElRef}>
-                  {userFormData.title ? `# ${userFormData.title} \n\n` : ''}
-                  {userFormData.description ? `## Description\n\n${userFormData.deployedLink ? `[Visit the Deployed Site](${userFormData.deployedLink})\n\n` : ''}${userFormData.description}\n\n` : ''}
-                  {`${tableOfContents(userFormData)}\n\n`}
-                  {userFormData.installation ? `## Installation\n\n ${userFormData.installation}\n\n` : ''}
-                  {userFormData.usage ? `## Usage\n\n ${userFormData.usage}\n\n` : ''}
-                  {userFormData.credits ? `## Credits\n\n ${userFormData.credits}\n\n` : ''}
-                  {userFormData.license ? `## License\n\n ${userFormData.license}\n\n` : ''}
-                  {userFormData.tests ? `## Test\n\n ${userFormData.tests}\n\n` : ''}
-                </pre>
-                : 
-                <div >
-                <div dangerouslySetInnerHTML={{__html: md.render(`${
-                    (userFormData.title ? `# ${userFormData.title} \n\n` : '')}${
-                    (userFormData.description ? `## Description\n\n${userFormData.deployedLink ? `[Visit the Deployed Site](${userFormData.deployedLink})\n\n` : ''}${userFormData.description}\n\n` : '')}${
-                    (`${ToC}\n\n`)}${
-                    (userFormData.installation ? `## Installation\n\n ${userFormData.installation}\n\n` : '')}${
-                    (userFormData.usage ? `## Usage\n\n ${userFormData.usage}\n\n`:'')}${
-                    (userFormData.credits ? `## Credits\n\n ${userFormData.credits}\n\n`:'')}${
-                    (userFormData.license ? `## License\n\n ${userFormData.license}\n\n`:'')}${
-                    (userFormData.tests ? `## Test\n\n ${userFormData.tests}\n\n`:'')}
-                `)}}></div>
-                </div>
+          <TextField
+            className="textFields"
+            id="deployedLink"
+            label="Deployed Link"
+            value={userFormData.deployedLink}
+            onChange={handleInputChange}
+            fullWidth
+            multiline
+            margin="normal"
+            sx={{
+              '& .MuiInputLabel-root.Mui-focused': {
+                color: '#a80038',
+              },
+              '& label.Mui-focused': {
+                color: '#a80038',
+              },
+              '& .MuiInput-underline:after': {
+                borderBottomColor: '#a80038',
+              },
+              '& .MuiOutlinedInput-root': {
+                '& fieldset': {
+                  borderColor: '#a80038',
+                },
+                '&:hover fieldset': {
+                  borderColor: '#a80038',
+                },
+                '&.Mui-focused fieldset': {
+                  borderColor: '#a80038',
+                },
+              
+            }}}
+          />
+          <div className="create-buttons">
+          <Button
+            disabled={!userFormData.title || renderToggle === "render"}
+            type="submit"
+            variant="contained"
+            sx={{
+              backgroundColor: "#a80038",
+              '&:hover': {
+                backgroundColor: '#fd0054',
+              },
+            }}
+          >
+            Save
+          </Button>
+          <Link to="/me">
+            <Button type="button" variant="contained"
+            sx={{
+              backgroundColor: "#a80038",
+              '&:hover': {
+                backgroundColor: '#fd0054',
+              },
+            }}>
+              Cancel
+            </Button>
+          </Link>
+          </div>
+        </Box>
+      </Grid>
+      <Grid xs={6} style={{ paddingLeft: "20px", zIndex: "0"}}>
+        <FormGroup>
+          <FormControlLabel
+            control={<Switch onChange={(event) => handleToggle(event)}
+            sx={{
+              '& .MuiSwitch-switchBase.Mui-checked': {
+                color: '#a80038',
+              },
+              '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
+                backgroundColor: '#a80038',
+              },
+            }} />}
+            label="Render"
+          />
+          <Popper id={id} open={open} anchorEl={anchorEl} placement="top-start">
+            Note: You can only save when rendering is off
+          </Popper>
+          <ToggleButtonGroup
+            value={formats}
+            onChange={handleFormat}
+            aria-label="text formatting"
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              maxWidth: "90%",
+              width: "100%",
+              padding: "0px",
+            }}
+          >
+            <ToggleButton
+              value="bold"
+              aria-label="bold"
+              className="tBtn"
+              style={{
+                border: "1px solid #2b2024",
+                borderRadius: "0px",
+                marginBottom: "5px",
+              }}
+            >
+              <strong style={{ color: "#a80038" }}>B</strong>
+            </ToggleButton>
+            <ToggleButton
+              style={{
+                marginBottom: "5px",
+                border: "1px solid #2b2024",
+                borderRadius: "0px",
+              }}
+              value="italics"
+              aria-label="bold"
+            >
+              <em style={{ color: "#a80038" }}>I</em>
+            </ToggleButton>
+            <ToggleButton
+              style={{
+                marginBottom: "5px",
+                border: "1px solid #2b2024",
+                borderRadius: "0px",
+              }}
+              value="underline"
+              aria-label="bold"
+            >
+              <u style={{ color: "#a80038" }}>U</u>
+            </ToggleButton>
+            <ToggleButton
+              style={{
+                marginBottom: "5px",
+                border: "1px solid #2b2024",
+                borderRadius: "0px",
+                color: "#a80038",
+              }}
+              value="code"
+              aria-label="bold"
+            >
+              code
+            </ToggleButton>
+            <ToggleButton
+              style={{
+                marginBottom: "5px",
+                border: "1px solid #2b2024",
+                borderRadius: "0px",
+                color: "#a80038",
+              }}
+              value="code block"
+              aria-label="bold"
+            >
+              code block
+            </ToggleButton>
+            <ToggleButton
+              style={{
+                marginBottom: "5px",
+                border: "1px solid #2b2024",
+                borderRadius: "0px",
+                color: "#a80038",
+              }}
+              value="bullet"
+              aria-label="bold"
+            >
+              •
+            </ToggleButton>
+            <ToggleButton
+              style={{
+                marginBottom: "5px",
+                border: "1px solid #2b2024",
+                borderRadius: "0px",
+                color: "#a80038",
+              }}
+              value="highlight"
+              aria-label="bold"
+            >
+              highlight
+            </ToggleButton>
+            <ToggleButton
+              style={{
+                marginBottom: "5px",
+                border: "1px solid #2b2024",
+                borderRadius: "0px",
+                color: "#a80038",
+              }}
+              value="block quote"
+              aria-label="bold"
+            >
+              blockquote
+            </ToggleButton>
+            <ToggleButton
+              style={{
+                marginBottom: "5px",
+                border: "1px solid #2b2024",
+                borderRadius: "0px",
+                color: "#a80038",
+              }}
+              value="strike through"
+              aria-label="bold"
+            >
+              <p style={{ textDecoration: "line-through" }}>Strike Through</p>
+            </ToggleButton>
+            <ToggleButton
+              style={{
+                marginBottom: "5px",
+                border: "1px solid #2b2024",
+                borderRadius: "0px",
+                color: "#a80038",
+              }}
+              value="h1"
+              aria-label="bold"
+            >
+              H1
+            </ToggleButton>
+            <ToggleButton
+              style={{
+                marginBottom: "5px",
+                border: "1px solid #2b2024",
+                borderRadius: "0px",
+                color: "#a80038",
+              }}
+              value="h2"
+              aria-label="bold"
+            >
+              H2
+            </ToggleButton>
+            <ToggleButton
+              style={{
+                marginBottom: "5px",
+                border: "1px solid #2b2024",
+                borderRadius: "0px",
+                color: "#a80038",
+              }}
+              value="h3"
+              aria-label="bold"
+            >
+              H3
+            </ToggleButton>
+            <ToggleButton
+              style={{
+                marginBottom: "5px",
+                border: "1px solid #2b2024",
+                borderRadius: "0px",
+                color: "#a80038",
+              }}
+              value="link"
+              aria-label="bold"
+            >
+              Link
+            </ToggleButton>
+          </ToggleButtonGroup>
+        </FormGroup>
+        {renderToggle === "code" ? (
+          <div className="markDown-Results">
+          <pre className="markDown-Results" ref={myElRef}>
+            {userFormData.title ? `# ${userFormData.title} \n\n` : ""}
+            {userFormData.description
+              ? `## Description\n\n${
+                  userFormData.deployedLink
+                    ? `[Visit the Deployed Site](${userFormData.deployedLink})\n\n`
+                    : ""
+                }${userFormData.description}\n\n`
+              : ""}
+            {`${tableOfContents(userFormData)}\n\n`}
+            {userFormData.installation
+              ? `## Installation\n\n ${userFormData.installation}\n\n`
+              : ""}
+            {userFormData.usage ? `## Usage\n\n ${userFormData.usage}\n\n` : ""}
+            {userFormData.credits
+              ? `## Credits\n\n ${userFormData.credits}\n\n`
+              : ""}
+            {userFormData.license
+              ? `## License\n\n ${userFormData.license}\n\n`
+              : ""}
+            {userFormData.tests ? `## Test\n\n ${userFormData.tests}\n\n` : ""}
+          </pre>
+          </div>
+        ) : (
+          <div>
+            <div
+              dangerouslySetInnerHTML={{
+                __html: md.render(`${
+                  userFormData.title ? `# ${userFormData.title} \n\n` : ""
+                }${
+                  userFormData.description
+                    ? `## Description\n\n${
+                        userFormData.deployedLink
+                          ? `[Visit the Deployed Site](${userFormData.deployedLink})\n\n`
+                          : ""
+                      }${userFormData.description}\n\n`
+                    : ""
+                }${`${ToC}\n\n`}${
+                  userFormData.installation
+                    ? `## Installation\n\n ${userFormData.installation}\n\n`
+                    : ""
+                }${
+                  userFormData.usage
+                    ? `## Usage\n\n ${userFormData.usage}\n\n`
+                    : ""
+                }${
+                  userFormData.credits
+                    ? `## Credits\n\n ${userFormData.credits}\n\n`
+                    : ""
+                }${
+                  userFormData.license
+                    ? `## License\n\n ${userFormData.license}\n\n`
+                    : ""
+                }${
+                  userFormData.tests
+                    ? `## Test\n\n ${userFormData.tests}\n\n`
+                    : ""
                 }
-            </Grid>
-        </Grid>
-    );
-}
+                `),
+              }}
+            ></div>
+          </div>
+        )}
+      </Grid>
+    </Grid>
+  );
+};
 
 export default ReadMeForm;
