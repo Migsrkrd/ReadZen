@@ -123,7 +123,7 @@ const ConfirmDeleteUserForm = ({ setOpen }) => {
         noValidate
         autoComplete="off"
       >
-        <h1>Confirm Account Delete</h1>
+        <h1 className='confirm-header'>Confirm Account Delete</h1>
 
         <StyledTextField
           id="password"  
@@ -159,9 +159,9 @@ const ConfirmDeleteUserForm = ({ setOpen }) => {
           variant='contained'
           onClick={handleCancel}
           sx={{
-            backgroundColor: '#666',
+            backgroundColor: '#a80038',
             '&:hover': {
-              backgroundColor: '#888',
+              backgroundColor: '#fd0054',
             },
           }}
         >

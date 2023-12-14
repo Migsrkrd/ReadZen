@@ -176,11 +176,6 @@ const Card = (props) => {
     console.log("Repo link copied:", repoLink);
   }
 
-  function exit(event) {
-    event.stopPropagation();
-    setIsLoggedIn(false);
-  }
-
   let ReadMes = [];
   const showPublished = () => {
     ReadMes = props.ReadMes.filter((readme) => readme.isPublished);

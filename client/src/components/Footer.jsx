@@ -11,6 +11,7 @@ const Footer = () => {
       justifyContent: 'center',
       alignItems: 'center',
       marginTop: '200px',
+
     },
     container: {
       width: '100%',
@@ -57,12 +58,12 @@ const Footer = () => {
   }
 
     return (
-<footer style={styles.siteFooter}>
+<footer style={styles.siteFooter} id="footer-here">
   <div style={styles.container}>
     <div style={styles.footerContent}>
       <div style={styles.footerInfo}>
         <p>&copy; 2023 ReadZen. All Rights Reserved.</p>
-        <p>Designed and Developed with ❤️ by Your Team Name</p>
+        <p>Designed and Developed with ❤️ by Team Readzen</p>
         <p>Contact us: <a style={styles.email} href="mailto:info@readzen.com">info@readzen.com</a></p>
       </div>
       <div style={styles.footerSocials}>
