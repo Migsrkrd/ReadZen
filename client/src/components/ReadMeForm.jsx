@@ -1,5 +1,5 @@
 import MarkdownIt from "markdown-it";
-// import renderHTML from 'react-render-html';
+import React from "react";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import Box from "@mui/material/Box";
@@ -37,8 +37,8 @@ const ReadMeForm = (props) => {
       const startOffset = range.startOffset;
       const endOffset = range.endOffset;
     
-      const maxBefore = 20; // Maximum number of characters before the selection
-      const maxAfter = 20; // Maximum number of characters after the selection
+      const maxBefore = 10; // Maximum number of characters before the selection
+      const maxAfter = 10; // Maximum number of characters after the selection
     
       const start = Math.max(0, startOffset - maxBefore);
       const end = Math.min(textContent.length, endOffset + maxAfter);
@@ -47,30 +47,29 @@ const ReadMeForm = (props) => {
       const selectedText = textContent.slice(startOffset, endOffset);
       const textAfter = textContent.slice(endOffset, end);
     
-      console.log("Text before selection:", textBefore);
-      console.log("Selected text:", selectedText);
-      console.log("Text after selection:", textAfter);
-    
-      const selected = textBefore + selectedText + textAfter;
-      console.log(selected);
+      let selected = textBefore + selectedText + textAfter;
 
       if(selection){
-      const regex = new RegExp(selected, "g");
-      // const matchesRight = [...myElRef.current.textContent.matchAll(regex)]
-      // const matches = [...myElRef.current.textContent.matchAll(regex)];
+      const arr=selected.split('\n')
+      let longestString = "";
 
-      // let matchesInput;
+      for (let i = 0; i < arr.length; i++) {
+        if (typeof arr[i] === "string" && arr[i].length > longestString.length) {
+          longestString = arr[i];
+        }
+      }
+    
+      let regex = new RegExp(longestString, "g");
+      if(arr.length>1){
+        selected=longestString;
+      }
       for (let key in userFormData) {
             const matches = userFormData[key].match(regex);
-            // console.log(matches);
             if(matches){
-              // matches = selectedText;
-              console.log(matches);
+
               cases(value, key, selectedText, selected);
             }
       }
-      // console.log(matchesRight)
-      // console.log(matchesInput)
     }
       setFormats(newFormats);
     };
@@ -134,103 +133,6 @@ const ReadMeForm = (props) => {
           // code to be executed if expression doesn't match any case
       }
     };
-
-  const cases = (value, key, matches) => {
-    switch (value) {
-      case "bold":
-        setUserFormData({
-          ...userFormData,
-          [key]: userFormData[key].replace(matches[0], ` **${matches[0]}** `),
-        });
-        break;
-      case "italics":
-        setUserFormData({
-          ...userFormData,
-          [key]: userFormData[key].replace(matches[0], ` *${matches[0]}* `),
-        });
-        break;
-      case "underline":
-        setUserFormData({
-          ...userFormData,
-          [key]: userFormData[key].replace(
-            matches[0],
-            ` <u>${matches[0]}</u> `
-          ),
-        });
-        break;
-      case "code":
-        setUserFormData({
-          ...userFormData,
-          [key]: userFormData[key].replace(matches[0], ` \`${matches[0]}\` `),
-        });
-        break;
-      case "code block":
-        setUserFormData({
-          ...userFormData,
-          [key]: userFormData[key].replace(
-            matches[0],
-            ` \`\`\`${matches[0]}\`\`\` `
-          ),
-        });
-        break;
-      case "bullet":
-        setUserFormData({
-          ...userFormData,
-          [key]: userFormData[key].replace(matches[0], `\n * ${matches[0]}`),
-        });
-        break;
-      case "highlight":
-        setUserFormData({
-          ...userFormData,
-          [key]: userFormData[key].replace(
-            matches[0],
-            ` <mark> ${matches[0]} </mark> `
-          ),
-        });
-        break;
-      case "block quote":
-        setUserFormData({
-          ...userFormData,
-          [key]: userFormData[key].replace(matches[0], `\n > ${matches[0]}`),
-        });
-        break;
-      case "strike through":
-        setUserFormData({
-          ...userFormData,
-          [key]: userFormData[key].replace(matches[0], ` ~~${matches[0]}~~ `),
-        });
-        break;
-      case "h1":
-        setUserFormData({
-          ...userFormData,
-          [key]: userFormData[key].replace(matches[0], `\n # ${matches[0]} `),
-        });
-        break;
-      case "h2":
-        setUserFormData({
-          ...userFormData,
-          [key]: userFormData[key].replace(matches[0], `\n ## ${matches[0]} `),
-        });
-        break;
-      case "h3":
-        setUserFormData({
-          ...userFormData,
-          [key]: userFormData[key].replace(matches[0], `\n ### ${matches[0]} `),
-        });
-        break;
-      case "link":
-        setUserFormData({
-          ...userFormData,
-          [key]: userFormData[key].replace(
-            matches[0],
-            `[${matches[0]}](${matches[0]}) `
-          ),
-        });
-        break;
-      default:
-      // code to be executed if expression doesn't match any case
-    }
-  };
 
   const [userFormData, setUserFormData] = useState(
     props.readme

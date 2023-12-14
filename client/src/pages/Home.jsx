@@ -8,24 +8,28 @@ const Home = () => {
 
   const { loading, data } = useQuery(GET_ALL_READMES);
 
-  const [getSearch, {load, dat }] = useLazyQuery(GET_SEARCHED_READMES)
-  // console.log("load")
-  // console.log(data)
   const ReadMes = data?.publishedReadmes || [];
+
+  const [getSearch, {load, error, dat }] = useLazyQuery(GET_SEARCHED_READMES)
 
   const [search, setSearch] = useState('');
 
-  const handleInputChange = (event) => {
+  let searchResults
+  const handleInputChange = async (event) => {
     console.log(event.target.value)
     setSearch(event.target.value)
-    getSearch( {variables:{author: event.target.value}})
+    searchResults = await getSearch( {variables:{author: event.target.value}})
+    console.log(dat)
   }
+  console.log(load)
+  console.log(search !== '' ? searchResults : "nothing")
 
     return (
       <main>
         <div className="divy">
           {loading ? 
-          <h2>loading</h2> : 
+          <h2>loading</h2> 
+          : 
           <div>
               <TextField
                     id='search'  
@@ -36,7 +40,10 @@ const Home = () => {
                     multiline
                     margin="normal"
                     />
-          <Card ReadMes={ReadMes} /> 
+          {/* {search !== '' ? 
+            <Card ReadMes={searchResults.data.searchReadmes} /> :
+            <Card ReadMes={ReadMes} /> 
+           } */}
           </div>
           }
         </div>
