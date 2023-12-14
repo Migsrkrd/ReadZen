@@ -51,6 +51,11 @@ const resolvers = {
             return ReadMe.find({ isPublished: true });
         },
 
+        searchReadmes: async(parent, args) => {
+            console.log('search')
+            console.log(args)
+            return ReadMe.find({author: args})
+        },
         // Returns all readmes of a given user
         readmes: async (parent, { username }, context) => {
             return ReadMe.find({ author: username });
