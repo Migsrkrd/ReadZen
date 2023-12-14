@@ -46,6 +46,7 @@ type Query {
     user(_id: ID!): User
     allreadmes: [ReadMe]
     publishedReadmes: [ReadMe]
+    searchReadmes(author: String): [ReadMe]
     readmes(username: String): [ReadMe]
     readme(_id: ID!): ReadMe
     comments(readMeId: String!): [Comment]
@@ -113,7 +114,6 @@ type Mutation {
         markdown: String
     ): ReadMe
     likeReadMe(
-        _id:ID!
         readMeId: ID!
     ): User
     unLikeReadMe(

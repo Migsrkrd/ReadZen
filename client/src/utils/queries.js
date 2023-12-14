@@ -54,6 +54,23 @@ export const GET_ME = gql`
   }
 `;
 
+export const GET_SEARCHED_READMES = gql`
+  query getSearchReadMes($author: String) {
+    searchReadmes(author: $author) {
+      _id
+      title
+      description
+      repoLink
+      deployedLink
+      isPublished
+      isPinned
+      datePublished
+      author
+      markdown
+    }
+  }
+`
+
 export const GET_ALL_READMES = gql`
   query getAllReadMes {
     publishedReadmes {
