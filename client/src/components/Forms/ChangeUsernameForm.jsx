@@ -33,11 +33,6 @@ const ChangeUsernameForm = ({ setOpen }) => {
   const [userFormData, setUserFormData] = useState({ newUsername: ''});
   const [errorMessages, setErrorMessages] = useState({});
 
-  // set state for form validation
-  // const [validated] = useState(false);
-  // set state for alert
-  // const [showAlert, setShowAlert] = useState(false);
-
   // update the mutation for updating the username
   const { _id: userId } = Auth.getProfile().data;
   const [updateUsername, { error }] = useMutation(UPDATE_USERNAME, {
@@ -46,8 +41,6 @@ const ChangeUsernameForm = ({ setOpen }) => {
       ...userFormData,
     }
   });
-  // console.log('userFormData');
-  // console.log(userFormData);
 
   const handleInputChange = (event) => {
     const { id, value } = event.target;
@@ -64,7 +57,6 @@ const ChangeUsernameForm = ({ setOpen }) => {
     } catch (e) {
       console.error(e);
       handleError(e)
-      // setShowAlert(true);
     }
 
     clearForm()
@@ -90,20 +82,11 @@ const ChangeUsernameForm = ({ setOpen }) => {
       const property = index.split(':')[0].trim();
       messages[property] = index.split(':')[1].trim();
     });
-    // console.log('error message', messages.main);
-    // console.log('error array', messageArray);
-    // console.log('error object', messages);
     setErrorMessages(messages);
   }
 
   return (
     <>
-      {/* This is needed for the validation functionality above */}
-      {/* <Form noValidate validated={validated} onSubmit={handleFormSubmit}> */}
-        {/* show alert if server response is bad */}
-        {/* <Alert dismissible onClose={() => setShowAlert(false)} show={showAlert} variant='danger'>
-          Something went wrong with your signup!
-        </Alert> */}
       <Box
         component="form"
         sx={{

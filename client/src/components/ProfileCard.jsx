@@ -54,8 +54,8 @@ const ProfileCard = (props) => {
   const [open, setOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [deleteId, setDeleteId] = useState();
-  // const [isPinned, setIsPinned] = useState(false);
 
+  //toggles the published attribute on readmes
   const [togglePublished] = useMutation(UPDATE_README, {
     refetchQueries: [
       {
@@ -69,7 +69,7 @@ const ProfileCard = (props) => {
       }
   ]
   });
-
+  //deletes a read me
   const [deleteReadMe] = useMutation(DELETE_README, {
     refetchQueries:[
       GET_READMES, {
@@ -123,7 +123,7 @@ const ProfileCard = (props) => {
       },
     });
   };
-
+  //toggles pin attribute on readme
     const togglePin = (id, isPinned, event) => {
       event.stopPropagation();
       const newIsPinned = !isPinned;
@@ -133,7 +133,6 @@ const ProfileCard = (props) => {
           isPinned: newIsPinned,
         }
       })
-      console.log("toggle pin")
     } 
 
   function noMoreThanWords(str) {
@@ -142,7 +141,7 @@ const ProfileCard = (props) => {
     }
     return str;
   }
-
+//allows the user to download the file
   const downloadFile= (readme, title, event) => {
     event.stopPropagation();
     const fileName = `${title}.README.md`;
