@@ -6,6 +6,7 @@ import { useQuery } from "@apollo/client";
 import { GET_READMES } from "../utils/queries";
 
 const Profile = () => {
+  //gets all readmes for that users profile
   const { loading, data } = useQuery(GET_READMES, {
     variables: {
       username:
@@ -18,6 +19,7 @@ const Profile = () => {
   return (
     <>
       <div>
+        {/* sets the cards to proflie cards if it is that users profile otherwise just shows regular cards */}
         {(useLocation().pathname === "/me" && Auth.loggedIn()) ||
         (Auth.loggedIn() && useParams().username === `${Auth.getProfile().data.username}`) ? (
           <div>

@@ -31,7 +31,6 @@ const userSchema = new Schema({
             ref: 'ReadMe'
         }
     ]
-    // Add pinned ReadMes later
 });
 
 // Hashes password

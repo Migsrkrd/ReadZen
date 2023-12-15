@@ -1,5 +1,4 @@
 import { useState } from 'react';
-// import { Form, Button, Alert } from 'react-bootstrap';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import { styled } from '@mui/material/styles';
@@ -50,7 +49,6 @@ const SignupForm = () => {
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
-    // console.log('submit')
     try {
       //creates a new user in the db
       const { data } = await addUser({
@@ -86,20 +84,11 @@ const SignupForm = () => {
       const newPassString = 'Password' + passString.split(')')[1] + ')';
       messages.password = newPassString;
     }
-    // console.log('error message', messages.main);
-    // console.log('error array', messageArray);
-    // console.log('error object', messages);
     setErrorMessages(messages);
   }
 
   return (
     <>
-      {/* This is needed for the validation functionality above */}
-      {/* <Form noValidate validated={validated} onSubmit={handleFormSubmit}> */}
-        {/* show alert if server response is bad */}
-        {/* <Alert dismissible onClose={() => setShowAlert(false)} show={showAlert} variant='danger'>
-          Something went wrong with your signup!
-        </Alert> */}
     <Box
           component="form"
           sx={{
@@ -109,6 +98,7 @@ const SignupForm = () => {
           noValidate
           autoComplete="off"
           >
+          {/* creates input boxes for each part of the state */}
         <StyledTextField
         id='username'  
         label="Username"
@@ -155,10 +145,9 @@ const SignupForm = () => {
           
         }}
       />
-      {/* <CssTextField label="Custom CSS" id="custom-css-outlined-input" /> */}
         <Button
+        // disables button if not all fields are filled out
           disabled={!(userFormData.username && userFormData.email && userFormData.password)}
-
           type='submit'
           variant='contained'
           sx={{
@@ -170,7 +159,6 @@ const SignupForm = () => {
           Submit
         </Button>
         </Box>
-      {/* </Form> */}
     </>
   );
 };
