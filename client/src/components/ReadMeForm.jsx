@@ -19,37 +19,38 @@ import { Link } from "react-router-dom";
 import { MITLicenseText, UnlicenseText, ApacheLicenseText } from './Forms/LicenseTexts';
 
 const ReadMeForm = (props) => {
+  //sets the reference area to null
   const myElRef=useRef(null);
+  //calls the markdown
     const md = MarkdownIt()
-    const [formats, setFormats] = useState(() => ['bold', 'italic']);
     const [ToC, setToC] = useState(null);
     //bold, italics, code, bullets, quotes, code block, block quote, strike through, highlight
-    const handleFormat = (event, newFormats) => {
+    const handleFormat = (event) => {
+      //checks which toggle has been clicked
       let target = event.target;
       while (target && target.getAttribute && target.getAttribute('value') === null) {
         target = target.parentNode;
       }
       const value = target.getAttribute('value');
+      //gets the user highlighted section as well as 10 characters before and after
       const selection = window.getSelection().toString();
       const range = window.getSelection().getRangeAt(0)
       const containerNode = range.commonAncestorContainer;
       const textContent = containerNode.textContent;
       const startOffset = range.startOffset;
       const endOffset = range.endOffset;
-    
       const maxBefore = 10; // Maximum number of characters before the selection
       const maxAfter = 10; // Maximum number of characters after the selection
-    
       const start = Math.max(0, startOffset - maxBefore);
       const end = Math.min(textContent.length, endOffset + maxAfter);
-    
       const textBefore = textContent.slice(start, startOffset);
       const selectedText = textContent.slice(startOffset, endOffset);
       const textAfter = textContent.slice(endOffset, end);
     
       let selected = textBefore + selectedText + textAfter;
-
+      //checks that something has been highlighted
       if(selection){
+        //splits the string if a return exists
       const arr=selected.split('\n')
       let longestString = "";
 
@@ -58,11 +59,12 @@ const ReadMeForm = (props) => {
           longestString = arr[i];
         }
       }
-    
+      // makes the longest string into a regex
       let regex = new RegExp(longestString, "g");
       if(arr.length>1){
         selected=longestString;
       }
+      //checks if the regex matches anywhere in the input fields
       for (let key in userFormData) {
             const matches = userFormData[key].match(regex);
             if(matches){
@@ -71,9 +73,8 @@ const ReadMeForm = (props) => {
             }
       }
     }
-      setFormats(newFormats);
     };
-
+    //cases to replace the highlighted text with the appropriate markdown styling
     const cases = (value, key, selectedText, selected) => {
       let replaced
       switch (value) {
@@ -133,7 +134,8 @@ const ReadMeForm = (props) => {
           // code to be executed if expression doesn't match any case
       }
     };
-
+    //use state for all the input boxes
+    //if the user is editing it uses props to fill in the fields
   const [userFormData, setUserFormData] = useState(
     props.readme
       ? {
@@ -167,14 +169,13 @@ const ReadMeForm = (props) => {
   const [addReadMe, { error: addReadMeError }] = useMutation(ADD_README);
   const [updateReadMe, { error: updateReadMeError }] =
     useMutation(UPDATE_README);
-
+//handles user typing into and input box and updates the correct one 
   const handleInputChange = (event) => {
-    // console.log(event.target);
     let { id, value } = event.target;
     id = id ? id : event.target.name;
     setUserFormData({ ...userFormData, [id]: value });
   };
-
+//changes whether the user is seeing markdown or the render
   const handleToggle = (event) => {
     setToC(string);
     renderToggle === "render"
@@ -182,6 +183,7 @@ const ReadMeForm = (props) => {
       : (setRenderToggle("render"), setAnchorEl(event.currentTarget));
   };
   let string;
+  //creates the table of contents
   const tableOfContents = (userFormData) => {
     string =
       (userFormData.title
@@ -203,10 +205,10 @@ const ReadMeForm = (props) => {
     try {
       if (props.readme) {
         // if the readme already exists (editing), then update it
-        console.log("update");
         await updateReadMe({
           variables: {
             readMeId: props.readme._id,
+            //refernces the created markdown text on the page
             markdown: myElRef.current.textContent,
             datePublished: "",
             isPublished: false,
@@ -318,16 +320,6 @@ const ReadMeForm = (props) => {
               
             }}}
           />
-          {/* 
-                    <TextField
-                        id='tableOfContents'  
-                        label="Table of Contents"
-                        value={userFormData.tableOfContents}
-                        onChange={handleInputChange}
-                        fullWidth
-                        multiline
-                        margin="normal"
-                    /> */}
           <TextField
             className="textFields"
             id="installation"
@@ -426,16 +418,6 @@ const ReadMeForm = (props) => {
               
             }}}
           />
-
-          {/* <TextField
-                    id='license'  
-                    label="License"
-                    value={userFormData.license}
-                    onChange={handleInputChange}
-                    fullWidth
-                    multiline
-                    margin="normal"
-                    /> */}
           <FormControl fullWidth
            sx={{
             '& .MuiInputLabel-root.Mui-focused': {
@@ -649,7 +631,6 @@ const ReadMeForm = (props) => {
             Note: You can only save when rendering is off
           </Popper>
           <ToggleButtonGroup
-            value={formats}
             onChange={handleFormat}
             aria-label="text formatting"
             style={{
@@ -830,6 +811,7 @@ const ReadMeForm = (props) => {
             </ToggleButton>
           </ToggleButtonGroup>
         </FormGroup>
+        {/* switches between markdown and render */}
         {renderToggle === "code" ? (
           <div className="markDown-Results">
           <pre className="markDown-Results" ref={myElRef}>
@@ -860,6 +842,7 @@ const ReadMeForm = (props) => {
             <div
             className="displaying-readme"
               dangerouslySetInnerHTML={{
+                //uses markdown it
                 __html: md.render(`${
                   userFormData.title ? `# ${userFormData.title} \n\n` : ""
                 }${

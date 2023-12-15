@@ -11,29 +11,34 @@ const router = createBrowserRouter([
   {
     path: '/',
     element: <App />,
-    errorElement: <h1 className='display-2'>Wrong page!</h1>,
+    errorElement: <h1 className='display-2'>404 Page Not Found!</h1>,
     children: [
+      //default is set to home
         {
             index: true,
             element: <Home />,
         },
+        //sends to users profile using the profile page
         {
             path: 'profiles/:username',
             element: <Profile />
         },
+        //sends a user to their profile using the profile page
         {
             path: '/me',
             element: <Profile />
         },
+        //sends a user to the about page
+
         {
             path: '/about',
             element: <About />
         },
+        //sends user to the generate page
         {
             path: '/generate',
             element: <Generate />
-        }
-
+        },
     ]
   }
 ])

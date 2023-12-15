@@ -1,7 +1,8 @@
 import ReadMeForm from "../components/ReadMeForm";
 import { useLocation } from "react-router-dom";
-// import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+
 const Generate = () => {
+  //passes through the reade me info to the readme form
   let { state } = useLocation();
   return (
     <div>

@@ -26,7 +26,6 @@ const resolvers = {
         // User's profile page
         me: async (parent, args, context) => {
             if (context.user) {
-                // console.log("context.user", context.user)
                 return await User.findOne({ _id: context.user._id });
             }
             throw AuthenticationError;
@@ -51,12 +50,9 @@ const resolvers = {
         publishedReadmes: async () => {
             return await ReadMe.find({ isPublished: true });
         },
-
+        //returns searched for readmes
         searchReadmes: async (parent, args) => {
-            // console.log('search')
-            // console.log(args)
             const regex = new RegExp(args.query, 'i');
-            // console.log(regex)
             const readme = await ReadMe.find({    
                 $or: [
                 { author: { $regex: regex } },
@@ -65,7 +61,6 @@ const resolvers = {
             ],
             isPublished: true
             })
-            // console.log(readme)
             return readme
         },
         // Returns all readmes of a given user
@@ -125,7 +120,6 @@ const resolvers = {
 
         // Creates a new user and assigns a token
         addUser: async (parent, args) => {
-            console.log("add user")
             const user = await User.create(args);
             const token = signToken(user);
 
@@ -193,8 +187,6 @@ const resolvers = {
                 
                 // find the user
                 const user = await User.findById(id);
-                // console.log('user');
-                // console.log(user);
 
                 if (!user) {
                   throw new AuthenticationError('User not found');
@@ -202,8 +194,6 @@ const resolvers = {
     
                 // check the password
                 const correctPass = await user.isCorrectPassword(password);
-                // console.log('correctPass');
-                // console.log(correctPass);
                 
                 if (!correctPass) {
                     throw new AuthenticationError('Incorrect password');
@@ -242,7 +232,7 @@ const resolvers = {
 
         // Stores a liked readme to a user, and increments the readme's likeCount
         likeReadMe: async (parent, args, context) => {
-            // console.log("likes")
+
             if (context.user) {
                 const readme = await ReadMe.findOneAndUpdate(
                     { _id: args.readMeId },
@@ -262,8 +252,7 @@ const resolvers = {
 
         unLikeReadMe: async (parent, args, context) => {
             if (context.user) {
-                // console.log('context user', context.user);
-                //     console.log('readMeId', args.readMeId);
+
                     const readme = await ReadMe.findOneAndUpdate(
                         { _id: args.readMeId },
                         { $inc: { likeCount: -1 } },
@@ -276,7 +265,6 @@ const resolvers = {
                         { new: true }
                     );
                 
-                    // console.log('user', user);
                     return user;
             }
             throw AuthenticationError;
@@ -298,8 +286,6 @@ const resolvers = {
 
         // Edits a readme and updates a user's readmes
         updateReadMe: async (parent, args, context) => {
-            // console.log('context.user', context.user);
-            // console.log('update');
             if (context.user) {
                 const readmeAuthor = (await ReadMe.findOne({ _id: args._id })).author;
 
@@ -310,8 +296,6 @@ const resolvers = {
                         { ...args },
                         { new: true }
                     );
-                    
-                    // console.log('readme', readme);
     
                     await User.findOneAndUpdate(
                         { _id: context.user._id },
