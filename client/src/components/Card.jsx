@@ -155,6 +155,11 @@ const Card = (props) => {
     // console.log(props);
     
     // console.log(id);
+    if(!Auth.loggedIn()){
+      setIsLoggedIn(true);
+      console.log("not logged in")
+      return;
+    }
 
     likeReadMe({
       variables:{
@@ -171,6 +176,11 @@ const Card = (props) => {
     // console.log(props);
     
     // console.log(id);
+    if(!Auth.loggedIn()){
+      setIsLoggedIn(true);
+      console.log("not logged in")
+      return;
+    }
 
     unLikeReadMe({
       variables:{
@@ -180,9 +190,12 @@ const Card = (props) => {
     });
   }
 
-  const isLiked = (id, userLikes) => {
-    for (let i= 0; i < userLikes.length; i++) {
-      if (id == userLikes[i]._id) {
+  const isLiked = (id, user, event) => {
+    if (!user) {
+      return false;
+    }
+    for (let i= 0; i < user.likes.length; i++) {
+      if (id == user.likes[i]._id) {
         // console.log('true');
         return true;
       }
@@ -328,7 +341,7 @@ const Card = (props) => {
                 className="btnBeg"
                 onClick={(event) => {
                   // console.log(readme.likeCount); 
-                  isLiked(readme._id, props.User.likes) ? unLike(readme._id, event) : like(readme._id, event)
+                  isLiked(readme._id, props.User, event) ? unLike(readme._id, event) : like(readme._id, event)
                 }}
               >
                 {readme.likeCount} {readme.likeCount==1 ? 'Like' : 'Likes'}
