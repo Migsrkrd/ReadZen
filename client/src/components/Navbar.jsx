@@ -33,7 +33,6 @@ const btn = {
 };
 
 const Header = () => {
-  const [showModal, setShowModal] = useState(false);
 
   const [activeForm, setActiveForm] = useState("login");
   const handleFormChange = (event) => {

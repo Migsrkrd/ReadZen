@@ -47,7 +47,6 @@ const Card = (props) => {
   const [expandedCardId, setExpandedCardId] = useState(null);
   const [expandedCardClass, setExpandedCardClass] = useState("card");
   const [markdown, setMarkdown] = useState();
-  // const [isLiked, setIsLiked] = useState(props.User.likes.includes(props.ReadMes.));
   const [open, setOpen] = useState(false);
   const [likeReadMe] = useMutation(LIKE_README, {
     refetchQueries: [
@@ -146,12 +145,7 @@ const Card = (props) => {
 
   function like(id, event) {
     event.stopPropagation();
-    // console.log("like");
-    // console.log(id);
-    // console.log("Like");
-    // console.log(props);
-    
-    // console.log(id);
+
     if(!Auth.loggedIn()){
       setIsLoggedIn(true);
       console.log("not logged in")
@@ -167,12 +161,7 @@ const Card = (props) => {
 
   function unLike(id, event) {
     event.stopPropagation();
-    // console.log("like");
-    // console.log(id);
-    // console.log("Unlike");
-    // console.log(props);
-    
-    // console.log(id);
+
     if(!Auth.loggedIn()){
       setIsLoggedIn(true);
       console.log("not logged in")
@@ -193,7 +182,6 @@ const Card = (props) => {
     }
     for (let i= 0; i < user.likes.length; i++) {
       if (id == user.likes[i]._id) {
-        // console.log('true');
         return true;
       }
     }
@@ -333,7 +321,6 @@ const Card = (props) => {
               <button
                 className="btnBeg"
                 onClick={(event) => {
-                  // console.log(readme.likeCount); 
                   isLiked(readme._id, props.User, event) ? unLike(readme._id, event) : like(readme._id, event)
                 }}
               >

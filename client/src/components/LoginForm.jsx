@@ -63,10 +63,6 @@ const LoginForm = () => {
   
   return (
     <div>
-      {/* <Form noValidate validated={validated} onSubmit={handleFormSubmit}> */}
-        {/* <Alert dismissible onClose={() => setShowAlert(false)} show={showAlert} variant='danger'>
-          Something went wrong with your login credentials!
-        </Alert> */}
             <Box className='loginForm'
           component="form"
           sx={{
@@ -119,7 +115,6 @@ const LoginForm = () => {
           Submit
         </Button>
         </Box>
-      {/* </Form> */}
     </div>
   );
 };

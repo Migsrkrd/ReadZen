@@ -35,11 +35,6 @@ const ConfirmDeleteUserForm = ({ setOpen }) => {
   });
   const [errorMessages, setErrorMessages] = useState({});
 
-  // set state for form validation
-  // const [validated] = useState(false);
-  // set state for alert
-  // const [showAlert, setShowAlert] = useState(false);
-
   // update the mutation for updating the username
   const { _id: userId } = Auth.getProfile().data;
   const [deleteUser, { error }] = useMutation(DELETE_USER, {
@@ -67,7 +62,6 @@ const ConfirmDeleteUserForm = ({ setOpen }) => {
     } catch (e) {
       console.error(e);
       handleError(e)
-      // setShowAlert(true);
     }
 
     clearForm()
@@ -85,12 +79,6 @@ const ConfirmDeleteUserForm = ({ setOpen }) => {
   }
 
   const handleError = (error) => {
-    // single error message for any validation error:
-    // const message = error.message;
-    // const messages = {};
-    // messages.main = message.split(':')[0];
-    // setErrorMessages(messages);
-    // console.log('error message', messages.main);
   
     const message = error.message;
     const messageArray = message.slice(message.indexOf(':') + 1).split(',');
@@ -100,20 +88,11 @@ const ConfirmDeleteUserForm = ({ setOpen }) => {
       const property = index.split(':')[0].trim();
       messages[property] = index.split(':')[1].trim();
     });
-    // console.log('error message', messages.main);
-    // console.log('error array', messageArray);
-    // console.log('error object', messages);
     setErrorMessages(messages);
   }
 
   return (
     <>
-      {/* This is needed for the validation functionality above */}
-      {/* <Form noValidate validated={validated} onSubmit={handleFormSubmit}> */}
-        {/* show alert if server response is bad */}
-        {/* <Alert dismissible onClose={() => setShowAlert(false)} show={showAlert} variant='danger'>
-          Something went wrong with your signup!
-        </Alert> */}
       <Box
         component="form"
         sx={{
