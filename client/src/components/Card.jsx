@@ -22,7 +22,8 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 600,
+  width: "80%",
+  maxWidth: "600px",
   bgcolor: "#fbf9fa",
   border: "2px solid #a80038",
   borderRadius: "10px",
@@ -71,8 +72,6 @@ const Card = (props) => {
     variables: { readMeId: expandedCardId },
   });
 
-  // console.log("data", data)
-
   const comments = data?.comments || [];
 
   useEffect(() => {
@@ -93,8 +92,6 @@ const Card = (props) => {
     // Check if the comment text is not empty before submitting
     try {
       if (commentText.trim() !== "") {
-        // console.log("Before add comment");
-        // console.log("expandedCardId", expandedCardId);
         addComment({
           variables: {
             author: Auth.getProfile().data.username,
@@ -200,7 +197,6 @@ const Card = (props) => {
         return true;
       }
     }
-    // console.log('false');
     return false;
   }
 
@@ -247,12 +243,9 @@ const Card = (props) => {
   }
 
   let ReadMes = [];
-  // console.log("card")
-  // console.log(props.ReadMes)
+
   const showPublished = () => {
     ReadMes = props.ReadMes.filter((readme) => readme.isPublished);
-    // const unpinned=props.ReadMes.filter(readme=>!readme.isPinned);
-    // ReadMes=[pinned, unpinned].flat();
   };
   showPublished();
 
@@ -279,7 +272,7 @@ const Card = (props) => {
           </div>
           <div className="card-body">
             <h3>{readme.title}</h3>
-            {/* limit words */}
+            {/* limits the number of words shown in the description */}
             <p>{noMoreThanWords(readme.description)}</p>
             <div className="card-links">
               <a
@@ -381,7 +374,7 @@ const Card = (props) => {
           </div>
         </div>
       ))}
-      <Modal
+      <Modal xs={6} md={6} lg={4}
         open={open}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
