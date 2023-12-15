@@ -6,6 +6,8 @@
 
 This application is a fullstack app designed for generating and sharing READMEs in an efficient and convenient way. We utilize React to render our front-end, Apollo Server for our back-end, and MongoDB/Mongoose for our data storage. ReadZen allows users to input information field by field to generate the exact README that they have in mind. READMEs can be saved to a user and viewed on their profile page, and from there they can download the markdown file or publish it so that it can be viewed on the discover page. A list of published READMEs can be liked or commented on for users who are logged in, and the markdown preview can be viewed by clicking on the card.
 
+![Demonstration gif](client/public/assets/Animation.gif)
+
 ## Table of Contents
 
 - [Title](#title)
